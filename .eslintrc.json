@@ -7,7 +7,6 @@
         "plugin:react/recommended",
         "airbnb",
         "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended",
         "airbnb-typescript"
     ],
     "parser": "@typescript-eslint/parser",
@@ -22,13 +21,11 @@
     "plugins": [
         "react",
         "@typescript-eslint",
-        "react-hooks",
-        "prettier"
-    ],
+        "react-hooks"
+        ],
     "rules": {
         "import/no-unresolved": "error",
-        "react/jsx-one-expression-per-line": [2, { "allow": "none" }],
-        "react/jsx-indent": [2, 2]
+        "quotes": ["error", "single"]
     },
     "settings": {
         "import/resolver": {
