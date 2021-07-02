@@ -1,0 +1,38 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended",
+        "airbnb-typescript"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "project": "./tsconfig.json",
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "@typescript-eslint",
+        "react-hooks",
+        "prettier"
+    ],
+    "rules": {
+        "import/no-unresolved": "error",
+        "react/jsx-one-expression-per-line": [2, { "allow": "none" }],
+        "react/jsx-indent": [2, 2]
+    },
+    "settings": {
+        "import/resolver": {
+          "typescript": {}
+        }
+    }
+}
