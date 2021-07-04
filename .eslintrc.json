@@ -26,7 +26,8 @@
     "rules": {
         "import/no-unresolved": "error",
         "quotes": ["error", "single"],
-        "import/prefer-default-export": "off"
+        "import/prefer-default-export": "off",
+        "react/require-default-props": "off"
     },
     "settings": {
         "import/resolver": {
