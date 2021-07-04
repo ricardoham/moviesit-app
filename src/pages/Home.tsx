@@ -1,5 +1,10 @@
 import React from 'react';
+import Header from 'components/Header';
 
-const Home = () => <div>bla</div>;
+const Home = (): JSX.Element => (
+  <div>
+    <Header />
+  </div>
+);
 
 export default Home;

@@ -25,7 +25,8 @@
         ],
     "rules": {
         "import/no-unresolved": "error",
-        "quotes": ["error", "single"]
+        "quotes": ["error", "single"],
+        "import/prefer-default-export": "off"
     },
     "settings": {
         "import/resolver": {
