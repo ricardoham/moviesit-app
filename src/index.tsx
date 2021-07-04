@@ -4,7 +4,7 @@ import { Router } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { GlobalStyle } from 'globalStyles';
 import history from 'configs/history';
-import App from './App';
+import App from './pages/App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 
