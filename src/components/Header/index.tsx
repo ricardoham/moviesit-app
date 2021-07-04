@@ -6,6 +6,7 @@ const Header = (): JSX.Element => (
   <StyledHeader>
     <span>logo</span>
     <Search />
+    <span>Profile</span>
   </StyledHeader>
 );
 

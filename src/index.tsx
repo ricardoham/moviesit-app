@@ -2,12 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { ChakraProvider } from '@chakra-ui/react';
+import { GlobalStyle } from 'globalStyles';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider>
+      <GlobalStyle />
       <App />
     </ChakraProvider>
   </React.StrictMode>,
