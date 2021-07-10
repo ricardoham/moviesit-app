@@ -1,4 +1,6 @@
-import React, { useEffect, useReducer } from 'react';
+import React, {
+  useEffect, useReducer, useState,
+} from 'react';
 import { moviesItAPI } from 'api';
 import { TMDBResults } from 'model/tmbd';
 
@@ -40,28 +42,39 @@ const dataFetchReducer = (state: State, action: Action): State => {
   }
 };
 
-export const useApiFetch = (): State[] => {
+export const useApiFetch = (): [State, React.Dispatch<React.SetStateAction<string>>] => {
   const [state, dispatch] = useReducer(dataFetchReducer, {
     isLoading: false,
     isError: false,
     payload: [],
   });
+  const [queryUrl, setQueryUrl] = useState('');
+
   useEffect(() => {
+    let didCancel = false;
     const fetchData = async () => {
       dispatch({ type: 'FETCH_MOVIES' });
 
       try {
-        const result = await moviesItAPI.get('/tmdb?name=titanic&page=1');
-        dispatch({
-          type: 'FETCH_MOVIES_SUCCESS',
-          payload: result.data,
-        });
+        const result = await moviesItAPI.get(`/tmdb?name=${queryUrl}&page=1`);
+        if (!didCancel) {
+          dispatch({
+            type: 'FETCH_MOVIES_SUCCESS',
+            payload: result.data,
+          });
+        }
       } catch (error) {
-        dispatch({ type: 'FETCH_MOVIES_FAILURE', isError: true, error: error.message });
+        if (!didCancel) {
+          dispatch({ type: 'FETCH_MOVIES_FAILURE', isError: true, error: error.message });
+        }
       }
     };
     fetchData();
-  }, []);
 
-  return [state];
+    return () => {
+      didCancel = true;
+    };
+  }, [queryUrl]);
+
+  return [state, setQueryUrl];
 };
