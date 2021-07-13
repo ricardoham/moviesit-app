@@ -1,6 +1,6 @@
+import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import React from 'react';
 import { IoSearchOutline } from 'react-icons/io5';
-import { SearchContainer, StyledSearch } from './styles';
 
 interface Props {
   onSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -8,15 +8,18 @@ interface Props {
 }
 
 const Search = ({ onSearch, value }: Props): JSX.Element => (
-  <SearchContainer>
-    <IoSearchOutline />
-    <StyledSearch
-      placeholder="Search"
+  <InputGroup bg="white" borderRadius="lg">
+    <InputLeftElement
+      pointerEvents="none"
+      children={<IoSearchOutline color="gray.300" />}
+    />
+    <Input
       type="search"
+      placeholder="Search"
       onChange={onSearch}
       value={value}
     />
-  </SearchContainer>
+  </InputGroup>
 );
 
 export default Search;
