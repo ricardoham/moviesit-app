@@ -7,7 +7,7 @@ import { TMDBResults } from 'model/tmbd';
 type State = {
   isLoading: boolean,
   isError: boolean,
-  payload?: TMDBResults | []
+  payload?: TMDBResults,
   error?: string,
 };
 
@@ -34,7 +34,7 @@ const dataFetchReducer = (state: State, action: Action): State => {
         ...state,
         isLoading: false,
         isError: true,
-        payload: [],
+        payload: undefined,
         error: action.error,
       };
     default:
@@ -46,7 +46,7 @@ export const useApiFetch = (): [State, React.Dispatch<React.SetStateAction<strin
   const [state, dispatch] = useReducer(dataFetchReducer, {
     isLoading: false,
     isError: false,
-    payload: [],
+    payload: undefined,
   });
   const [queryUrl, setQueryUrl] = useState('');
 

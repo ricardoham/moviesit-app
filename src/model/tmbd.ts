@@ -6,6 +6,7 @@ export interface TMDB {
   popularity: number;
   voteAverage: number;
   releaseDate: string;
+  posterPath: string;
 }
 
 export interface TMDBResults {
