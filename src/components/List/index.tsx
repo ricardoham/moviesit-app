@@ -7,16 +7,25 @@ import { TMDB } from 'model/tmbd';
 interface Props {
   data: TMDB[];
   loading: boolean;
+  onClick: (args: any) => void;
 }
 
-const ListItems = ({ data, loading }: Props): JSX.Element => {
+const ListItems = ({ data, loading, onClick }: Props): JSX.Element => {
   console.log(loading);
 
   return (
     <List>
       {
         data.map((item) => (
-          <ListItem key={item.id} m={4} p={2} display={{ md: 'flex' }} bg="white">
+          <ListItem
+            key={item.id}
+            m={4}
+            p={2}
+            display={{ md: 'flex' }}
+            bg="white"
+            onClick={() => onClick(item.id)}
+            cursor="pointer"
+          >
             <Box flexShrink={0}>
               <Image
                 src={`https://image.tmdb.org/t/p/original/${item.posterPath}`}
