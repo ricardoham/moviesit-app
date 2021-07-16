@@ -5,7 +5,7 @@ const Navbar = (): JSX.Element => (
   <ul>
     <li>
       <Link to="/">Home</Link>
-      <Link to="/filmes">Filmes</Link>
+      <Link to="/movies">Filmes</Link>
     </li>
   </ul>
 );

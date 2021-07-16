@@ -42,13 +42,15 @@ const dataFetchReducer = (state: State, action: Action): State => {
   }
 };
 
-export const useApiFetch = (): [State, React.Dispatch<React.SetStateAction<string>>] => {
+export const useApiFetch = (
+  initialUrl: string,
+): [State, React.Dispatch<React.SetStateAction<string>>] => {
+  const [url, setUrl] = useState(initialUrl);
   const [state, dispatch] = useReducer(dataFetchReducer, {
     isLoading: false,
     isError: false,
     payload: undefined,
   });
-  const [queryUrl, setQueryUrl] = useState('');
 
   useEffect(() => {
     let didCancel = false;
@@ -56,7 +58,7 @@ export const useApiFetch = (): [State, React.Dispatch<React.SetStateAction<strin
       dispatch({ type: 'FETCH_MOVIES' });
 
       try {
-        const result = await moviesItAPI.get(`/tmdb?name=${queryUrl}&page=1`);
+        const result = await moviesItAPI.get(url);
         if (!didCancel) {
           dispatch({
             type: 'FETCH_MOVIES_SUCCESS',
@@ -74,7 +76,7 @@ export const useApiFetch = (): [State, React.Dispatch<React.SetStateAction<strin
     return () => {
       didCancel = true;
     };
-  }, [queryUrl]);
+  }, [url]);
 
-  return [state, setQueryUrl];
+  return [state, setUrl];
 };
