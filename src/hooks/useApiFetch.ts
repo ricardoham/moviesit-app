@@ -2,12 +2,13 @@ import React, {
   useEffect, useReducer, useState,
 } from 'react';
 import { moviesItAPI } from 'api';
-import { TMDBResults } from 'model/tmbd';
+import { TMDB, TMDBResults } from 'model/tmbd';
 
 type State = {
   isLoading: boolean,
   isError: boolean,
-  payload?: TMDBResults,
+  result: TMDB[],
+  page: number,
   error?: string,
 };
 
@@ -27,14 +28,15 @@ const dataFetchReducer = (state: State, action: Action): State => {
       return {
         ...state,
         isLoading: false,
-        payload: action.payload,
+        result: state.result?.concat(action.payload.results),
+        page: action.payload.page,
       };
     case 'FETCH_MOVIES_FAILURE':
       return {
         ...state,
         isLoading: false,
         isError: true,
-        payload: undefined,
+        result: [],
         error: action.error,
       };
     default:
@@ -49,9 +51,9 @@ export const useApiFetch = (
   const [state, dispatch] = useReducer(dataFetchReducer, {
     isLoading: false,
     isError: false,
-    payload: undefined,
+    result: [],
+    page: 1,
   });
-
   useEffect(() => {
     let didCancel = false;
     const fetchData = async () => {
