@@ -12,4 +12,5 @@ export interface TMDB {
 export interface TMDBResults {
   results: TMDB[];
   page: number;
+  totalPages: number;
 }

@@ -1,20 +1,31 @@
 import React from 'react';
 import { Button, Image, Text } from '@chakra-ui/react';
 import { CloseBar } from 'components/CloseBar';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
+import { useFetch } from 'hooks/useFetch';
+import { TMDB } from 'model/tmbd';
 
 interface Props {
   onClose: () => void;
 }
 
-const MoviesDetails = (): JSX.Element => {
+// TODO implement a modal instead to persist search data
+
+const MoviesDetails = ({ onClose }: Props): JSX.Element => {
+  const { id } = useParams<{ id: string }>();
+  const [{ data, isLoading, isError }] = useFetch<TMDB>(`/tmdb/${id}`);
+
   const history = useHistory();
   return (
     <div>
       <CloseBar onClose={() => history.push('/movies')} />
-      <Image />
-      <Text />
-      <Text />
+      <Image
+        src={`https://image.tmdb.org/t/p/original/${data?.posterPath}`}
+        borderRadius="lg"
+        w={[200, 250, 300]}
+      />
+      <Text>{data?.title}</Text>
+      <Text>{data?.overview}</Text>
       <Button />
     </div>
   );

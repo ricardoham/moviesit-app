@@ -5,12 +5,9 @@ import ListItems from 'components/List';
 import { Link, useHistory } from 'react-router-dom';
 
 const Movies = (): JSX.Element => {
-  const [{ isError, isLoading, payload }, doFetch] = useApiFetch('/tmdb?name=&page=1');
+  const [{ isError, isLoading, result }, doFetch] = useApiFetch('/tmdb?name=&page=1');
   const [query, setQuery] = useState('');
   const history = useHistory();
-
-  console.log(payload);
-  console.log(isError);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
@@ -25,7 +22,7 @@ const Movies = (): JSX.Element => {
       <Search onSearch={(e) => handleSearch(e)} value={query} />
       <button type="button" onClick={() => doFetch(`/tmdb?name=${query}&page=1`)}>Search</button>
       <ListItems
-        data={payload?.results || []}
+        data={result || []}
         loading={isLoading}
         onClick={handleMovieDetail}
       />

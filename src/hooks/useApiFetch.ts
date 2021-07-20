@@ -48,7 +48,7 @@ const dataFetchReducer = (state: State, action: Action): State => {
 
 export const useApiFetch = (
   initialUrl: string,
-  currentPage: number,
+  currentPage?: number,
 ): [State, React.Dispatch<React.SetStateAction<string>>] => {
   const [url, setUrl] = useState(initialUrl);
   const [state, dispatch] = useReducer(dataFetchReducer, {
