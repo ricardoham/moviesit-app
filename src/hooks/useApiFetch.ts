@@ -9,6 +9,7 @@ type State = {
   isError: boolean,
   result: TMDB[],
   page: number,
+  totalPages: number;
   error?: string,
 };
 
@@ -28,8 +29,9 @@ const dataFetchReducer = (state: State, action: Action): State => {
       return {
         ...state,
         isLoading: false,
-        result: state.result?.concat(action.payload.results),
+        result: action.payload.results,
         page: action.payload.page,
+        totalPages: action.payload.totalPages,
       };
     case 'FETCH_MOVIES_FAILURE':
       return {
@@ -46,6 +48,7 @@ const dataFetchReducer = (state: State, action: Action): State => {
 
 export const useApiFetch = (
   initialUrl: string,
+  currentPage: number,
 ): [State, React.Dispatch<React.SetStateAction<string>>] => {
   const [url, setUrl] = useState(initialUrl);
   const [state, dispatch] = useReducer(dataFetchReducer, {
@@ -53,6 +56,7 @@ export const useApiFetch = (
     isError: false,
     result: [],
     page: 1,
+    totalPages: 0,
   });
   useEffect(() => {
     let didCancel = false;
@@ -78,7 +82,7 @@ export const useApiFetch = (
     return () => {
       didCancel = true;
     };
-  }, [url]);
+  }, [url, currentPage]);
 
   return [state, setUrl];
 };
