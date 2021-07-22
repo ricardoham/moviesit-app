@@ -14,3 +14,21 @@ export interface TMDBResults {
   page: number;
   totalPages: number;
 }
+
+export interface TMDBMovieDetail {
+  id: number;
+  title: string;
+  genres: {
+    id: number,
+    name: string,
+  }[],
+  overview: string;
+  popularity: number;
+  voteAverage: number;
+  releaseDate: string;
+  posterPath: string;
+  budget: number;
+  status: string;
+  runtime: number;
+  revenue: number;
+}
