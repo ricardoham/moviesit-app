@@ -8,20 +8,21 @@ interface State<T> {
 }
 
 export const useFetch = <T>(
-  urlSlug: string,
-): [State<T>, React.Dispatch<React.SetStateAction<string>>] => {
+  urlSlug?: string,
+): [State<T>, React.Dispatch<React.SetStateAction<string | undefined>>] => {
   const [data, setData] = useState();
-  const [url, setUrl] = useState('');
+  const [url, setUrl] = useState(urlSlug);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
+    if (!url) return;
     const fetchData = async () => {
       setIsError(false);
       setIsLoading(true);
 
       try {
-        const result = await moviesItAPI(urlSlug || url);
+        const result = await moviesItAPI.get(url || '');
         setData(result.data);
       } catch (error) {
         setIsError(true);

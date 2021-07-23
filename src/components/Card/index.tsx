@@ -27,7 +27,7 @@ const Card = ({
         <Heading as="h4" size="md">{header}</Heading>
         <Text mt={4}>{text}</Text>
       </Box>
-      <Button>{btnText}</Button>
+      <Button size="md">{btnText}</Button>
     </Box>
     {
       invert

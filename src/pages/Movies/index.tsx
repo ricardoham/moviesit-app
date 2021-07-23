@@ -4,6 +4,7 @@ import { useApiFetch } from 'hooks/useApiFetch';
 import ListItems from 'components/List';
 import { Link, useHistory } from 'react-router-dom';
 import Card from 'components/Card';
+import { TMDB, TMDBMovieDetail } from 'model/tmbd';
 import MoviesSearchList from './MoviesList';
 
 const Movies = (): JSX.Element => {
@@ -31,41 +32,45 @@ const Movies = (): JSX.Element => {
       <Search onSearch={(e) => handleSearch(e)} value={query} />
       <button type="button" onClick={handleSearchMovie}>Search</button>
       {
-        showMoviesList && (
-        <MoviesSearchList
-          result={result}
-          isLoading={isLoading}
-          onMovieDetails={handleMovieDetail}
-          onShow={() => setShowMoviesList(!showMoviesList)}
-        />
+        showMoviesList ? (
+          <MoviesSearchList
+            result={result}
+            isLoading={isLoading}
+            onMovieDetails={handleMovieDetail}
+            onShow={() => setShowMoviesList(!showMoviesList)}
+          />
+        ) : (
+          <>
+            <Card
+              image="/images/recommendations.jpg"
+              header="Buscar recomendações"
+              text="Busque recomendações da comunidade"
+              btnText="Ver mais..."
+            />
+            <Card
+              image="/images/watched.jpg"
+              header="Filmes assistidos"
+              text="Filmes que eu já assisti"
+              btnText="Ver mais..."
+              invert
+            />
+            <Card
+              image="/images/favmovies.jpg"
+              header="Filmes favoritos"
+              text="Filmes que você ama!"
+              btnText="Ver mais..."
+            />
+            <Card
+              image="/images/towatch.jpg"
+              header="Filmes para assistir"
+              text="Crie listas de filmes para assistir depois"
+              btnText="Ver mais..."
+              invert
+            />
+          </>
         )
       }
-      <Card
-        image="/images/recommendations.jpg"
-        header="Buscar recomendações"
-        text="Busque recomendações da comunidade"
-        btnText="Ver mais..."
-      />
-      <Card
-        image="/images/watched.jpg"
-        header="Filmes assistidos"
-        text="Filmes que eu já assisti"
-        btnText="Ver mais..."
-        invert
-      />
-      <Card
-        image="/images/favmovies.jpg"
-        header="Filmes favoritos"
-        text="Filmes que você ama!"
-        btnText="Ver mais..."
-      />
-      <Card
-        image="/images/towatch.jpg"
-        header="Filmes para assistir"
-        text="Crie listas de filmes para assistir depois"
-        btnText="Ver mais..."
-        invert
-      />
+
     </div>
   );
 };

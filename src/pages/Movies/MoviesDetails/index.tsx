@@ -9,6 +9,7 @@ import { TMDB, TMDBMovieDetail } from 'model/tmbd';
 import { currencyFormat } from 'utils/currency';
 import { IoBookmarkOutline, IoCheckboxOutline, IoStarOutline } from 'react-icons/io5';
 import LoadingSkeleton from 'components/Skeleton';
+import { usePost } from 'hooks/usePost';
 
 interface Props {
   onClose: () => void;
@@ -19,8 +20,16 @@ interface Props {
 const MoviesDetails = ({ onClose }: Props): JSX.Element => {
   const { id } = useParams<{ id: string }>();
   const [{ data, isLoading, isError }] = useFetch<TMDBMovieDetail>(`/tmdb/${id}`);
+  const [{ error }, doPost] = usePost<TMDBMovieDetail>();
 
   const history = useHistory();
+
+  console.log(data);
+  const handleFavMovie = (movie: TMDBMovieDetail) => {
+    doPost({ url: '/favmovies', body: movie });
+    // console.log('Tet');
+  };
+
   return (
     <>
       <CloseBar onClose={() => history.push('/movies')} />
@@ -55,16 +64,34 @@ const MoviesDetails = ({ onClose }: Props): JSX.Element => {
                       </Text>
                       <Box display="flex" mt={2} mb={2}>
                         <Box flex="1">
-                          <Text fontWeight="bold">Gêneros 🎭</Text>
-                          {
+                          <Box display="flex">
+                            <Box mr="auto">
+                              <Text fontWeight="bold">Gêneros 🎭</Text>
+                              {
                             data?.genres.map((g) => (
                               <Text pl={2} key={g.id.toString()}>{g.name}</Text>
                             ))
                           }
-                          <Text fontWeight="bold">Lançamento 📅</Text>
-                          <Text pl={2}>{data?.releaseDate}</Text>
-                          <Text fontWeight="bold">Bilheteria 💵</Text>
-                          <Text pl={2}>{currencyFormat(data?.revenue || 0)}</Text>
+                              <Text fontWeight="bold">Duração ⏱</Text>
+                              <Text pl={2}>
+                                {data?.runtime}
+                                {' '}
+                                minutos
+                              </Text>
+                              <Text fontWeight="bold">Lançamento 📅</Text>
+                              <Text pl={2}>{data?.releaseDate}</Text>
+                            </Box>
+                            <Box mr="auto">
+                              <Text fontWeight="bold">Bilheteria 💵</Text>
+                              <Text pl={2}>{currencyFormat(data?.revenue || 0)}</Text>
+                              <Text fontWeight="bold">Produção 💸</Text>
+                              <Text pl={2}>{currencyFormat(data?.budget || 0)}</Text>
+                              <Text fontWeight="bold">Popularidade 🍿</Text>
+                              <Text pl={2}>{data?.popularity}</Text>
+                              <Text fontWeight="bold">IMDB 🏅</Text>
+                              <Text pl={2}>{data?.voteAverage}</Text>
+                            </Box>
+                          </Box>
                         </Box>
                         <Box display="flex" flexFlow="column" justifyContent="center" p={2}>
                           <IconButton
@@ -73,6 +100,7 @@ const MoviesDetails = ({ onClose }: Props): JSX.Element => {
                             aria-label="Favoritar"
                             variant="ghost"
                             fontSize="20"
+                            onClick={() => data && handleFavMovie(data)}
                           />
                           <IconButton
                             size="md"
@@ -89,7 +117,6 @@ const MoviesDetails = ({ onClose }: Props): JSX.Element => {
                             fontSize="20"
                           />
                         </Box>
-
                       </Box>
                     </Box>
                   </Box>
@@ -97,7 +124,6 @@ const MoviesDetails = ({ onClose }: Props): JSX.Element => {
                 <Button colorScheme="blue">Criar Lista de Recomendações</Button>
               </Box>
             )
-
         }
     </>
   );

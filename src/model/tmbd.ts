@@ -17,6 +17,7 @@ export interface TMDBResults {
 
 export interface TMDBMovieDetail {
   id: number;
+  isFavorite: boolean;
   title: string;
   genres: {
     id: number,
@@ -26,7 +27,7 @@ export interface TMDBMovieDetail {
   popularity: number;
   voteAverage: number;
   releaseDate: string;
-  posterPath: string;
+  posterPath?: string;
   budget: number;
   status: string;
   runtime: number;
