@@ -1,15 +1,14 @@
 import React from 'react';
 import {
-  Box, Button, Heading, IconButton, Image, Text,
+  Box, Button, Heading, Image, Text,
 } from '@chakra-ui/react';
 import { CloseBar } from 'components/CloseBar';
 import { useHistory, useParams } from 'react-router-dom';
 import { useFetch } from 'hooks/useFetch';
-import { TMDB, TMDBMovieDetail } from 'model/tmbd';
+import { TMDBMovieDetail } from 'model/tmbd';
 import { currencyFormat } from 'utils/currency';
-import { IoBookmarkOutline, IoCheckboxOutline, IoStarOutline } from 'react-icons/io5';
 import LoadingSkeleton from 'components/Skeleton';
-import { usePost } from 'hooks/usePost';
+import ControlMovies from 'components/ControlMovies';
 
 interface Props {
   onClose: () => void;
@@ -20,15 +19,7 @@ interface Props {
 const MoviesDetails = ({ onClose }: Props): JSX.Element => {
   const { id } = useParams<{ id: string }>();
   const [{ data, isLoading, isError }] = useFetch<TMDBMovieDetail>(`/tmdb/${id}`);
-  const [{ error }, doPost] = usePost<TMDBMovieDetail>();
-
   const history = useHistory();
-
-  console.log(data);
-  const handleFavMovie = (movie: TMDBMovieDetail) => {
-    doPost({ url: '/favmovies', body: movie });
-    // console.log('Tet');
-  };
 
   return (
     <>
@@ -93,30 +84,9 @@ const MoviesDetails = ({ onClose }: Props): JSX.Element => {
                             </Box>
                           </Box>
                         </Box>
-                        <Box display="flex" flexFlow="column" justifyContent="center" p={2}>
-                          <IconButton
-                            size="md"
-                            icon={<IoStarOutline />}
-                            aria-label="Favoritar"
-                            variant="ghost"
-                            fontSize="20"
-                            onClick={() => data && handleFavMovie(data)}
-                          />
-                          <IconButton
-                            size="md"
-                            icon={<IoBookmarkOutline />}
-                            aria-label="Agendar pra depois"
-                            variant="ghost"
-                            fontSize="20"
-                          />
-                          <IconButton
-                            size="md"
-                            icon={<IoCheckboxOutline />}
-                            aria-label="Agendar pra depois"
-                            variant="ghost"
-                            fontSize="20"
-                          />
-                        </Box>
+                        <ControlMovies
+                          movie={data}
+                        />
                       </Box>
                     </Box>
                   </Box>

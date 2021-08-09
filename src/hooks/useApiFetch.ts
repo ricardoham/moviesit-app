@@ -47,10 +47,10 @@ const dataFetchReducer = (state: State, action: Action): State => {
 };
 
 export const useApiFetch = (
-  initialUrl: string,
+  initialUrl?: string,
   currentPage?: number,
 ): [State, React.Dispatch<React.SetStateAction<string>>] => {
-  const [url, setUrl] = useState(initialUrl);
+  const [url, setUrl] = useState('');
   const [state, dispatch] = useReducer(dataFetchReducer, {
     isLoading: false,
     isError: false,
@@ -58,9 +58,11 @@ export const useApiFetch = (
     page: 1,
     totalPages: 0,
   });
+
   useEffect(() => {
     let didCancel = false;
     const fetchData = async () => {
+      if (!url) return;
       dispatch({ type: 'FETCH_MOVIES' });
 
       try {

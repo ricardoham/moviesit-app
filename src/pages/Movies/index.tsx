@@ -8,7 +8,7 @@ import { TMDB, TMDBMovieDetail } from 'model/tmbd';
 import MoviesSearchList from './MoviesList';
 
 const Movies = (): JSX.Element => {
-  const [{ isError, isLoading, result }, doFetch] = useApiFetch('/tmdb?name=&page=1');
+  const [{ isError, isLoading, result }, doFetch] = useApiFetch();
   const [query, setQuery] = useState('');
   const [showMoviesList, setShowMoviesList] = useState(false);
   const history = useHistory();
