@@ -11,10 +11,11 @@ interface Props {
   text: string;
   btnText?: string;
   invert?: boolean
+  onAction?: () => void;
 }
 
 const Card = ({
-  image, header, text, btnText, invert,
+  image, header, text, btnText, invert, onAction,
 }: Props): JSX.Element => (
   <Box display="flex" m={6} bg="white" p={4}>
     {!invert && <Image src={image} boxSize="300px" borderRadius="lg" /> }
@@ -27,7 +28,7 @@ const Card = ({
         <Heading as="h4" size="md">{header}</Heading>
         <Text mt={4}>{text}</Text>
       </Box>
-      <Button size="md">{btnText}</Button>
+      <Button size="md" onClick={onAction}>{btnText}</Button>
     </Box>
     {
       invert

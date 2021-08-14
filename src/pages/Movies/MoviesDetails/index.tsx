@@ -84,14 +84,14 @@ const MoviesDetails = ({ onClose }: Props): JSX.Element => {
                             </Box>
                           </Box>
                         </Box>
-                        <ControlMovies
-                          movie={data}
-                        />
+
                       </Box>
                     </Box>
                   </Box>
                 </Box>
-                <Button colorScheme="blue">Criar Lista de Recomendações</Button>
+                <ControlMovies
+                  movie={data}
+                />
               </Box>
             )
         }

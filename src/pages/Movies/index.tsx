@@ -19,7 +19,7 @@ const Movies = (): JSX.Element => {
   };
 
   const handleMovieDetail = (id: string) => {
-    history.push(`/movie/details/${id}`);
+    history.push(`/movies/details/${id}`);
   };
 
   const handleSearchMovie = () => {
@@ -49,17 +49,18 @@ const Movies = (): JSX.Element => {
             />
             <Card
               image="/images/watched.jpg"
-              header="Filmes assistidos"
-              text="Filmes que eu já assisti"
+              header="Meus filmes"
+              text="Aqui você encontra a lista de seus filmes escolhidos na busca."
               btnText="Ver mais..."
               invert
+              onAction={() => history.push('/movie/mymovies')}
             />
-            <Card
+            {/* <Card
               image="/images/favmovies.jpg"
               header="Filmes favoritos"
               text="Filmes que você ama!"
               btnText="Ver mais..."
-            />
+            /> */}
             <Card
               image="/images/towatch.jpg"
               header="Filmes para assistir"

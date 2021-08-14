@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, IconButton } from '@chakra-ui/react';
+import { Box, Button, IconButton } from '@chakra-ui/react';
 import { IoBookmarkOutline, IoCheckboxOutline, IoStarOutline } from 'react-icons/io5';
 import { useFetch } from 'hooks/useFetch';
 import { TMDBMovieDetail } from 'model/tmbd';
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const ControlMovies = ({ movie }: Props): JSX.Element => {
-  const [{ data, isError }, doFetch, fetchData] = useFetch<FavMovies>();
+  const [{ data, isError }, doFetch] = useFetch<FavMovies>();
   const [deleteData] = useInsertOrDelete({});
   const [insertData] = useInsertOrDelete({ isInsert: true });
   const [favMovie, setFavMovie] = useState(data?.isFavorite || false);
@@ -46,31 +46,17 @@ const ControlMovies = ({ movie }: Props): JSX.Element => {
 
   return (
     <Box display="flex" flexFlow="column" justifyContent="center" p={2}>
-      <IconButton
+      <Button
+        disabled={data?.isFavorite || favMovie}
+        colorScheme="blue"
+        onClick={handleFavMovie}
         isLoading={isLoading}
-        size="md"
-        icon={<IoStarOutline />}
-        aria-label="Favoritar"
-        variant="ghost"
-        fontSize="20"
-        onClick={favMovie ? handleRemoveFavMovie : handleFavMovie}
-      />
-      <IconButton
-        isLoading={isLoading}
-        size="md"
-        icon={<IoBookmarkOutline />}
-        aria-label="Agendar pra depois"
-        variant="ghost"
-        fontSize="20"
-      />
-      <IconButton
-        isLoading={isLoading}
-        size="md"
-        icon={<IoCheckboxOutline />}
-        aria-label="Agendar pra depois"
-        variant="ghost"
-        fontSize="20"
-      />
+        loadingText="Adicionando a lista..."
+      >
+        {`${(data?.isFavorite || favMovie) ? 'Já é um filme favorito' : 'Adicionar aos meus filmes'}`}
+      </Button>
+      <Button colorScheme="blue">Quero assistir mais tarde</Button>
+      <Button colorScheme="blue">Criar recomendações</Button>
     </Box>
   );
 };
