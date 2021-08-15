@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box, Button, ButtonGroup, Image, List, ListItem, Text,
 } from '@chakra-ui/react';
@@ -9,7 +9,7 @@ interface Props {
   data: TMDBMovieDetail[];
   loading: boolean;
   onShowDetails: (item?: number | string) => void;
-  onRemoveItem?: (item?: number | string) => void;
+  onRemoveItem?: (item?: number | string) => Promise<void>;
   onAddRecommendation?: (item?: number | string) => void;
 }
 
@@ -21,12 +21,27 @@ const ListItems = ({
   onAddRecommendation,
   onRemoveItem,
 }: Props): JSX.Element => {
-  console.log(loading);
+  const [list, setList] = useState(data);
+  const [isLoading, setLoading] = useState(false);
+
+  const handleRemoveItem = async (itemId?: number | string) => {
+    setLoading(true);
+    try {
+      if (itemId && onRemoveItem) {
+        await onRemoveItem(itemId);
+        const newList = list.filter((l) => l.id !== itemId);
+        setList(newList);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    setLoading(false);
+  };
 
   return (
     <List>
       {
-        data.map((item) => (
+        list.map((item) => (
           <ListItem
             key={item.id}
             m={4}
@@ -54,14 +69,29 @@ const ListItems = ({
                     && (
                     <Button
                       type="button"
+                      disabled={isLoading}
                       onClick={() => onAddRecommendation && onAddRecommendation(item.id)}
                     >
                       Adicionar em recomendação
                     </Button>
                     )
                   }
-                  <Button type="button" onClick={() => onShowDetails(item.movieId)}>Ver mais detalhes</Button>
-                  <Button type="button" onClick={() => onRemoveItem && onRemoveItem(item.id)}>Remover</Button>
+                  <Button
+                    type="button"
+                    disabled={isLoading}
+                    onClick={() => onShowDetails(item.movieId)}
+                  >
+                    Ver mais detalhes
+
+                  </Button>
+                  <Button
+                    type="button"
+                    disabled={isLoading}
+                    isLoading={isLoading}
+                    onClick={() => handleRemoveItem(item.id)}
+                  >
+                    Remover
+                  </Button>
                 </ButtonGroup>
               )
             }

@@ -16,12 +16,17 @@ const MoviesSearchList = ({
 }: Props):JSX.Element => (
   <Box>
     <CloseBar onClose={onShow} />
-    <ListItems
-      data={result || []}
-      listType="tmdb"
-      loading={isLoading}
-      onShowDetails={onMovieDetails}
-    />
+    {
+      isLoading ? <div>Loading...</div>
+        : (
+          <ListItems
+            data={result || []}
+            listType="tmdb"
+            loading={isLoading}
+            onShowDetails={onMovieDetails}
+          />
+        )
+    }
   </Box>
 );
 export default MoviesSearchList;
