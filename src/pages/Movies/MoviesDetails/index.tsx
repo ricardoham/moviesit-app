@@ -3,7 +3,7 @@ import {
   Box, Button, Heading, Image, Text,
 } from '@chakra-ui/react';
 import { CloseBar } from 'components/CloseBar';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { useFetch } from 'hooks/useFetch';
 import { TMDBMovieDetail } from 'model/tmbd';
 import { currencyFormat } from 'utils/currency';
@@ -20,6 +20,7 @@ const MoviesDetails = ({ onClose }: Props): JSX.Element => {
   const { id } = useParams<{ id: string }>();
   const [{ data, isLoading, isError }] = useFetch<TMDBMovieDetail>(`/tmdb/${id}`);
   const history = useHistory();
+  const { state } = useLocation<boolean>();
 
   return (
     <>
@@ -89,9 +90,14 @@ const MoviesDetails = ({ onClose }: Props): JSX.Element => {
                     </Box>
                   </Box>
                 </Box>
-                <ControlMovies
-                  movie={data}
-                />
+                {
+                  !state && (
+                  <ControlMovies
+                    movie={data}
+                  />
+                  )
+                }
+
               </Box>
             )
         }

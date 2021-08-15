@@ -2,12 +2,12 @@ import React, {
   useEffect, useReducer, useState,
 } from 'react';
 import { moviesItAPI } from 'api';
-import { TMDB, TMDBResults } from 'model/tmbd';
+import { TMDB, TMDBMovieDetail, TMDBResults } from 'model/tmbd';
 
 type State = {
   isLoading: boolean,
   isError: boolean,
-  result: TMDB[],
+  result: TMDBMovieDetail[],
   page: number,
   totalPages: number;
   error?: string,

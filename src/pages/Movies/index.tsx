@@ -18,8 +18,8 @@ const Movies = (): JSX.Element => {
     setQuery(e.target.value);
   };
 
-  const handleMovieDetail = (id: string) => {
-    history.push(`/movies/details/${id}`);
+  const handleMovieDetail = (item?: number | string) => {
+    history.push(`/movies/details/${item}`);
   };
 
   const handleSearchMovie = () => {
@@ -53,7 +53,7 @@ const Movies = (): JSX.Element => {
               text="Aqui você encontra a lista de seus filmes escolhidos na busca."
               btnText="Ver mais..."
               invert
-              onAction={() => history.push('/movie/mymovies')}
+              onAction={() => history.push('/movies/mymovies')}
             />
             {/* <Card
               image="/images/favmovies.jpg"

@@ -10,25 +10,26 @@ export interface TMDB {
 }
 
 export interface TMDBResults {
-  results: TMDB[];
+  results: TMDBMovieDetail[];
   page: number;
   totalPages: number;
 }
 
 export interface TMDBMovieDetail {
-  id: number;
+  id?: number | string;
+  movieId?: number;
   title: string;
   genres: {
     id: number,
-    name: string,
+    name?: string,
   }[],
   overview: string;
   popularity: number;
   voteAverage: number;
   releaseDate: string;
   posterPath?: string;
-  budget: number;
-  status: string;
-  runtime: number;
-  revenue: number;
+  budget?: number;
+  status?: string;
+  runtime?: number;
+  revenue?: number;
 }

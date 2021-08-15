@@ -1,13 +1,13 @@
 import React from 'react';
-import { TMDB } from 'model/tmbd';
+import { TMDB, TMDBMovieDetail } from 'model/tmbd';
 import ListItems from 'components/List';
 import { Box } from '@chakra-ui/react';
 import { CloseBar } from 'components/CloseBar';
 
 interface Props {
-  result: TMDB[];
+  result: TMDBMovieDetail[];
   isLoading: boolean;
-  onMovieDetails: (id: string) => void;
+  onMovieDetails: (item?: number | string) => void;
   onShow: () => void;
 }
 
@@ -18,8 +18,9 @@ const MoviesSearchList = ({
     <CloseBar onClose={onShow} />
     <ListItems
       data={result || []}
+      listType="tmdb"
       loading={isLoading}
-      onClick={onMovieDetails}
+      onShowDetails={onMovieDetails}
     />
   </Box>
 );
