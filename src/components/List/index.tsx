@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box, Button, ButtonGroup, Image, List, ListItem, Text,
 } from '@chakra-ui/react';
-import { TMDBMovieDetail } from 'model/tmbd';
+import { ListModel } from 'model/list';
 
 interface Props {
   listType: 'tmdb' | 'movies' | 'persons';
-  data: TMDBMovieDetail[];
+  data?: ListModel[];
   loading: boolean;
   onShowDetails: (item?: number | string) => void;
   onRemoveItem?: (item?: number | string) => Promise<void>;
@@ -29,7 +29,7 @@ const ListItems = ({
     try {
       if (itemId && onRemoveItem) {
         await onRemoveItem(itemId);
-        const newList = list.filter((l) => l.id !== itemId);
+        const newList = list?.filter((l) => l.id !== itemId);
         setList(newList);
       }
     } catch (e) {
@@ -41,7 +41,7 @@ const ListItems = ({
   return (
     <List>
       {
-        list.map((item) => (
+        list?.map((item) => (
           <ListItem
             key={item.id}
             m={4}
@@ -53,13 +53,13 @@ const ListItems = ({
           >
             <Box flexShrink={0}>
               <Image
-                src={`https://image.tmdb.org/t/p/original/${item.posterPath}`}
+                src={`https://image.tmdb.org/t/p/original/${item.poster}`}
                 borderRadius="lg"
                 width={{ md: 48 }}
               />
             </Box>
             <Box mt={{ base: 4, md: 0 }} ml={{ md: 6 }} overflow="hidden">
-              <Text fontWeight="bold" fontSize="lg">{item.title}</Text>
+              <Text fontWeight="bold" fontSize="lg">{item.header}</Text>
               <Text>{item.overview}</Text>
               {
               (listType === 'movies' || listType === 'persons') && (
@@ -79,7 +79,7 @@ const ListItems = ({
                   <Button
                     type="button"
                     disabled={isLoading}
-                    onClick={() => onShowDetails(item.movieId)}
+                    onClick={() => onShowDetails(item.tmdbId)}
                   >
                     Ver mais detalhes
 

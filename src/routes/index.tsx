@@ -4,6 +4,7 @@ import Home from 'pages/Home';
 import Movies from 'pages/Movies';
 import MoviesDetails from 'pages/Movies/MoviesDetails';
 import MyMovies from 'pages/Movies/MyMovies';
+import People from 'pages/People';
 
 const Routes = (): JSX.Element => (
   <Switch>
@@ -11,6 +12,7 @@ const Routes = (): JSX.Element => (
     <Route exact path="/movies" component={Movies} />
     <Route path="/movies/details/:id" component={MoviesDetails} />
     <Route path="/movies/mymovies" component={MyMovies} />
+    <Route path="/people" component={People} />
   </Switch>
 );
 

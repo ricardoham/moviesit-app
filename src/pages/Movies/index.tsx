@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Search from 'components/Search';
 import { useApiFetch } from 'hooks/useApiFetch';
-import ListItems from 'components/List';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Card from 'components/Card';
-import { TMDB, TMDBMovieDetail } from 'model/tmbd';
-import MoviesSearchList from './MoviesList';
+import ResultList from 'components/ResultList';
+import { ListModel } from 'model/list';
 
 const Movies = (): JSX.Element => {
   const [{ isError, isLoading, result }, doFetch] = useApiFetch();
@@ -27,16 +26,25 @@ const Movies = (): JSX.Element => {
     doFetch(`/tmdb?name=${query}&page=1`);
   };
 
+  const listData: ListModel[] = useMemo(() => result.map((item) => ({
+    id: item.id,
+    header: item.title,
+    overview: item.overview,
+    poster: item.posterPath,
+  })), [result]);
+
   return (
     <div>
       <Search onSearch={(e) => handleSearch(e)} value={query} />
       <button type="button" onClick={handleSearchMovie}>Search</button>
       {
         showMoviesList ? (
-          <MoviesSearchList
-            result={result}
+          <ResultList
+            listType="tmdb"
+            result={listData}
             isLoading={isLoading}
-            onMovieDetails={handleMovieDetail}
+            showList={showMoviesList}
+            onShowDetails={handleMovieDetail}
             onShow={() => setShowMoviesList(!showMoviesList)}
           />
         ) : (

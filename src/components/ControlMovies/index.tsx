@@ -25,7 +25,7 @@ const ControlMovies = ({ movie }: Props): JSX.Element => {
     setLoading(true);
     const body = { ...movie, isFavorite: true };
     try {
-      insertData({ url: '/favmovies', body });
+      await insertData({ url: '/favmovies', body });
       setFavMovie(true);
     } catch (error) {
       console.error(error);
