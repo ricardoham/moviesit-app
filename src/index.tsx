@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Auth0Provider } from '@auth0/auth0-react';
 import { Router } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { GlobalStyle } from 'globalStyles';
 import history from 'configs/history';
+import AuthRoute from 'routes/AuthRoute';
 import App from './pages/App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
@@ -11,10 +13,12 @@ import './index.css';
 ReactDOM.render(
   <React.StrictMode>
     <Router history={history}>
-      <ChakraProvider>
-        <GlobalStyle />
-        <App />
-      </ChakraProvider>
+      <AuthRoute>
+        <ChakraProvider>
+          <GlobalStyle />
+          <App />
+        </ChakraProvider>
+      </AuthRoute>
     </Router>
   </React.StrictMode>,
   document.getElementById('root'),
