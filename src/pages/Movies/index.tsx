@@ -54,6 +54,7 @@ const Movies = (): JSX.Element => {
               header="Buscar recomendações"
               text="Busque recomendações da comunidade"
               btnText="Ver mais..."
+              onAction={() => history.push('/recommendations')}
             />
             <Card
               image="/images/watched.jpg"
