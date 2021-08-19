@@ -2,9 +2,13 @@ import React, { useState } from 'react';
 import { Box } from '@chakra-ui/react';
 import Search from 'components/Search';
 import { useApiFetch } from 'hooks/useApiFetch';
+import { Recommendations } from 'model/recommendations';
+import { useFetch } from 'hooks/useFetch';
+import ListCard from 'components/ListCard';
 
 const CommunityRecommendations = (): JSX.Element => {
-  const [{ isError, isLoading, result }, doFetch] = useApiFetch();
+  // const [{ isError, isLoading, result }, doFetch] = useApiFetch();
+  const [{ data, isLoading }, doFetch, fetchData] = useFetch<Recommendations[]>('/recommendations');
   const [query, setQuery] = useState('');
   const [showMoviesList, setShowMoviesList] = useState(false);
 
@@ -18,6 +22,8 @@ const CommunityRecommendations = (): JSX.Element => {
     doFetch('/recommendations');
   };
 
+  console.log(data);
+
   return (
     <Box>
       <Search
@@ -26,6 +32,11 @@ const CommunityRecommendations = (): JSX.Element => {
         onSearch={handleSearchRecommendations}
         onChangeSearch={(e) => handleSearch(e)}
       />
+      {
+        !isLoading && (
+          <ListCard data={data || []} />
+        )
+      }
     </Box>
   );
 };

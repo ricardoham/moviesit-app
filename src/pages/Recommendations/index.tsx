@@ -14,6 +14,7 @@ const Recommendations = (): JSX.Element => {
           header="Minhas recomendações"
           text="Acesse suas recomendações ou crie uma nova"
           btnText="Ver mais..."
+          onAction={() => history.push('/recommendations/myrecommendations')}
         />
       </Box>
       <Box>
