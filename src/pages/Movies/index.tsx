@@ -35,8 +35,12 @@ const Movies = (): JSX.Element => {
 
   return (
     <div>
-      <Search onSearch={(e) => handleSearch(e)} value={query} />
-      <button type="button" onClick={handleSearchMovie}>Search</button>
+      <Search
+        value={query}
+        placeholder="Pesquisar filmes"
+        onSearch={handleSearchMovie}
+        onChangeSearch={(e) => handleSearch(e)}
+      />
       {
         showMoviesList ? (
           <ResultList
@@ -49,19 +53,18 @@ const Movies = (): JSX.Element => {
           />
         ) : (
           <>
-            <Card
+            {/* <Card
               image="/images/recommendations.jpg"
               header="Buscar recomendações"
               text="Busque recomendações da comunidade"
               btnText="Ver mais..."
-              onAction={() => history.push('/recommendations')}
-            />
+              onAction={() => history.push('/recommendations/community')}
+            /> */}
             <Card
               image="/images/watched.jpg"
               header="Meus filmes"
               text="Aqui você encontra a lista de seus filmes escolhidos na busca."
               btnText="Ver mais..."
-              invert
               onAction={() => history.push('/movies/mymovies')}
             />
             {/* <Card
@@ -71,11 +74,11 @@ const Movies = (): JSX.Element => {
               btnText="Ver mais..."
             /> */}
             <Card
+              invert
               image="/images/towatch.jpg"
               header="Filmes para assistir"
               text="Crie listas de filmes para assistir depois"
               btnText="Ver mais..."
-              invert
             />
           </>
         )

@@ -8,7 +8,7 @@ import { CardContainer, CardControl } from './styles';
 interface Props {
   image?: string;
   header: string;
-  text: string;
+  text?: string;
   btnText?: string;
   invert?: boolean
   onAction?: () => void;

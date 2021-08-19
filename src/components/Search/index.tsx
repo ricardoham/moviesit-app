@@ -1,25 +1,40 @@
-import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import {
+  Box, Button, Input, InputGroup, InputLeftElement,
+} from '@chakra-ui/react';
 import React from 'react';
 import { IoSearchOutline } from 'react-icons/io5';
 
 interface Props {
-  onSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
   value: string;
+  onSearch: () => void;
+  onChangeSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Search = ({ onSearch, value }: Props): JSX.Element => (
-  <InputGroup bg="white" borderRadius="lg">
-    <InputLeftElement
-      pointerEvents="none"
-      children={<IoSearchOutline color="gray.300" />}
-    />
-    <Input
-      type="search"
-      placeholder="Search"
-      onChange={onSearch}
-      value={value}
-    />
-  </InputGroup>
+const Search = ({
+  value, placeholder, onChangeSearch, onSearch,
+}: Props): JSX.Element => (
+  <Box display="flex" m="8px">
+    <InputGroup bg="white" borderRadius="lg">
+      <InputLeftElement
+        pointerEvents="none"
+        children={<IoSearchOutline color="gray.300" />}
+      />
+      <Input
+        type="search"
+        placeholder={placeholder || 'Search'}
+        onChange={onChangeSearch}
+        value={value}
+      />
+    </InputGroup>
+    <Button
+      ml="8px"
+      type="button"
+      onClick={onSearch}
+    >
+      Pesquisar
+    </Button>
+  </Box>
 );
 
 export default Search;

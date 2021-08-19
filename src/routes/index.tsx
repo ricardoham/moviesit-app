@@ -6,6 +6,7 @@ import MoviesDetails from 'pages/Movies/MoviesDetails';
 import MyMovies from 'pages/Movies/MyMovies';
 import People from 'pages/People';
 import Recommendations from 'pages/Recommendations';
+import CommunityRecommendations from 'pages/Recommendations/Community';
 
 const Routes = (): JSX.Element => (
   <Switch>
@@ -14,7 +15,8 @@ const Routes = (): JSX.Element => (
     <Route path="/movies/details/:id" component={MoviesDetails} />
     <Route path="/movies/mymovies" component={MyMovies} />
     <Route path="/people" component={People} />
-    <Route path="/recommendations" component={Recommendations} />
+    <Route exact path="/recommendations" component={Recommendations} />
+    <Route path="/recommendations/community" component={CommunityRecommendations} />
   </Switch>
 );
 

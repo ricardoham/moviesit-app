@@ -39,8 +39,12 @@ const People = (): JSX.Element => {
 
   return (
     <div>
-      <Search onSearch={(e) => handleSearch(e)} value={query} />
-      <button type="button" onClick={handleSearchMovie}>Search</button>
+      <Search
+        value={query}
+        placeholder="Pesquisar estrelas e/ou diretores"
+        onSearch={handleSearchMovie}
+        onChangeSearch={(e) => handleSearch(e)}
+      />
       {
     showMoviesList ? (
       <ResultList
