@@ -8,12 +8,12 @@ export interface Movies {
 }
 
 export interface Recommendations{
-  id: string;
-  userId: string;
-  createdBy: string;
-  createdAt: Date;
-  title: string;
-  description: string;
-  movies: Movies[];
-  upVote: number;
+  id?: string;
+  userId?: string;
+  createdBy?: string;
+  createdAt?: Date;
+  title?: string;
+  description?: string;
+  movies?: Movies[];
+  upVote?: number;
 }

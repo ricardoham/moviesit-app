@@ -18,12 +18,8 @@ const ResultList = ({
   result, listType, isLoading, onShowDetails, showList, onShow,
 }: Props):JSX.Element => (
   <Box>
-    <Modal
-      showModal={showList}
-      onCloseModal={onShow}
-    >
-      <CloseBar onClose={onShow} />
-      {
+
+    {
       isLoading ? <div>Loading...</div>
         : (
           <ListItems
@@ -34,7 +30,6 @@ const ResultList = ({
           />
         )
     }
-    </Modal>
 
   </Box>
 );

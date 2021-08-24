@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Box, Heading, Image, List, ListItem,
+  Box, Heading, Image, List, ListItem, Text,
 } from '@chakra-ui/react';
 import { Recommendations } from 'model/recommendations';
 
@@ -13,11 +13,36 @@ const ListCard = ({ data }: Props): JSX.Element => (
     <List>
       {
         data.map((item) => (
-          <ListItem>
-            <Box>
+          <ListItem key={item.id} p={3}>
+            <Box
+              bg="white"
+              p={3}
+              borderRadius="4px"
+            >
               <Image />
-              <Heading as="h2">{item.title}</Heading>
-              <Heading as="h5">{item.createdBy}</Heading>
+              <Box
+                display="flex"
+                alignItems="center"
+                mb="8px"
+              >
+                <Heading flex={1}>{item.title}</Heading>
+                <Text>
+                  Feito por
+                  {' '}
+                  <Text fontWeight="bold">{item.createdBy}</Text>
+                </Text>
+              </Box>
+              <Box>
+                <Text fontWeight="bold">Filmes 🎭</Text>
+                {
+                  item.movies?.map((m) => (
+                    <Text pl={2} key={m.movieId.toString()}>{m.title}</Text>
+                  ))
+                }
+              </Box>
+              <Text>
+                {item.description}
+              </Text>
             </Box>
           </ListItem>
         ))

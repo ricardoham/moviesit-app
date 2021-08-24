@@ -8,6 +8,7 @@ import People from 'pages/People';
 import Recommendations from 'pages/Recommendations';
 import CommunityRecommendations from 'pages/Recommendations/Community';
 import MyRecommendations from 'pages/Recommendations/MyRecommendations';
+import FormRecommendation from 'pages/Recommendations/MyRecommendations/Form';
 
 const Routes = (): JSX.Element => (
   <Switch>
@@ -19,6 +20,8 @@ const Routes = (): JSX.Element => (
     <Route exact path="/recommendations" component={Recommendations} />
     <Route path="/recommendations/community" component={CommunityRecommendations} />
     <Route path="/recommendations/myrecommendations" component={MyRecommendations} />
+    <Route path="/myrecommendations/form" component={FormRecommendation} />
+
   </Switch>
 );
 
