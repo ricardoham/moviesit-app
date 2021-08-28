@@ -4,7 +4,7 @@ import { IoBookmarkOutline, IoCheckboxOutline, IoStarOutline } from 'react-icons
 import { useFetch } from 'hooks/useFetch';
 import { TMDBMovieDetail } from 'model/tmbd';
 import { FavMovies } from 'model/favmovies';
-import { useInsertOrDelete } from 'hooks/useInsertOrDelete';
+import { useApiOperation } from 'hooks/useApiOperation';
 
 interface Props {
   movie?: TMDBMovieDetail;
@@ -12,8 +12,8 @@ interface Props {
 
 const ControlMovies = ({ movie }: Props): JSX.Element => {
   const [{ data, isError }, doFetch] = useFetch<FavMovies>();
-  const [deleteData] = useInsertOrDelete({});
-  const [insertData] = useInsertOrDelete({ isInsert: true });
+  const [loadingPost, insertData] = useApiOperation({ operation: 'insert' });
+  const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const [favMovie, setFavMovie] = useState(data?.isFavorite || false);
   const [isLoading, setLoading] = useState(false);
 
@@ -22,15 +22,15 @@ const ControlMovies = ({ movie }: Props): JSX.Element => {
   }, [movie]);
 
   const handleFavMovie = async () => {
-    setLoading(true);
+    // setLoading(true);
     const body = { ...movie, isFavorite: true };
     try {
       await insertData({ url: '/favmovies', body });
-      setFavMovie(true);
+      // setFavMovie(true);
     } catch (error) {
       console.error(error);
     }
-    setLoading(false);
+    // setLoading(false);
   };
 
   const handleRemoveFavMovie = async () => {
@@ -50,7 +50,7 @@ const ControlMovies = ({ movie }: Props): JSX.Element => {
         disabled={data?.isFavorite || favMovie}
         colorScheme="blue"
         onClick={handleFavMovie}
-        isLoading={isLoading}
+        isLoading={loadingPost}
         loadingText="Adicionando a lista..."
       >
         {`${(data?.isFavorite || favMovie) ? 'Já é um filme favorito' : 'Adicionar aos meus filmes'}`}

@@ -21,6 +21,7 @@ const Routes = (): JSX.Element => (
     <Route path="/recommendations/community" component={CommunityRecommendations} />
     <Route path="/recommendations/myrecommendations" component={MyRecommendations} />
     <Route path="/myrecommendations/form" component={FormRecommendation} />
+    <Route path="/myrecommendations/form/edit" component={FormRecommendation} />
 
   </Switch>
 );

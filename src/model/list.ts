@@ -5,4 +5,8 @@ export interface ListModel {
   poster?: string;
   overview?: string;
   popularity?:number;
+  genres?: {
+    id?: number;
+    name?: string;
+  }[]
 }

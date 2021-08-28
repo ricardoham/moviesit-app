@@ -22,8 +22,6 @@ const CommunityRecommendations = (): JSX.Element => {
     doFetch('/recommendations');
   };
 
-  console.log(data);
-
   return (
     <Box>
       <Search

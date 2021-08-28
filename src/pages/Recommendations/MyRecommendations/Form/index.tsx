@@ -1,40 +1,43 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Formik, FormikValues } from 'formik';
 import * as yup from 'yup';
-import { Recommendations } from 'model/recommendations';
+import { Movies, Recommendations } from 'model/recommendations';
 import {
-  Box, Button, ButtonGroup, Input, Modal, ModalBody,
+  Box, Button, ButtonGroup, IconButton, Input, Modal, ModalBody,
 
-  ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea, useDisclosure,
+  ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Textarea, useDisclosure,
 } from '@chakra-ui/react';
 import Field from 'components/Field';
 import Search from 'components/Search';
 import { useApiFetch } from 'hooks/useApiFetch';
-import ResultList from 'components/ResultList';
 import { ListModel } from 'model/list';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+import ListSearch from 'components/ListSearch';
+import { IoCloseOutline } from 'react-icons/io5';
+import { useApiOperation } from 'hooks/useApiOperation';
 import { Form } from './styles';
 
-interface Props {
-  recommendation?: Recommendations;
-}
-
-const FormRecommendation = ({ recommendation }: Props): JSX.Element => {
+const FormRecommendation = (): JSX.Element => {
+  const { state } = useLocation<{ recommendation: Recommendations }>();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [{ isError, isLoading, result }, doFetch] = useApiFetch();
+  const [loadingPost, insertData] = useApiOperation({ operation: 'insert' });
+  const [loadingEdit, editData] = useApiOperation({ operation: 'edit' });
   const [query, setQuery] = useState('');
   const [showMoviesList, setShowMoviesList] = useState(false);
+  const [movieContains, setMovieContains] = useState(false);
   const history = useHistory();
-  console.log('QUe', query);
 
   const initialValues = {
-    title: recommendation?.title || '',
-    description: recommendation?.description || '',
+    title: state.recommendation?.title || '',
+    description: state.recommendation?.description || '',
+    movies: state.recommendation?.movies || [],
   };
 
   const validationSchema = yup.object().shape({
     title: yup.string().required('Title is required'),
     description: yup.string().required('Informe a descrição'),
+    movies: yup.array().min(1, 'Minimo 1 filme').max(5, 'Máximo 5 filmes').required('Filmes required'),
   });
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,8 +54,50 @@ const FormRecommendation = ({ recommendation }: Props): JSX.Element => {
     doFetch(`/client/tmdb?name=${query}&page=1`);
   };
 
-  const handleSubmit = () => {
-    console.log('Form submit');
+  const handleSelectMovies = (
+    movies: Movies[],
+    movie: Movies,
+    setField: (field: string, value: any) => void,
+  ) => {
+    const alreadyRecommendation = movies.find((item) => item.movieId === movie.movieId);
+
+    if (alreadyRecommendation) {
+      setMovieContains(true);
+      return;
+    }
+    setField('movies', [...movies, movie]);
+  };
+
+  const handleRemoveSelectMovies = (
+    movies: Movies[],
+    movie: Movies,
+    setField: (field: string, value: any) => void,
+  ) => {
+    const newList = movies?.filter((l) => l.movieId !== movie.movieId);
+
+    setField('movies', newList);
+  };
+
+  const handleSubmit = async (data: Recommendations) => {
+    try {
+      if (state.recommendation) {
+        const updateData = {
+          ...data,
+          id: state.recommendation.id,
+          userId: state.recommendation.userId,
+          createdBy: state.recommendation.createdBy,
+          createdAt: state.recommendation.createdAt,
+          upVote: state.recommendation.upVote,
+        };
+        await editData({ url: `/recommendations/${state.recommendation._id}`, body: updateData });
+      } else {
+        await insertData({ url: '/recommendations', body: { ...data, userId: 'test0101', createdBy: 'Joseph' } });
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      history.push('/recommendations/myrecommendations');
+    }
   };
 
   const listData: ListModel[] = useMemo(() => result.map((item) => ({
@@ -70,55 +115,79 @@ const FormRecommendation = ({ recommendation }: Props): JSX.Element => {
         onSubmit={handleSubmit}
         isInitialValid={(formik: any) => validationSchema.isValidSync(formik.initialValues)}
       >
-        {({ values, isValid }: FormikValues) => {
-          console.log('IsValid', isValid);
-
-          return (
-            <Form>
-              <Field name="title" label="Titulo">
-                <Input placeholder="Informe um titulo" />
-              </Field>
-              <Field name="description" label="Descrição">
-                <Textarea placeholder="Informe uma descrição " />
-              </Field>
-              <Button onClick={onOpen}>Inserir filmes</Button>
-              <Field name="movies">
-                <Modal isOpen={isOpen} onClose={onClose} size="3xl">
-                  <ModalOverlay />
-                  <ModalContent>
-                    <ModalHeader mt="32px">
-                      <Search
-                        value={query}
-                        placeholder="Pesquisar filmes"
-                        onSearch={handleSearchMovie}
-                        onChangeSearch={(e) => handleSearch(e)}
-                      />
-                    </ModalHeader>
-                    <ModalCloseButton onClick={() => setQuery('')} />
-                    <ModalBody>
-                      {
-                      showMoviesList && (
-                        <ResultList
-                          listType="tmdb"
-                          result={listData}
-                          isLoading={isLoading}
-                          showList={showMoviesList}
-                          onShowDetails={handleMovieDetail}
-                          onShow={() => setShowMoviesList(!showMoviesList)}
-                        />
-                      )
+        {({ values, isValid, setFieldValue }: FormikValues) => (
+          <Form>
+            <Field name="title" label="Titulo">
+              <Input placeholder="Informe um titulo" />
+            </Field>
+            <Field name="description" label="Descrição">
+              <Textarea placeholder="Informe uma descrição " />
+            </Field>
+            <Modal isOpen={isOpen} onClose={onClose} size="3xl">
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader mt="32px">
+                  <Search
+                    value={query}
+                    placeholder="Pesquisar filmes"
+                    onSearch={handleSearchMovie}
+                    onChangeSearch={(e) => handleSearch(e)}
+                  />
+                </ModalHeader>
+                <ModalCloseButton onClick={() => setQuery('')} />
+                <ModalBody>
+                  {
+                      isLoading ? <div>Loading...</div>
+                        : (
+                          <ListSearch
+                            listType="tmdb"
+                            data={listData}
+                            loading={isLoading}
+                            onShowDetails={handleMovieDetail}
+                            onSelectMovies={
+                              (movie: Movies) => handleSelectMovies(
+                                values.movies, movie, setFieldValue,
+                              )
+                            }
+                          />
+                        )
+                    }
+                  <>
+                    {
+                        movieContains && (<div>Filem ja exite</div>)
                       }
-                    </ModalBody>
-                  </ModalContent>
-                </Modal>
-              </Field>
-              <ButtonGroup variant="outline" spacing="6">
-                <Button colorScheme="blue" type="submit" onClick={handleSubmit}>Save</Button>
-                <Button>Cancel</Button>
-              </ButtonGroup>
-            </Form>
-          );
-        }}
+                  </>
+                </ModalBody>
+              </ModalContent>
+            </Modal>
+            <Field name="movies" label="Filmes">
+              <Box>
+                {
+                    values.movies.map((selected: Movies) => (
+                      <Box key={selected.movieId}>
+                        <span>{selected.title}</span>
+                        <IconButton
+                          aria-label="remove movie"
+                          variant="ghost"
+                          icon={<IoCloseOutline />}
+                          onClick={
+                            () => handleRemoveSelectMovies(
+                              values.movies, selected, setFieldValue,
+                            )
+                          }
+                        />
+                      </Box>
+                    ))
+                  }
+              </Box>
+            </Field>
+            <Button onClick={onOpen}>Inserir filmes</Button>
+            <ButtonGroup variant="outline" spacing="6">
+              <Button colorScheme="blue" type="submit" isLoading={loadingPost || loadingEdit}>Save</Button>
+              <Button onClick={() => history.push('/recommendations/myrecommendations')}>Cancel</Button>
+            </ButtonGroup>
+          </Form>
+        )}
       </Formik>
     </Box>
   );

@@ -3,11 +3,11 @@ import ListItems from 'components/List';
 import { useFetch } from 'hooks/useFetch';
 import { FavMovies } from 'model/favmovies';
 import { useHistory } from 'react-router-dom';
-import { useInsertOrDelete } from 'hooks/useInsertOrDelete';
+import { useApiOperation } from 'hooks/useApiOperation';
 
 const MyMovies = (): JSX.Element => {
   const [{ data, isLoading, isError }, doFetch] = useFetch<FavMovies[]>();
-  const [deleteData] = useInsertOrDelete({});
+  const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const [loading, setLoading] = useState(isLoading);
 
   const history = useHistory();
@@ -37,7 +37,7 @@ const MyMovies = (): JSX.Element => {
           <ListItems
             data={data || []}
             listType="movies"
-            loading={isLoading}
+            loading={loadingDelete}
             onShowDetails={handleMovieDetail}
             onRemoveItem={handleRemoveFavMovie}
           />
