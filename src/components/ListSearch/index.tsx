@@ -9,7 +9,7 @@ interface Props {
   listType: 'tmdb' | 'movies' | 'persons';
   data?: ListModel[];
   loading: boolean;
-  onShowDetails: (item?: number | string) => void;
+  onShowDetails?: (item?: number | string) => void;
   onRemoveItem?: (item?: number | string) => Promise<void>;
   onAddRecommendation?: (item?: number | string) => void;
   onSelectMovies?: (movie: Movies) => void;
@@ -83,7 +83,7 @@ const ListSearch = ({
                   <Button
                     type="button"
                     disabled={isLoading}
-                    onClick={() => onShowDetails(item.tmdbId)}
+                    onClick={() => onShowDetails && onShowDetails(item.tmdbId)}
                   >
                     Ver mais detalhes
 

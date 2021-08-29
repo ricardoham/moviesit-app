@@ -79,6 +79,7 @@ const Movies = (): JSX.Element => {
               header="Filmes para assistir"
               text="Crie listas de filmes para assistir depois"
               btnText="Ver mais..."
+              onAction={() => history.push('/movies/waitlist')}
             />
           </>
         )

@@ -9,6 +9,8 @@ import Recommendations from 'pages/Recommendations';
 import CommunityRecommendations from 'pages/Recommendations/Community';
 import MyRecommendations from 'pages/Recommendations/MyRecommendations';
 import FormRecommendation from 'pages/Recommendations/MyRecommendations/Form';
+import WaitList from 'pages/Movies/WaitList';
+import FormWaitList from 'pages/Movies/WaitList/Form';
 
 const Routes = (): JSX.Element => (
   <Switch>
@@ -16,13 +18,14 @@ const Routes = (): JSX.Element => (
     <Route exact path="/movies" component={Movies} />
     <Route path="/movies/details/:id" component={MoviesDetails} />
     <Route path="/movies/mymovies" component={MyMovies} />
+    <Route path="/movies/waitlist" component={WaitList} />
+    <Route path="/waitlist/form" component={FormWaitList} />
     <Route path="/people" component={People} />
     <Route exact path="/recommendations" component={Recommendations} />
     <Route path="/recommendations/community" component={CommunityRecommendations} />
     <Route path="/recommendations/myrecommendations" component={MyRecommendations} />
     <Route path="/myrecommendations/form" component={FormRecommendation} />
     <Route path="/myrecommendations/form/edit" component={FormRecommendation} />
-
   </Switch>
 );
 
