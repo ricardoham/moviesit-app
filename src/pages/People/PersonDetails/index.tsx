@@ -18,7 +18,7 @@ interface Props {
 // TODO implement a modal instead to persist search data
 
 const PersonDetails = ({ id }: Props): JSX.Element => {
-  const [{ data, isLoading, isError }] = useFetch<TMDBPeopleDetail>(`/tmdbperson/${id}`);
+  const [{ data, loadingFetch, errorFetch }] = useFetch<TMDBPeopleDetail>(`/client/tmdbperson/${id}`);
   const history = useHistory();
   // const { state } = useLocation<boolean>();
   console.log(data);
@@ -26,7 +26,7 @@ const PersonDetails = ({ id }: Props): JSX.Element => {
   return (
     <>
       {
-          isLoading
+          loadingFetch
             ? <LoadingSkeleton />
             : (
               <Box display="flex" flexFlow="column" p={2} bg="white">

@@ -23,7 +23,7 @@ const Movies = (): JSX.Element => {
 
   const handleSearchMovie = () => {
     setShowMoviesList(true);
-    doFetch(`/tmdb?name=${query}&page=1`);
+    doFetch(`/client/tmdb?name=${query}&page=1`);
   };
 
   const listData: ListModel[] = useMemo(() => result.map((item) => ({

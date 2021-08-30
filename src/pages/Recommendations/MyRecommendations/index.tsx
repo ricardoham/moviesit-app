@@ -8,7 +8,7 @@ import { useApiOperation } from 'hooks/useApiOperation';
 
 const MyRecommendations = (): JSX.Element => {
   const userId = 'test01010';
-  const [{ data, isLoading }, doFetch, fetchData] = useFetch<Recommendations[]>(`/recommendations/user/${userId}`);
+  const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<Recommendations[]>(`/recommendations/user/${userId}`);
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const history = useHistory();
 
@@ -31,7 +31,7 @@ const MyRecommendations = (): JSX.Element => {
       <Button onClick={() => history.push('/myrecommendations/form')}>Nova recomendação</Button>
       <Heading as="h1" size="lg">Minhas recomendações</Heading>
       {
-        !isLoading && (
+        !loadingFetch && (
           <ListCard
             isLoading={loadingDelete}
             data={data || []}

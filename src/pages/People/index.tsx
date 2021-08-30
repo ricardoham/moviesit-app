@@ -9,7 +9,7 @@ import React, { useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 const People = (): JSX.Element => {
-  const [{ data, isLoading }, doFetch] = useFetch<TMDBPeopleResults>();
+  const [{ data, loadingFetch }, doFetch] = useFetch<TMDBPeopleResults>();
   const [query, setQuery] = useState('');
   const [showMoviesList, setShowMoviesList] = useState(false);
   const history = useHistory();
@@ -27,7 +27,7 @@ const People = (): JSX.Element => {
 
   const handleSearchMovie = () => {
     setShowMoviesList(true);
-    doFetch(`/tmdbpeople?name=${query}&page=1`);
+    doFetch(`/client/tmdbpeople?name=${query}&page=1`);
   };
 
   const listData: ListModel[] | undefined = useMemo(() => data?.results?.map((item) => ({
@@ -50,7 +50,7 @@ const People = (): JSX.Element => {
       <ResultList
         showList={showMoviesList}
         listType="tmdb"
-        isLoading={isLoading}
+        isLoading={loadingFetch}
         result={listData}
         onShowDetails={handleMovieDetail}
         onShow={() => setShowMoviesList(!showMoviesList)}

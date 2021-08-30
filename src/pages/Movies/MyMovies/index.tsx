@@ -4,11 +4,12 @@ import { useFetch } from 'hooks/useFetch';
 import { FavMovies } from 'model/favmovies';
 import { useHistory } from 'react-router-dom';
 import { useApiOperation } from 'hooks/useApiOperation';
+import { TMDBResults } from 'model/tmbd';
 
 const MyMovies = (): JSX.Element => {
-  const [{ data, isLoading, isError }, doFetch] = useFetch<FavMovies[]>();
+  const [{ data, loadingFetch, errorFetch }, doFetch] = useFetch<TMDBResults>();
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
-  const [loading, setLoading] = useState(isLoading);
+  const [loading, setLoading] = useState(loadingFetch);
 
   const history = useHistory();
 
@@ -33,9 +34,9 @@ const MyMovies = (): JSX.Element => {
   return (
     <>
       {
-        isLoading ? <div>Loading...</div> : (
+        loadingFetch ? <div>Loading...</div> : (
           <ListItems
-            data={data || []}
+            data={data?.results || []}
             listType="movies"
             loading={loadingDelete}
             onShowDetails={handleMovieDetail}

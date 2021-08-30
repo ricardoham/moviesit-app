@@ -1,25 +1,33 @@
+import React, { useMemo, useState, useEffect } from 'react';
 import {
-  Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure,
+  Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay,
 } from '@chakra-ui/react';
 import ListSearch from 'components/ListSearch';
 import Search from 'components/Search';
-import { useApiFetch } from 'hooks/useApiFetch';
+import { useFetch } from 'hooks/useFetch';
 import { ListModel } from 'model/list';
 import { Movies } from 'model/recommendations';
-import React, { useMemo, useState } from 'react';
+import { TMDBResults } from 'model/tmbd';
 
 interface Props {
+  ownList?: boolean;
   listType: 'tmdb' | 'movies' | 'persons';
+  isOpen: boolean;
+  onOpen?: () => void;
+  onClose: () => void;
   onSelectMovie: (movie: Movies) => void;
 }
 
 const MoviesModal = ({
+  ownList,
+  isOpen,
   listType,
   onSelectMovie,
+  onOpen,
+  onClose,
 }: Props): JSX.Element => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [query, setQuery] = useState('');
-  const [{ isError, isLoading, result }, doFetch] = useApiFetch();
+  const [{ data, loadingFetch, errorFetch }, setURL] = useFetch<TMDBResults>();
   const [showMoviesList, setShowMoviesList] = useState(false);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,37 +37,50 @@ const MoviesModal = ({
 
   const handleSearchMovie = () => {
     setShowMoviesList(true);
-    doFetch(`/client/tmdb?name=${query}&page=1`);
+    setURL(`/client/tmdb?name=${query}&page=1`);
   };
 
-  const listData: ListModel[] = useMemo(() => result.map((item) => ({
+  useEffect(() => {
+    if (isOpen && ownList) {
+      setURL('/favmovies');
+    }
+  }, [ownList, isOpen]);
+
+  const listData: ListModel[] | undefined = useMemo(() => data?.results?.map((item) => ({
     id: item.id,
     header: item.title,
     overview: item.overview,
     poster: item.posterPath,
-  })), [result]);
+  })), [data]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="3xl">
       <ModalOverlay />
       <ModalContent>
         <ModalHeader mt="32px">
-          <Search
-            value={query}
-            placeholder="Pesquisar filmes"
-            onSearch={handleSearchMovie}
-            onChangeSearch={(e) => handleSearch(e)}
-          />
+          {
+            ownList ? (
+              <h3>Meus filmes</h3>
+            )
+              : (
+                <Search
+                  value={query}
+                  placeholder="Pesquisar filmes"
+                  onSearch={handleSearchMovie}
+                  onChangeSearch={(e) => handleSearch(e)}
+                />
+              )
+          }
         </ModalHeader>
-        <ModalCloseButton onClick={() => setQuery('')} />
+        <ModalCloseButton onClick={() => setURL('')} />
         <ModalBody>
           {
-            isLoading ? <div>Loading...</div>
+            (loadingFetch) ? <div>Loading...</div>
               : (
                 <ListSearch
                   listType={listType}
                   data={listData}
-                  loading={isLoading}
+                  loading={loadingFetch}
                   onSelectMovies={(movie: Movies) => onSelectMovie(movie)}
                 />
               )

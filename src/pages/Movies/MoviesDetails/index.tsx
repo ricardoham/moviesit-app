@@ -18,7 +18,7 @@ interface Props {
 
 const MoviesDetails = ({ onClose }: Props): JSX.Element => {
   const { id } = useParams<{ id: string }>();
-  const [{ data, isLoading, isError }] = useFetch<TMDBMovieDetail>(`/tmdb/${id}`);
+  const [{ data, loadingFetch }] = useFetch<TMDBMovieDetail>(`/client/tmdb/${id}`);
   const history = useHistory();
   const { state } = useLocation<boolean>();
 
@@ -26,7 +26,7 @@ const MoviesDetails = ({ onClose }: Props): JSX.Element => {
     <>
       <CloseBar onClose={() => history.push('/movies')} />
       {
-          isLoading
+          loadingFetch
             ? <LoadingSkeleton />
             : (
               <Box display="flex" flexFlow="column" p={2} bg="white">

@@ -2,8 +2,8 @@ import { moviesItAPI } from 'api';
 import React, { useCallback, useEffect, useState } from 'react';
 
 interface State<T> {
-  isLoading: boolean,
-  isError: boolean,
+  loadingFetch: boolean,
+  errorFetch: boolean,
   data?: T,
 }
 
@@ -12,8 +12,8 @@ export const useFetch = <T>(
 ): [State<T>, React.Dispatch<React.SetStateAction<string | undefined>>, () => Promise<void>] => {
   const [data, setData] = useState();
   const [url, setUrl] = useState(urlSlug);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [loadingFetch, setIsLoading] = useState(false);
+  const [errorFetch, setIsError] = useState(false);
 
   const fetchData = useCallback(async (): Promise<void> => {
     setIsError(false);
@@ -30,9 +30,12 @@ export const useFetch = <T>(
   }, [url]);
 
   useEffect(() => {
-    if (!url) return;
+    if (!url) {
+      setData(undefined);
+      return;
+    }
     fetchData();
   }, [url]);
 
-  return [{ data, isLoading, isError }, setUrl, fetchData];
+  return [{ data, loadingFetch, errorFetch }, setUrl, fetchData];
 };

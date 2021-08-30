@@ -18,6 +18,7 @@ export interface TMDBResults {
 export interface TMDBMovieDetail {
   id?: number | string;
   movieId?: number;
+  isFavorite?: boolean;
   title: string;
   genres: {
     id: number,

@@ -11,7 +11,7 @@ interface Props {
 }
 
 const ControlMovies = ({ movie }: Props): JSX.Element => {
-  const [{ data, isError }, doFetch] = useFetch<FavMovies>();
+  const [{ data }, doFetch] = useFetch<FavMovies>();
   const [loadingPost, insertData] = useApiOperation({ operation: 'insert' });
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const [favMovie, setFavMovie] = useState(data?.isFavorite || false);
