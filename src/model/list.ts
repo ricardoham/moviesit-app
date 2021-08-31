@@ -1,6 +1,6 @@
 export interface ListModel {
   id?: number | string;
-  tmdbId?: number;
+  movieId?: number;
   header?: string;
   poster?: string;
   overview?: string;

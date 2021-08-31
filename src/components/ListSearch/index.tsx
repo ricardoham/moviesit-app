@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Box, Button, ButtonGroup, Image, List, ListItem, Text,
+  Box, Button, ButtonGroup, Checkbox, Image, List, ListItem, Radio, RadioGroup, Text,
 } from '@chakra-ui/react';
 import { ListModel } from 'model/list';
 import { Movies } from 'model/recommendations';
@@ -13,6 +13,7 @@ interface Props {
   onRemoveItem?: (item?: number | string) => Promise<void>;
   onAddRecommendation?: (item?: number | string) => void;
   onSelectMovies?: (movie: Movies) => void;
+  onClose?: () => void;
 }
 
 const ListSearch = ({
@@ -23,6 +24,7 @@ const ListSearch = ({
   onAddRecommendation,
   onRemoveItem,
   onSelectMovies,
+  onClose,
 }: Props): JSX.Element => {
   const [list, setList] = useState(data);
   const [isLoading, setLoading] = useState(false);
@@ -41,18 +43,27 @@ const ListSearch = ({
     setLoading(false);
   };
 
+  const handleSelectMovie = (item: ListModel) => {
+    if (onSelectMovies && onClose) {
+      onSelectMovies({ movieId: item.movieId, title: item.header });
+      onClose();
+    } else if (onSelectMovies) {
+      onSelectMovies({ movieId: item.id as number, title: item.header });
+    }
+  };
+
   return (
     <List>
       {
         list?.map((item) => (
           <ListItem
-            key={item.id}
+            key={item.movieId}
             m={4}
             p={2}
             display={{ md: 'flex' }}
             bg="white"
             onClick={() => onSelectMovies
-              && onSelectMovies({ movieId: item.id, title: item.header, genres: item.genres })}
+              && handleSelectMovie(item)}
             cursor={listType === 'tmdb' ? 'pointer' : 'auto'}
           >
             <Box flexShrink={0}>
@@ -63,7 +74,9 @@ const ListSearch = ({
               />
             </Box>
             <Box mt={{ base: 4, md: 0 }} ml={{ md: 6 }} overflow="hidden">
-              <Text fontWeight="bold" fontSize="lg">{item.header}</Text>
+              <Box display="flex" p={2}>
+                <Text flex={1} fontWeight="bold" fontSize="lg">{item.header}</Text>
+              </Box>
               <Text>{item.overview}</Text>
               {
               (listType === 'movies' || listType === 'persons') && (
@@ -83,7 +96,7 @@ const ListSearch = ({
                   <Button
                     type="button"
                     disabled={isLoading}
-                    onClick={() => onShowDetails && onShowDetails(item.tmdbId)}
+                    onClick={() => onShowDetails && onShowDetails(item.movieId)}
                   >
                     Ver mais detalhes
 

@@ -40,21 +40,29 @@ const MoviesModal = ({
     setURL(`/client/tmdb?name=${query}&page=1`);
   };
 
+  const handleCloseModal = () => {
+    setURL('');
+    onClose();
+  };
+
   useEffect(() => {
     if (isOpen && ownList) {
       setURL('/favmovies');
     }
   }, [ownList, isOpen]);
 
-  const listData: ListModel[] | undefined = useMemo(() => data?.results?.map((item) => ({
-    id: item.id,
-    header: item.title,
-    overview: item.overview,
-    poster: item.posterPath,
-  })), [data]);
+  const listData: ListModel[] | undefined = useMemo(() => data?.results?.map((item) => {
+    const movieId = item.isFavorite ? item.movieId : item.id as number;
+    return {
+      movieId,
+      header: item.title,
+      overview: item.overview,
+      poster: item.posterPath,
+    };
+  }), [data]);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="3xl">
+    <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose} size="3xl">
       <ModalOverlay />
       <ModalContent>
         <ModalHeader mt="32px">
@@ -82,6 +90,7 @@ const MoviesModal = ({
                   data={listData}
                   loading={loadingFetch}
                   onSelectMovies={(movie: Movies) => onSelectMovie(movie)}
+                  onClose={handleCloseModal}
                 />
               )
           }

@@ -27,7 +27,7 @@ const Movies = (): JSX.Element => {
   };
 
   const listData: ListModel[] = useMemo(() => result.map((item) => ({
-    id: item.id,
+    id: item.id as number,
     header: item.title,
     overview: item.overview,
     poster: item.posterPath,

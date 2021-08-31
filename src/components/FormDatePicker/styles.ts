@@ -124,3 +124,10 @@ export const StyledCalendar = styled(Calendar)`
     background-color: #e6e6e6;
   }
 `;
+
+export const ErrorMessage = styled.div`
+  margin: 8px 0;
+  color: red;
+  font-size: 12px;
+  align-self: flex-start;
+`;

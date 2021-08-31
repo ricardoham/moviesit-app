@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { useApiOperation } from 'hooks/useApiOperation';
 
 const MyRecommendations = (): JSX.Element => {
-  const userId = 'test01010';
+  const userId = 'test0101';
   const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<Recommendations[]>(`/recommendations/user/${userId}`);
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const history = useHistory();

@@ -1,5 +1,5 @@
 export interface Movies {
-  movieId?: number | string;
+  movieId?: number;
   title?: string;
   genres?: {
     id?: number;

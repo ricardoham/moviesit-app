@@ -14,7 +14,7 @@ const CustomFormikField = ({
   id, name, label, children, ...props
 }: Props): JSX.Element => {
   const [field, meta] = useField({ ...props, name });
-
+  console.log('META_--', field);
   return (
     <>
       {label && <Label id={id} name={name} label={label} />}

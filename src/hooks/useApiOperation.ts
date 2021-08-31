@@ -21,7 +21,8 @@ export const useApiOperation = <T>({ operation }: Props): [
       }
       if (operation === 'edit') {
         await moviesItAPI.put(content.url, content?.body);
-      } else {
+      }
+      if (operation === 'delete') {
         await moviesItAPI.delete(content.url);
       }
     } catch (err) {
