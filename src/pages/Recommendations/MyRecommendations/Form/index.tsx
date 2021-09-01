@@ -19,7 +19,6 @@ import { Form } from './styles';
 
 const FormRecommendation = (): JSX.Element => {
   const { state } = useLocation<{ recommendation: Recommendations } | undefined>();
-  // const location = useLocation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [{ isError, isLoading, result }, doFetch] = useApiFetch();
   const [loadingPost, insertData] = useApiOperation({ operation: 'insert' });
@@ -28,19 +27,12 @@ const FormRecommendation = (): JSX.Element => {
   const [showMoviesList, setShowMoviesList] = useState(false);
   const [movieContains, setMovieContains] = useState(false);
   const history = useHistory();
-  console.log('LOcationas', state);
 
   const initialValues = {
     title: state?.recommendation?.title || '',
     description: state?.recommendation?.description || '',
     movies: state?.recommendation?.movies || [],
   };
-
-  // const initialValues = {
-  //   title: '',
-  //   description: '',
-  //   movies: [],
-  // };
 
   const validationSchema = yup.object().shape({
     title: yup.string().required('Title is required'),
@@ -89,15 +81,7 @@ const FormRecommendation = (): JSX.Element => {
   const handleSubmit = async (data: Recommendations) => {
     try {
       if (state) {
-        const updateData = {
-          ...data,
-          id: state.recommendation.id,
-          userId: state.recommendation.userId,
-          createdBy: state.recommendation.createdBy,
-          createdAt: state.recommendation.createdAt,
-          upVote: state.recommendation.upVote,
-        };
-        await editData({ url: `/recommendations/${state.recommendation._id}`, body: updateData });
+        await editData({ url: `/recommendations/${state.recommendation._id}`, body: { ...data } });
       } else {
         await insertData({ url: '/recommendations', body: { ...data, userId: 'test0101', createdBy: 'Joseph' } });
       }

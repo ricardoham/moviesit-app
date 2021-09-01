@@ -3,6 +3,7 @@ import {
   Box, Button, ButtonGroup, Heading, Image, List, ListItem, Text,
 } from '@chakra-ui/react';
 import { Recommendations } from 'model/recommendations';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
   isLoading?: boolean;
@@ -15,15 +16,16 @@ interface Props {
 const ListCard = ({
   isLoading, data, ownRecommendation, onEditRecommendation, onRemoveRecommendation,
 }: Props): JSX.Element => {
-  const handleRemoveItem = () => {
-
-  };
+  const history = useHistory();
   return (
     <Box>
       <List>
         {
         data.map((item) => (
-          <ListItem key={item.id} p={3}>
+          <ListItem
+            key={item.id}
+            p={3}
+          >
             <Box
               bg="white"
               p={3}
@@ -59,8 +61,27 @@ const ListCard = ({
                 {item.description}
               </Text>
               {
+              !ownRecommendation
+              && (
+              <Button
+                variant="outline"
+                colorScheme="blue"
+                onClick={() => history.push('/recommendations/details', { recommendation: item })}
+              >
+                Ver detalhes
+              </Button>
+              )
+               }
+              {
                 ownRecommendation && (
                   <ButtonGroup spacing={4} space mt={8}>
+                    <Button
+                      variant="outline"
+                      colorScheme="blue"
+                      onClick={() => history.push('/recommendations/details', { recommendation: item })}
+                    >
+                      Ver detalhes
+                    </Button>
                     <Button
                       colorScheme="teal"
                       variant="outline"

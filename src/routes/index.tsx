@@ -11,6 +11,7 @@ import MyRecommendations from 'pages/Recommendations/MyRecommendations';
 import FormRecommendation from 'pages/Recommendations/MyRecommendations/Form';
 import WaitList from 'pages/Movies/WaitList';
 import FormWaitList from 'pages/Movies/WaitList/Form';
+import RecommendationDetails from 'pages/Recommendations/Details';
 
 const Routes = (): JSX.Element => (
   <Switch>
@@ -24,6 +25,7 @@ const Routes = (): JSX.Element => (
     <Route exact path="/recommendations" component={Recommendations} />
     <Route path="/recommendations/community" component={CommunityRecommendations} />
     <Route path="/recommendations/myrecommendations" component={MyRecommendations} />
+    <Route path="/recommendations/details" component={RecommendationDetails} />
     <Route path="/myrecommendations/form" component={FormRecommendation} />
     <Route path="/myrecommendations/form/edit" component={FormRecommendation} />
   </Switch>
