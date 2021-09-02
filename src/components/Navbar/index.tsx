@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import * as S from './styles';
 
 const Navbar = (): JSX.Element => (
-  <ul>
-    <li>
-      <Link to="/">Home</Link>
-      <Link to="/movies">Filmes</Link>
-      <Link to="/people">Atores e Diretores</Link>
-      <Link to="/recommendations">Recomendações de filmes</Link>
-    </li>
-  </ul>
+  <S.StyledNavbar>
+    <S.NavbarLink to="/">Home</S.NavbarLink>
+    <S.NavbarLink to="/movies">Filmes</S.NavbarLink>
+    <S.NavbarLink to="/people">Atores e Diretores</S.NavbarLink>
+    <S.NavbarLink to="/recommendations">Recomendações de filmes</S.NavbarLink>
+    <S.NavbarLink to="/profile">Perfil</S.NavbarLink>
+  </S.StyledNavbar>
 );
 
 export default Navbar;

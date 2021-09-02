@@ -5,9 +5,8 @@ import { StyledHeader } from './styles';
 
 const Header = (): JSX.Element => (
   <StyledHeader>
-    <span>logo</span>
+    <span>Movies it!</span>
     <Navbar />
-    <span>Profile</span>
     <Login />
   </StyledHeader>
 );
