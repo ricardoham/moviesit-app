@@ -104,33 +104,32 @@ const FormRecommendation = (): JSX.Element => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
-        isInitialValid={(formik: any) => validationSchema.isValidSync(formik.initialValues)}
+        isInitialValid={
+          (formik: FormikValues) => validationSchema.isValidSync(formik.initialValues)
+        }
       >
-        {({ values, isValid, setFieldValue }: FormikValues) => {
-          console.log('VAL-reco', values);
-
-          return (
-            <Form>
-              <Field name="title" label="Titulo">
-                <Input placeholder="Informe um titulo" />
-              </Field>
-              <Field name="description" label="Descrição">
-                <Textarea placeholder="Informe uma descrição " />
-              </Field>
-              <Modal isOpen={isOpen} onClose={onClose} size="3xl">
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader mt="32px">
-                    <Search
-                      value={query}
-                      placeholder="Pesquisar filmes"
-                      onSearch={handleSearchMovie}
-                      onChangeSearch={(e) => handleSearch(e)}
-                    />
-                  </ModalHeader>
-                  <ModalCloseButton onClick={() => setQuery('')} />
-                  <ModalBody>
-                    {
+        {({ values, isValid, setFieldValue }: FormikValues) => (
+          <Form>
+            <Field name="title" label="Titulo">
+              <Input placeholder="Informe um titulo" />
+            </Field>
+            <Field name="description" label="Descrição">
+              <Textarea placeholder="Informe uma descrição " />
+            </Field>
+            <Modal isOpen={isOpen} onClose={onClose} size="3xl">
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader mt="32px">
+                  <Search
+                    value={query}
+                    placeholder="Pesquisar filmes"
+                    onSearch={handleSearchMovie}
+                    onChangeSearch={(e) => handleSearch(e)}
+                  />
+                </ModalHeader>
+                <ModalCloseButton onClick={() => setQuery('')} />
+                <ModalBody>
+                  {
                       isLoading ? <div>Loading...</div>
                         : (
                           <ListSearch
@@ -146,17 +145,17 @@ const FormRecommendation = (): JSX.Element => {
                           />
                         )
                     }
-                    <>
-                      {
+                  <>
+                    {
                         movieContains && (<div>Filem ja exite</div>)
                       }
-                    </>
-                  </ModalBody>
-                </ModalContent>
-              </Modal>
-              <Field name="movies" label="Filmes">
-                <Box>
-                  {
+                  </>
+                </ModalBody>
+              </ModalContent>
+            </Modal>
+            <Field name="movies" label="Filmes">
+              <Box>
+                {
                     values.movies.map((selected: Movies) => (
                       <Box key={selected.movieId}>
                         <span>{selected.title}</span>
@@ -173,16 +172,15 @@ const FormRecommendation = (): JSX.Element => {
                       </Box>
                     ))
                   }
-                </Box>
-              </Field>
-              <Button onClick={onOpen}>Inserir filmes</Button>
-              <ButtonGroup variant="outline" spacing="6">
-                <Button colorScheme="blue" type="submit" isLoading={loadingPost || loadingEdit}>Save</Button>
-                <Button onClick={() => history.push('/recommendations/myrecommendations')}>Cancel</Button>
-              </ButtonGroup>
-            </Form>
-          );
-        }}
+              </Box>
+            </Field>
+            <Button onClick={onOpen}>Inserir filmes</Button>
+            <ButtonGroup variant="outline" spacing="6">
+              <Button colorScheme="blue" type="submit" isLoading={loadingPost || loadingEdit}>Save</Button>
+              <Button onClick={() => history.push('/recommendations/myrecommendations')}>Cancel</Button>
+            </ButtonGroup>
+          </Form>
+        )}
       </Formik>
     </Box>
   );

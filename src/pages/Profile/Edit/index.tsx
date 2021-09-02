@@ -1,32 +1,57 @@
 import React from 'react';
 import {
-  Box, Button, ButtonGroup, Image, Input, Textarea,
+  Box, Button, ButtonGroup, Input, Textarea,
 } from '@chakra-ui/react';
 import * as yup from 'yup';
-
 import Field from 'components/Field';
 import { Form, Formik, FormikValues } from 'formik';
 import { Profile } from 'model/profile';
-import { useHistory } from 'react-router-dom';
-// import { Form } from './styles';
+import { useHistory, useLocation } from 'react-router-dom';
+import { useApiOperation } from 'hooks/useApiOperation';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const ProfileEdit = (): JSX.Element => {
-  const history = useHistory();
+  const [loadingPost, insertData] = useApiOperation({ operation: 'insert' });
+  const [loadingEdit, editData] = useApiOperation({ operation: 'edit' });
 
-  const initialValues: Profile = {
-    nickname: '',
-    about: '',
-    facebook: '',
-    twitter: '',
-    whatsapp: undefined,
-    tiktok: '',
+  const history = useHistory();
+  const { state } = useLocation<{ profile: Profile } | undefined>();
+  const { user } = useAuth0();
+  const { profile } = { ...state };
+
+  const initialValues = {
+    moviesitNickname: profile?.moviesitNickname || '',
+    age: profile?.age || undefined,
+    about: profile?.about || '',
+    socialMedias: {
+      facebook: profile?.socialMedias?.facebook || undefined,
+      instagram: profile?.socialMedias?.instagram || undefined,
+      twitter: profile?.socialMedias?.twitter || undefined,
+      whatsapp: profile?.socialMedias?.whatsapp || undefined,
+      tiktok: profile?.socialMedias?.tiktok || undefined,
+    } || undefined,
   };
   const validationSchema = yup.object().shape({
     comment: yup.string().max(500),
   });
 
-  const handleSubmit = () => {
+  const handleSubmit = async (data: Profile) => {
+    console.log('dDat', data);
+    const updateProfileData = {
+      ...data,
+      socialMedia: data.socialMedias,
+    };
 
+    try {
+      if (state?.profile) {
+        await editData({ url: `/profile/${profile?._id}`, body: { ...data } });
+      } else {
+        await insertData({ url: 'profile', body: { ...data, userId: user?.sub } });
+      }
+      history.push('/profile');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -40,7 +65,7 @@ const ProfileEdit = (): JSX.Element => {
       >
         {({ values, isValid, setFieldValue }: FormikValues) => (
           <Form>
-            <Field name="nickname" label="Nome">
+            <Field name="moviesitNickname" label="Nome">
               <Input />
             </Field>
             <Field name="age" label="Idade">
@@ -49,23 +74,23 @@ const ProfileEdit = (): JSX.Element => {
             <Field name="about" label="Sobre mim">
               <Textarea />
             </Field>
-            <Field name="facebook" label="Facebook">
+            <Field name="socialMedias.facebook" label="Facebook">
               <Input />
             </Field>
-            <Field name="instagram" label="Instagram">
+            <Field name="socialMedias.instagram" label="Instagram">
               <Input />
             </Field>
-            <Field name="twitter" label="Twitter">
+            <Field name="socialMedias.twitter" label="Twitter">
               <Input />
             </Field>
-            <Field name="whatsapp" label="WhatsApp">
+            <Field name="socialMedias.whatsapp" label="WhatsApp">
               <Input type="tel" />
             </Field>
-            <Field name="tiktok" label="TikTok">
+            <Field name="socialMedias.tiktok" label="TikTok">
               <Input />
             </Field>
             <ButtonGroup variant="outline" spacing="6">
-              <Button colorScheme="blue" type="submit">Salvar</Button>
+              <Button colorScheme="blue" type="submit" isLoading={loadingPost || loadingEdit}>Salvar</Button>
               <Button onClick={() => history.push('/profile')}>Cancelar</Button>
             </ButtonGroup>
           </Form>

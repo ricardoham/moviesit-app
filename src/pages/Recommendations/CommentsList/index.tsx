@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
 import {
-  Box, Button, ButtonGroup, Divider, Heading, Text,
+  Box, Button, ButtonGroup, Divider, Heading, IconButton, Text,
 } from '@chakra-ui/react';
 import { useFetch } from 'hooks/useFetch';
 import { Comments } from 'model/comments';
+import { IoWarningOutline } from 'react-icons/io5';
 
 interface Props {
   userId?: string;
@@ -34,12 +35,23 @@ const CommentsList = ({
               </Box>
               {
                 (item.userId === 'test0303')
-                && (
-                <ButtonGroup>
-                  <Button onClick={() => onEditComment(item)}>Editar</Button>
-                  <Button onClick={() => onRemoveComment(item._id)}>Remover</Button>
-                </ButtonGroup>
-                )
+                  ? (
+                    <ButtonGroup>
+                      <Button
+                        variant="outline"
+                        onClick={() => onEditComment(item)}
+                      >
+                        Editar
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => onRemoveComment(item._id)}
+                      >
+                        Remover
+                      </Button>
+                    </ButtonGroup>
+                  )
+                  : <IconButton variant="ghost" aria-label="Reportar Usuario" size="md" fontSize="25px" icon={<IoWarningOutline />} />
               }
             </Box>
             <Text>{item.comment}</Text>

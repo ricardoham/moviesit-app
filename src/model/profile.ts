@@ -1,5 +1,6 @@
-export interface Talk {
+export interface Deposition {
   id?: string;
+  depositionUserId?: string;
   createdBy?: string;
   talk?: string;
 }
@@ -13,11 +14,12 @@ export interface ProfileSocialMedia {
 }
 
 export interface Profile {
+  _id?: string;
   id?: string;
   name?: string;
-  nickname?: string;
+  moviesitNickname?: string;
   age?: number;
   about?: string;
-  socialMedia?: ProfileSocialMedia;
-  talk?: Talk[]
+  socialMedias?: ProfileSocialMedia;
+  deposition?: Deposition[]
 }

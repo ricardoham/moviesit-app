@@ -9,8 +9,31 @@ import { IoLogoTiktok } from 'react-icons/io5';
 import { ProfileSocialMedia } from 'model/profile';
 
 interface Props {
-  socialMedia: ProfileSocialMedia
+  socialMedia?: ProfileSocialMedia
 }
+
+const SocialItems = {
+  facebook: {
+    color: 'facebook',
+    arial: 'Facebook',
+    icon: <FaFacebook />,
+  },
+  instagram: {
+    color: 'pink',
+    arial: 'Instagram',
+    icon: <FaInstagram />,
+  },
+  twitter: {
+    color: 'twitter',
+    arial: 'Twitter',
+    icon: <FaTwitter />,
+  },
+  tiktok: {
+    color: 'teal',
+    arial: 'Tiktok',
+    icon: <IoLogoTiktok />,
+  },
+} as any;
 
 const SocialMedia = ({ socialMedia }: Props):JSX.Element => (
   <Box mt={4}>
@@ -18,11 +41,23 @@ const SocialMedia = ({ socialMedia }: Props):JSX.Element => (
       Me siga nas redes sociais
     </Heading>
     <HStack>
-      <IconButton size="lg" fontSize="25px" colorScheme="facebook" aria-label="facebook" icon={<FaFacebook />} />
-      <IconButton size="lg" fontSize="25px" colorScheme="pink" aria-label="Instagram" icon={<FaInstagram />} />
-      <IconButton size="lg" fontSize="25px" colorScheme="twitter" aria-label="Twitter" icon={<FaTwitter />} />
-      <IconButton size="lg" fontSize="25px" colorScheme="whatsapp" aria-label="WhatsApp" icon={<FaWhatsapp />} />
-      <IconButton size="lg" fontSize="25px" colorScheme="teal" aria-label="Tiktok" icon={<IoLogoTiktok />} />
+      {
+        socialMedia
+        && Object.entries(socialMedia).map(([k, v]) => {
+          const comp = SocialItems[k].icon as React.ReactElement;
+
+          return (
+            <IconButton
+              size="lg"
+              fontSize="25px"
+              colorScheme={SocialItems[k].color}
+              aria-label={SocialItems[k].arial}
+              icon={comp}
+              onClick={() => window.open(v, '_blank')}
+            />
+          );
+        })
+      }
     </HStack>
   </Box>
 );
