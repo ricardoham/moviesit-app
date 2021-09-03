@@ -48,6 +48,7 @@ const SocialMedia = ({ socialMedia }: Props):JSX.Element => (
 
           return (
             <IconButton
+              key={k}
               size="lg"
               fontSize="25px"
               colorScheme={SocialItems[k].color}

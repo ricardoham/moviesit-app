@@ -7,13 +7,14 @@ import { useHistory } from 'react-router-dom';
 import { useFetch } from 'hooks/useFetch';
 import { Profile as ITProfile } from 'model/profile';
 import SocialMedia from 'components/SocialMedia';
+import ProfileDeposition from './Deposition';
 
 const Profile = (): JSX.Element => {
   const { user } = useAuth0();
   const history = useHistory();
   const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<ITProfile>(`/profile/${user?.sub}`);
-
   const { name, picture } = { ...user };
+  const ownProfile = true;
 
   return (
     <Box m={4}>
@@ -39,6 +40,10 @@ const Profile = (): JSX.Element => {
         <Heading mt={10} as="h4" size="md">
           Depoimentos
         </Heading>
+        {
+          !loadingFetch
+            && <ProfileDeposition profileId={data?.id} ownProfile={ownProfile} />
+        }
       </Box>
     </Box>
   );

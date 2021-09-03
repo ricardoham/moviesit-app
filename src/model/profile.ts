@@ -1,4 +1,5 @@
 export interface Deposition {
+  _id?: string;
   id?: string;
   depositionUserId?: string;
   createdBy?: string;
@@ -16,6 +17,7 @@ export interface ProfileSocialMedia {
 export interface Profile {
   _id?: string;
   id?: string;
+  userId?: string;
   name?: string;
   moviesitNickname?: string;
   age?: number;
