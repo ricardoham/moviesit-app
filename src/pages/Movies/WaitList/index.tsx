@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Box, Button,
@@ -7,6 +7,7 @@ import { WaitList as ITWaitList } from 'model/waitList';
 import { useFetch } from 'hooks/useFetch';
 import ListCard from 'components/ListCard';
 import { useApiOperation } from 'hooks/useApiOperation';
+import { IListCard } from 'model/listCard';
 
 const WaitList = (): JSX.Element => {
   const userId = 'test0101';
@@ -29,6 +30,15 @@ const WaitList = (): JSX.Element => {
     }
   };
 
+  const listData: IListCard[] | undefined = useMemo(() => data?.map((item) => ({
+    _id: item._id as string,
+    id: item.id as string,
+    title: item.title,
+    movie: item.movie,
+    description: item.comment,
+    dueData: item.dueDate,
+  })), [data]);
+
   return (
     <Box>
       <Button onClick={() => history.push('/waitlist/form')}>Criar uma nova list</Button>
@@ -38,12 +48,12 @@ const WaitList = (): JSX.Element => {
         !loadingFetch && (
           <ListCard
             isLoading={loadingDelete}
-            data={data || []}
+            data={listData || []}
             ownRecommendation
-            onEditRecommendation={
+            onEditCardItem={
               (waitList: ITWaitList) => handleEditWaitList(waitList)
             }
-            onRemoveRecommendation={
+            onRemoveCardItem={
               (id?: string) => handleRemoveWaitList(id)
             }
           />

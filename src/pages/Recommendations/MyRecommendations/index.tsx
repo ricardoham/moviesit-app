@@ -36,10 +36,10 @@ const MyRecommendations = (): JSX.Element => {
             isLoading={loadingDelete}
             data={data || []}
             ownRecommendation
-            onEditRecommendation={
+            onEditCardItem={
               (recommendation: Recommendations) => handleEditRecommendation(recommendation)
             }
-            onRemoveRecommendation={
+            onRemoveCardItem={
               (id?: string) => handleRemoveRecommendation(id)
             }
           />

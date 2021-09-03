@@ -53,13 +53,6 @@ const Movies = (): JSX.Element => {
           />
         ) : (
           <>
-            {/* <Card
-              image="/images/recommendations.jpg"
-              header="Buscar recomendações"
-              text="Busque recomendações da comunidade"
-              btnText="Ver mais..."
-              onAction={() => history.push('/recommendations/community')}
-            /> */}
             <Card
               image="/images/watched.jpg"
               header="Meus filmes"
@@ -67,12 +60,6 @@ const Movies = (): JSX.Element => {
               btnText="Ver mais..."
               onAction={() => history.push('/movies/mymovies')}
             />
-            {/* <Card
-              image="/images/favmovies.jpg"
-              header="Filmes favoritos"
-              text="Filmes que você ama!"
-              btnText="Ver mais..."
-            /> */}
             <Card
               invert
               image="/images/towatch.jpg"

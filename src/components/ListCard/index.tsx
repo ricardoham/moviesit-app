@@ -4,19 +4,21 @@ import {
 } from '@chakra-ui/react';
 import { Recommendations } from 'model/recommendations';
 import { useHistory } from 'react-router-dom';
+import { IListCard } from 'model/listCard';
 
 interface Props {
   isLoading?: boolean;
-  data: Recommendations[];
+  data: IListCard[];
   ownRecommendation?: boolean;
-  onEditRecommendation?: (recommendation: Recommendations) => void;
-  onRemoveRecommendation?: (id?: string) => void;
+  onEditCardItem?: (recommendation: Recommendations) => void;
+  onRemoveCardItem?: (id?: string) => void;
 }
 
 const ListCard = ({
-  isLoading, data, ownRecommendation, onEditRecommendation, onRemoveRecommendation,
+  isLoading, data, ownRecommendation, onEditCardItem, onRemoveCardItem,
 }: Props): JSX.Element => {
   const history = useHistory();
+
   return (
     <Box>
       <List>
@@ -52,14 +54,18 @@ const ListCard = ({
               <Box>
                 <Text fontWeight="bold">Filmes 🎭</Text>
                 {
-                  item.movies?.map((m) => (
+                  item.movie?.title
+                  || item.movies?.map((m) => (
                     <Text pl={2} key={m.movieId}>{m.title}</Text>
                   ))
                 }
               </Box>
-              <Text>
-                {item.description}
-              </Text>
+              <Box>
+                <Text fontWeight="bold">{`${item.movie ? 'Comentários' : 'Descrição'}📝`}</Text>
+                <Text>
+                  {item.description}
+                </Text>
+              </Box>
               {
               !ownRecommendation
               && (
@@ -74,18 +80,24 @@ const ListCard = ({
                }
               {
                 ownRecommendation && (
-                  <ButtonGroup spacing={4} space mt={8}>
-                    <Button
-                      variant="outline"
-                      colorScheme="blue"
-                      onClick={() => history.push('/recommendations/details', { recommendation: item })}
-                    >
-                      Ver detalhes
-                    </Button>
+                  <ButtonGroup spacing={4} mt={8}>
+                    {
+                      !item.movie
+                      && (
+                      <Button
+                        variant="outline"
+                        colorScheme="blue"
+                        onClick={() => history.push('/recommendations/details', { recommendation: item })}
+                      >
+                        Ver detalhes
+                      </Button>
+                      )
+                    }
+
                     <Button
                       colorScheme="teal"
                       variant="outline"
-                      onClick={() => onEditRecommendation && onEditRecommendation(item)}
+                      onClick={() => onEditCardItem && onEditCardItem(item)}
                     >
                       Editar
                     </Button>
@@ -93,7 +105,7 @@ const ListCard = ({
                       isLoading={isLoading}
                       colorScheme="red"
                       variant="outline"
-                      onClick={() => onRemoveRecommendation && onRemoveRecommendation(item._id)}
+                      onClick={() => onRemoveCardItem && onRemoveCardItem(item._id)}
                     >
                       Remover
                     </Button>

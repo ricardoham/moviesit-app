@@ -67,6 +67,7 @@ const FormWaitList = (): JSX.Element => {
           movie: state.waitList.movie,
         };
         await editData({ url: `/waitlist/${state.waitList._id}`, body: updateData });
+        history.push('/movies/waitlist');
       } else {
         await insertData({ url: 'waitlist', body: { ...data, userId: 'test0101' } });
       }

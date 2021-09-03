@@ -16,5 +16,6 @@ export interface Recommendations{
   title?: string;
   description?: string;
   movies?: Movies[];
+  movie?: Movies;
   upVote?: number;
 }
