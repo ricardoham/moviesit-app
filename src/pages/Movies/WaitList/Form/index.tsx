@@ -13,9 +13,11 @@ import MoviesModal from 'components/Modal';
 import { WaitList } from 'model/waitList';
 import { useApiOperation } from 'hooks/useApiOperation';
 import { IoCloseOutline } from 'react-icons/io5';
+import { useAuth0 } from '@auth0/auth0-react';
 import { Form } from './styles';
 
 const FormWaitList = (): JSX.Element => {
+  const { user } = useAuth0();
   const { state } = useLocation<{ waitList: WaitList } | undefined>();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [ownList, setOwnList] = useState(false);
@@ -67,10 +69,10 @@ const FormWaitList = (): JSX.Element => {
           movie: state.waitList.movie,
         };
         await editData({ url: `/waitlist/${state.waitList._id}`, body: updateData });
-        history.push('/movies/waitlist');
       } else {
-        await insertData({ url: 'waitlist', body: { ...data, userId: 'test0101' } });
+        await insertData({ url: 'waitlist', body: { ...data, userId: user?.sub } });
       }
+      history.push('/movies/waitlist');
     } catch (error) {
       console.error(error);
     }

@@ -64,18 +64,6 @@ const ListItems = ({
               {
               (listType === 'movies' || listType === 'persons') && (
                 <ButtonGroup mt={14}>
-                  {
-                    listType === 'movies'
-                    && (
-                    <Button
-                      type="button"
-                      disabled={isLoading}
-                      onClick={() => onAddRecommendation && onAddRecommendation(item.id)}
-                    >
-                      Adicionar em recomendação
-                    </Button>
-                    )
-                  }
                   <Button
                     type="button"
                     disabled={isLoading}
@@ -87,8 +75,7 @@ const ListItems = ({
                   <Button
                     type="button"
                     disabled={isLoading}
-                    isLoading={isLoading}
-                    onClick={() => handleRemoveItem(item.id)}
+                    onClick={() => onRemoveItem && onRemoveItem(item._id)}
                   >
                     Remover
                   </Button>

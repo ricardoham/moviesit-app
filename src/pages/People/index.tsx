@@ -14,8 +14,6 @@ const People = (): JSX.Element => {
   const [showMoviesList, setShowMoviesList] = useState(false);
   const history = useHistory();
 
-  console.log(data);
-
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
     setQuery(e.target.value);
@@ -59,8 +57,8 @@ const People = (): JSX.Element => {
       <>
         <Card
           image="/images/recommendations.jpg"
-          header="Visualizar estrelas e diretores"
-          text="Busque recomendações da comunidade"
+          header="Meus atores e diretores"
+          text="Aqui você encontra suas estrelas e diretores favoritos"
           btnText="Ver mais..."
         />
       </>

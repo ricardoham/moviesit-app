@@ -1,47 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, IconButton } from '@chakra-ui/react';
-import { IoBookmarkOutline, IoCheckboxOutline, IoStarOutline } from 'react-icons/io5';
+import { useHistory } from 'react-router-dom';
+import { Box, Button } from '@chakra-ui/react';
 import { useFetch } from 'hooks/useFetch';
 import { TMDBMovieDetail } from 'model/tmbd';
 import { FavMovies } from 'model/favmovies';
 import { useApiOperation } from 'hooks/useApiOperation';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface Props {
   movie?: TMDBMovieDetail;
 }
 
 const ControlMovies = ({ movie }: Props): JSX.Element => {
+  const { user } = useAuth0();
   const [{ data }, doFetch] = useFetch<FavMovies>();
   const [loadingPost, insertData] = useApiOperation({ operation: 'insert' });
-  const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const [favMovie, setFavMovie] = useState(data?.isFavorite || false);
-  const [isLoading, setLoading] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     doFetch(`/favmovies/${movie?.id}`);
   }, [movie]);
 
   const handleFavMovie = async () => {
-    // setLoading(true);
-    const body = { ...movie, isFavorite: true };
+    const body = { ...movie, isFavorite: true, userId: user?.sub };
     try {
       await insertData({ url: '/favmovies', body });
-      // setFavMovie(true);
+      history.push('/movies/mymovies');
     } catch (error) {
       console.error(error);
     }
-    // setLoading(false);
-  };
-
-  const handleRemoveFavMovie = async () => {
-    setLoading(true);
-    try {
-      await deleteData({ url: '/favmovies', body: { id: movie?.id } });
-      setFavMovie(false);
-    } catch (e) {
-      console.error(e);
-    }
-    setLoading(false);
   };
 
   return (
@@ -55,8 +43,6 @@ const ControlMovies = ({ movie }: Props): JSX.Element => {
       >
         {`${(data?.isFavorite || favMovie) ? 'Já é um filme favorito' : 'Adicionar aos meus filmes'}`}
       </Button>
-      <Button colorScheme="blue">Quero assistir mais tarde</Button>
-      <Button colorScheme="blue">Criar recomendações</Button>
     </Box>
   );
 };

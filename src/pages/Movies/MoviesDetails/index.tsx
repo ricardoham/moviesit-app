@@ -24,7 +24,7 @@ const MoviesDetails = ({ onClose }: Props): JSX.Element => {
 
   return (
     <>
-      <CloseBar onClose={() => history.push('/movies')} />
+      <CloseBar onClose={() => history.push('/movies/mymovies')} />
       {
           loadingFetch
             ? <LoadingSkeleton />

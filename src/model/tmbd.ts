@@ -16,6 +16,7 @@ export interface TMDBResults {
 }
 
 export interface TMDBMovieDetail {
+  _id?: string;
   id?: number | string;
   movieId?: number;
   isFavorite?: boolean;

@@ -8,13 +8,15 @@ import { useFetch } from 'hooks/useFetch';
 import ListCard from 'components/ListCard';
 import { useApiOperation } from 'hooks/useApiOperation';
 import { IListCard } from 'model/listCard';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const WaitList = (): JSX.Element => {
-  const userId = 'test0101';
-  const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<ITWaitList[]>(`/waitlist/user/${userId}`);
+  const { user } = useAuth0();
+  const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<ITWaitList[]>(`/waitlist/user/${user?.sub}`);
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
-
   const history = useHistory();
+
+  console.log(data);
 
   const handleEditWaitList = (waitList: ITWaitList) => {
     history.push('/waitList/form/edit', { waitList });

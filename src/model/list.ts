@@ -1,4 +1,5 @@
 export interface ListModel {
+  _id?: string;
   id?: number | string;
   movieId?: number;
   header?: string;
