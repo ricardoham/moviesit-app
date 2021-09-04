@@ -14,6 +14,8 @@ import FormWaitList from 'pages/Movies/WaitList/Form';
 import RecommendationDetails from 'pages/Recommendations/Details';
 import Profile from 'pages/Profile';
 import ProfileEdit from 'pages/Profile/Edit';
+import MyPeople from 'pages/People/MyPeople';
+import PersonDetails from 'pages/People/PersonDetails';
 
 const Routes = (): JSX.Element => (
   <Switch>
@@ -23,7 +25,9 @@ const Routes = (): JSX.Element => (
     <Route path="/movies/mymovies" component={MyMovies} />
     <Route path="/movies/waitlist" component={WaitList} />
     <Route path="/waitlist/form" component={FormWaitList} />
-    <Route path="/people" component={People} />
+    <Route exact path="/people" component={People} />
+    <Route path="/people/mypeople" component={MyPeople} />
+    <Route path="/people/details/:id" component={PersonDetails} />
     <Route exact path="/recommendations" component={Recommendations} />
     <Route path="/recommendations/community" component={CommunityRecommendations} />
     <Route path="/recommendations/myrecommendations" component={MyRecommendations} />

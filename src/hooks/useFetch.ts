@@ -18,10 +18,8 @@ export const useFetch = <T>(
   const fetchData = useCallback(async (): Promise<void> => {
     setIsError(false);
     setIsLoading(true);
-    console.log('many cals');
     try {
       const result = await moviesItAPI.get(url || '');
-      console.log('RES', result);
       setData(result.data);
     } catch (error) {
       console.error(error);
@@ -33,12 +31,10 @@ export const useFetch = <T>(
 
   useEffect(() => {
     if (!url) {
-      console.log('many cals23332');
       setData(undefined);
       return;
     }
     fetchData();
-    console.log('many cals22');
   }, [url]);
 
   return [{ data, loadingFetch, errorFetch }, setUrl, fetchData];

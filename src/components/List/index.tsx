@@ -9,7 +9,7 @@ interface Props {
   data?: ListModel[];
   loading: boolean;
   onShowDetails: (item?: number | string) => void;
-  onRemoveItem?: (item?: number | string) => Promise<void>;
+  onRemoveItem?: (id?:string) => Promise<void>;
   onAddRecommendation?: (item?: number | string) => void;
 }
 
@@ -24,19 +24,19 @@ const ListItems = ({
   const [list, setList] = useState(data);
   const [isLoading, setLoading] = useState(false);
 
-  const handleRemoveItem = async (itemId?: number | string) => {
-    setLoading(true);
-    try {
-      if (itemId && onRemoveItem) {
-        await onRemoveItem(itemId);
-        const newList = list?.filter((l) => l.id !== itemId);
-        setList(newList);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-    setLoading(false);
-  };
+  // const handleRemoveItem = async (itemId?: number | string) => {
+  //   setLoading(true);
+  //   try {
+  //     if (itemId && onRemoveItem) {
+  //       await onRemoveItem(itemId);
+  //       const newList = list?.filter((l) => l.id !== itemId);
+  //       setList(newList);
+  //     }
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  //   setLoading(false);
+  // };
 
   return (
     <List>

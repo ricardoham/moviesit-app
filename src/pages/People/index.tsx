@@ -11,7 +11,7 @@ import { useHistory } from 'react-router-dom';
 const People = (): JSX.Element => {
   const [{ data, loadingFetch }, doFetch] = useFetch<TMDBPeopleResults>();
   const [query, setQuery] = useState('');
-  const [showMoviesList, setShowMoviesList] = useState(false);
+  const [showPeopleList, setShowPeopleList] = useState(false);
   const history = useHistory();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,12 +19,12 @@ const People = (): JSX.Element => {
     setQuery(e.target.value);
   };
 
-  const handleMovieDetail = (item?: number | string) => {
-    history.push(`/movies/details/${item}`);
+  const handlePeopleDetail = (item?: number | string) => {
+    history.push(`/people/details/${item}`);
   };
 
   const handleSearchMovie = () => {
-    setShowMoviesList(true);
+    setShowPeopleList(true);
     doFetch(`/client/tmdbpeople?name=${query}&page=1`);
   };
 
@@ -44,14 +44,14 @@ const People = (): JSX.Element => {
         onChangeSearch={(e) => handleSearch(e)}
       />
       {
-    showMoviesList ? (
+    showPeopleList ? (
       <ResultList
-        showList={showMoviesList}
+        showList={showPeopleList}
         listType="tmdb"
         isLoading={loadingFetch}
         result={listData}
-        onShowDetails={handleMovieDetail}
-        onShow={() => setShowMoviesList(!showMoviesList)}
+        onShowDetails={handlePeopleDetail}
+        onShow={() => setShowPeopleList(!showPeopleList)}
       />
     ) : (
       <>
@@ -60,6 +60,8 @@ const People = (): JSX.Element => {
           header="Meus atores e diretores"
           text="Aqui você encontra suas estrelas e diretores favoritos"
           btnText="Ver mais..."
+          onAction={() => history.push('/people/mypeople')}
+
         />
       </>
     )

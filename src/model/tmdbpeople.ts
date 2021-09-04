@@ -1,6 +1,5 @@
 export interface TMDBPeopleDetail {
   id?: number | string;
-  peopleId?: number;
   name: string;
   birthDay?: string;
   deathDay?: string | null;

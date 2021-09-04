@@ -8,7 +8,7 @@ import { useFetch } from 'hooks/useFetch';
 import { TMDBMovieDetail } from 'model/tmbd';
 import { currencyFormat } from 'utils/currency';
 import LoadingSkeleton from 'components/Skeleton';
-import ControlMovies from 'components/ControlMovies';
+import ControlDetails from 'components/ControlMovies';
 
 interface Props {
   onClose: () => void;
@@ -92,7 +92,7 @@ const MoviesDetails = ({ onClose }: Props): JSX.Element => {
                 </Box>
                 {
                   !state && (
-                  <ControlMovies
+                  <ControlDetails
                     movie={data}
                   />
                   )

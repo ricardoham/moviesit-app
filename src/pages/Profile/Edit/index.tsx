@@ -36,7 +36,6 @@ const ProfileEdit = (): JSX.Element => {
   });
 
   const handleSubmit = async (data: Profile) => {
-    console.log('dDat', data);
     const updateProfileData = {
       ...data,
       socialMedia: data.socialMedias,

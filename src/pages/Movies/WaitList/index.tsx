@@ -16,8 +16,6 @@ const WaitList = (): JSX.Element => {
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const history = useHistory();
 
-  console.log(data);
-
   const handleEditWaitList = (waitList: ITWaitList) => {
     history.push('/waitList/form/edit', { waitList });
   };

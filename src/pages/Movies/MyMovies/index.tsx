@@ -10,20 +10,17 @@ import { ListModel } from 'model/list';
 
 const MyMovies = (): JSX.Element => {
   const { user } = useAuth0();
-  const [{ data, loadingFetch, errorFetch }, doFetch, fetchData] = useFetch<TMDBMovieDetail[]>(`/favmovies/user/${user?.sub}`);
+  const [{ data, loadingFetch, errorFetch }, doFetch, fetchData] = useFetch<FavMovies[]>(`/favmovies/user/${user?.sub}`);
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const history = useHistory();
-
-  console.log('DAA', data);
-  console.log('loadingFetch', loadingFetch);
 
   const handleMovieDetail = (item?: number | string) => {
     history.push(`/movies/details/${item}`, { isMyMovies: true });
   };
 
-  const handleRemoveFavMovie = async (item?: number | string) => {
+  const handleRemoveFavMovie = async (id?: string) => {
     try {
-      await deleteData({ url: `/favmovies/${item as string}` });
+      await deleteData({ url: `/favmovies/${id}` });
     } catch (error) {
       console.error(error);
     } finally {

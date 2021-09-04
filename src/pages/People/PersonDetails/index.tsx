@@ -8,20 +8,14 @@ import { useFetch } from 'hooks/useFetch';
 import { TMDBMovieDetail } from 'model/tmbd';
 import { currencyFormat } from 'utils/currency';
 import LoadingSkeleton from 'components/Skeleton';
-import ControlMovies from 'components/ControlMovies';
+import ControlDetails from 'components/ControlMovies';
 import { TMDBPeopleDetail } from 'model/tmdbpeople';
 
-interface Props {
-  id: string;
-}
-
-// TODO implement a modal instead to persist search data
-
-const PersonDetails = ({ id }: Props): JSX.Element => {
+const PersonDetails = (): JSX.Element => {
+  const { id } = useParams<{ id: string }>();
   const [{ data, loadingFetch, errorFetch }] = useFetch<TMDBPeopleDetail>(`/client/tmdbperson/${id}`);
   const history = useHistory();
   // const { state } = useLocation<boolean>();
-  console.log(data);
 
   return (
     <>
@@ -82,6 +76,7 @@ const PersonDetails = ({ id }: Props): JSX.Element => {
                     </Box>
                   </Box>
                 </Box>
+                <ControlDetails person={data} />
               </Box>
             )
         }
