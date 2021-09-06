@@ -67,10 +67,9 @@ const ListItems = ({
                   <Button
                     type="button"
                     disabled={isLoading}
-                    onClick={() => onShowDetails(item.movieId)}
+                    onClick={() => onShowDetails(item.itemId)}
                   >
                     Ver mais detalhes
-
                   </Button>
                   <Button
                     type="button"

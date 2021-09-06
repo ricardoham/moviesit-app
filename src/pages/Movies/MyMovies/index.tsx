@@ -31,7 +31,7 @@ const MyMovies = (): JSX.Element => {
   const listData: ListModel[] | undefined = useMemo(() => data?.map((item) => ({
     _id: item._id,
     id: item.id,
-    movieId: item.movieId,
+    itemId: item.movieId,
     header: item.title,
     overview: item.overview,
     poster: item.posterPath,

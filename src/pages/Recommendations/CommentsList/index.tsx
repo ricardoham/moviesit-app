@@ -5,6 +5,7 @@ import {
 import { useFetch } from 'hooks/useFetch';
 import { Comments } from 'model/comments';
 import { IoWarningOutline } from 'react-icons/io5';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface Props {
   userId?: string;
@@ -16,12 +17,15 @@ interface Props {
 
 const CommentsList = ({
   data, recommendationId, userId, onRemoveComment, onEditComment,
-}: Props): JSX.Element => (
-  <Box
-    overflowY="auto"
-    height="300px"
-  >
-    {
+}: Props): JSX.Element => {
+  const { user } = useAuth0();
+
+  return (
+    <Box
+      overflowY="auto"
+      height="300px"
+    >
+      {
         data?.map((item) => (
           <Box key={item.id} display="flex" flexFlow="column">
             <Box display="flex" alignItems="center">
@@ -34,7 +38,7 @@ const CommentsList = ({
                 </Heading>
               </Box>
               {
-                (item.userId === 'test0303')
+                (item.userId === user?.sub)
                   ? (
                     <ButtonGroup>
                       <Button
@@ -58,7 +62,8 @@ const CommentsList = ({
           </Box>
         ))
       }
-  </Box>
-);
+    </Box>
+  );
+};
 
 export default CommentsList;

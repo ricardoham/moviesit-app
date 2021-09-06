@@ -6,6 +6,7 @@ import { useFetch } from 'hooks/useFetch';
 import { Comments } from 'model/comments';
 import { IoWarningOutline } from 'react-icons/io5';
 import { ICommentList } from 'model/commentList';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
   ownProfile?: boolean;
@@ -18,12 +19,16 @@ interface Props {
 
 const CommentsList = ({
   ownProfile, data, recommendationId, userId, onRemoveComment, onEditComment,
-}: Props): JSX.Element => (
-  <Box
-    overflowY="auto"
-    height="300px"
-  >
-    {
+}: Props): JSX.Element => {
+  console.log(ownProfile);
+  const history = useHistory();
+
+  return (
+    <Box
+      overflowY="auto"
+      height="300px"
+    >
+      {
         data?.map((item) => (
           <Box key={item.id} display="flex" flexFlow="column">
             <Box display="flex" alignItems="center">
@@ -31,16 +36,21 @@ const CommentsList = ({
                 <Text>
                   Comentário de:
                 </Text>
-                <Heading ml={2} size="sm">
+                <Heading
+                  ml={2}
+                  size="sm"
+                  cursor="pointer"
+                  onClick={() => history.push(`/profile/details/${item.createdById}`)}
+                >
                   {item.createdBy}
                 </Heading>
               </Box>
               {
-                (item.createdById === 'test0303')
+                (item.createdById === userId)
                   ? (
                     <ButtonGroup>
                       {
-                        !ownProfile
+                        (!ownProfile || item.userId === userId)
                         && (
                         <Button
                           variant="outline"
@@ -65,7 +75,7 @@ const CommentsList = ({
           </Box>
         ))
       }
-  </Box>
-);
-
+    </Box>
+  );
+};
 export default CommentsList;

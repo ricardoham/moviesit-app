@@ -11,13 +11,14 @@ import { useApiOperation } from 'hooks/useApiOperation';
 import { useAuth0 } from '@auth0/auth0-react';
 
 const ProfileEdit = (): JSX.Element => {
-  const [loadingPost, insertData] = useApiOperation({ operation: 'insert' });
   const [loadingEdit, editData] = useApiOperation({ operation: 'edit' });
 
   const history = useHistory();
   const { state } = useLocation<{ profile: Profile } | undefined>();
   const { user } = useAuth0();
   const { profile } = { ...state };
+
+  console.log('EDI', profile);
 
   const initialValues = {
     moviesitNickname: profile?.moviesitNickname || '',
@@ -44,8 +45,6 @@ const ProfileEdit = (): JSX.Element => {
     try {
       if (state?.profile) {
         await editData({ url: `/profile/${profile?._id}`, body: { ...data } });
-      } else {
-        await insertData({ url: 'profile', body: { ...data, userId: user?.sub } });
       }
       history.push('/profile');
     } catch (err) {
@@ -89,7 +88,7 @@ const ProfileEdit = (): JSX.Element => {
               <Input />
             </Field>
             <ButtonGroup variant="outline" spacing="6">
-              <Button colorScheme="blue" type="submit" isLoading={loadingPost || loadingEdit}>Salvar</Button>
+              <Button colorScheme="blue" type="submit" isLoading={loadingEdit}>Salvar</Button>
               <Button onClick={() => history.push('/profile')}>Cancelar</Button>
             </ButtonGroup>
           </Form>

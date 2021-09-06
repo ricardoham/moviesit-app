@@ -15,9 +15,11 @@ import { useHistory, useLocation } from 'react-router-dom';
 import ListSearch from 'components/ListSearch';
 import { IoCloseOutline } from 'react-icons/io5';
 import { useApiOperation } from 'hooks/useApiOperation';
+import { useAuth0 } from '@auth0/auth0-react';
 import { Form } from './styles';
 
 const FormRecommendation = (): JSX.Element => {
+  const { user } = useAuth0();
   const { state } = useLocation<{ recommendation: Recommendations } | undefined>();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [{ isError, isLoading, result }, doFetch] = useApiFetch();
@@ -83,7 +85,7 @@ const FormRecommendation = (): JSX.Element => {
       if (state) {
         await editData({ url: `/recommendations/${state.recommendation._id}`, body: { ...data } });
       } else {
-        await insertData({ url: '/recommendations', body: { ...data, userId: 'test0101', createdBy: 'Joseph' } });
+        await insertData({ url: '/recommendations', body: { ...data, userId: user?.sub, createdBy: user?.name } });
       }
       history.push('/recommendations/myrecommendations');
     } catch (error) {

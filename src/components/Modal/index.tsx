@@ -54,7 +54,7 @@ const MoviesModal = ({
   const listData: ListModel[] | undefined = useMemo(() => data?.results?.map((item) => {
     const movieId = item.isFavorite ? item.movieId : item.id as number;
     return {
-      movieId,
+      itemId: movieId,
       header: item.title,
       overview: item.overview,
       poster: item.posterPath,

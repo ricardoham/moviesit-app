@@ -11,10 +11,11 @@ import DepositionForm from '../DepositionForm';
 
 interface Props {
   profileId?: string;
-  ownProfile?: boolean;
+  userId?: string;
+  userParamsId?: string;
 }
 
-const ProfileDeposition = ({ profileId, ownProfile }: Props): JSX.Element => {
+const ProfileDeposition = ({ profileId, userId, userParamsId }: Props): JSX.Element => {
   const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<Deposition[]>(`/deposition/profile/${profileId}`);
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const [editComment, setEditComment] = useState<ICommentList>();
@@ -45,19 +46,21 @@ const ProfileDeposition = ({ profileId, ownProfile }: Props): JSX.Element => {
     comment: item.talk,
   })), [profileId, data]);
 
+  console.log('IDFORM', userParamsId);
+  // console.log('ownProfile', ownProfile);
+
   return (
     <Box>
       {
         loadingFetch ? <Spinner size="xl" /> : (
           <>
             <CommentsList
-              ownProfile={ownProfile}
               data={listData}
               onRemoveComment={handleRemoveDeposition}
               onEditComment={handleEditComment}
             />
             {
-              !ownProfile
+              (userParamsId !== userId && userParamsId !== undefined)
             && <DepositionForm profileId={profileId} />
             }
           </>

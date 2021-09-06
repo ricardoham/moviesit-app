@@ -17,8 +17,10 @@ export interface ProfileSocialMedia {
 export interface Profile {
   _id?: string;
   id?: string;
+  hasProfile?: boolean;
   userId?: string;
   name?: string;
+  picture?: string;
   moviesitNickname?: string;
   age?: number;
   about?: string;

@@ -10,6 +10,7 @@ import { useApiOperation } from 'hooks/useApiOperation';
 import { Comments } from 'model/comments';
 import CommentsList from 'components/CommentsList';
 import { ICommentList } from 'model/commentList';
+import { useAuth0 } from '@auth0/auth0-react';
 import CommentsForm from '../CommentsForm';
 
 interface Props {
@@ -17,6 +18,7 @@ interface Props {
 }
 
 const RecommendationComments = ({ recommendationId }: Props): JSX.Element => {
+  const { user } = useAuth0();
   const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<Comments[]>(`/comments/recommendation/${recommendationId}`);
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const [comment, setComment] = useState<Comments>();
@@ -52,6 +54,7 @@ const RecommendationComments = ({ recommendationId }: Props): JSX.Element => {
       <Heading size="md" mb={4}>Comentarios</Heading>
       <CommentsList
         data={listData}
+        userId={user?.sub}
         recommendationId={recommendationId}
         onRemoveComment={handleRemoveComment}
         onEditComment={handleEditComment}

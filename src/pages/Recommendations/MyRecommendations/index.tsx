@@ -5,10 +5,11 @@ import { Recommendations } from 'model/recommendations';
 import ListCard from 'components/ListCard';
 import { useHistory } from 'react-router-dom';
 import { useApiOperation } from 'hooks/useApiOperation';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const MyRecommendations = (): JSX.Element => {
-  const userId = 'test0101';
-  const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<Recommendations[]>(`/recommendations/user/${userId}`);
+  const { user } = useAuth0();
+  const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<Recommendations[]>(`/recommendations/user/${user?.sub}`);
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const history = useHistory();
 

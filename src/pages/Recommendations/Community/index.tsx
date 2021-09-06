@@ -7,7 +7,6 @@ import { useFetch } from 'hooks/useFetch';
 import ListCard from 'components/ListCard';
 
 const CommunityRecommendations = (): JSX.Element => {
-  // const [{ isError, isLoading, result }, doFetch] = useApiFetch();
   const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<Recommendations[]>('/recommendations');
   const [query, setQuery] = useState('');
   const [showMoviesList, setShowMoviesList] = useState(false);

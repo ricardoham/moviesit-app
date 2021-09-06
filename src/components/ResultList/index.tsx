@@ -17,8 +17,8 @@ interface Props {
 const ResultList = ({
   result, listType, isLoading, onShowDetails, showList, onShow,
 }: Props):JSX.Element => (
-  <Box>
-
+  <Box bg="white">
+    <CloseBar onClose={onShow} />
     {
       isLoading ? <div>Loading...</div>
         : (

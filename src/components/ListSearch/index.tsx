@@ -45,7 +45,7 @@ const ListSearch = ({
 
   const handleSelectMovie = (item: ListModel) => {
     if (onSelectMovies && onClose) {
-      onSelectMovies({ movieId: item.movieId, title: item.header });
+      onSelectMovies({ movieId: item.itemId, title: item.header });
       onClose();
     } else if (onSelectMovies) {
       onSelectMovies({ movieId: item.id as number, title: item.header });
@@ -57,7 +57,7 @@ const ListSearch = ({
       {
         list?.map((item) => (
           <ListItem
-            key={item.movieId}
+            key={item.itemId}
             m={4}
             p={2}
             display={{ md: 'flex' }}
@@ -96,7 +96,7 @@ const ListSearch = ({
                   <Button
                     type="button"
                     disabled={isLoading}
-                    onClick={() => onShowDetails && onShowDetails(item.movieId)}
+                    onClick={() => onShowDetails && onShowDetails(item.itemId)}
                   >
                     Ver mais detalhes
 

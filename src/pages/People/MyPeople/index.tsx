@@ -36,7 +36,7 @@ const MyPeople = (): JSX.Element => {
   const listData: ListModel[] | undefined = useMemo(() => data?.map((item) => ({
     _id: item._id,
     id: item.id,
-    personId: item.personId,
+    itemId: item.personId,
     header: item.name,
     overview: item.biography,
     poster: item.profilePatch,

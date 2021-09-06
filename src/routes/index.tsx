@@ -35,7 +35,8 @@ const Routes = (): JSX.Element => (
     <Route path="/myrecommendations/form" component={FormRecommendation} />
     <Route path="/myrecommendations/form/edit" component={FormRecommendation} />
     <Route exact path="/profile" component={Profile} />
-    <Route path="/profile/edit" component={ProfileEdit} />
+    <Route path="/profile/details/:id" component={Profile} />
+    <Route exact path="/profile/edit" component={ProfileEdit} />
   </Switch>
 );
 

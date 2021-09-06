@@ -7,6 +7,7 @@ import Field from 'components/Field';
 import { Formik, FormikValues, Form } from 'formik';
 import { Comments } from 'model/comments';
 import { useApiOperation } from 'hooks/useApiOperation';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface Props {
   comments?: Comments;
@@ -18,6 +19,7 @@ interface Props {
 const CommentsForm = ({
   comments, recommendationId, onFetchComments, onSendEdit,
 }: Props):JSX.Element => {
+  const { user } = useAuth0();
   const isEdit = !!comments?.comment;
   const [loadingPost, insertData] = useApiOperation({ operation: 'insert' });
   const [loadingEdit, editData] = useApiOperation({ operation: 'edit' });
@@ -39,7 +41,7 @@ const CommentsForm = ({
         await insertData({
           url: 'comments',
           body: {
-            ...data, userId: 'test0303', recommendationId, createdBy: 'Petter',
+            ...data, userId: user?.sub, recommendationId, createdBy: user?.name,
           },
         });
       }
