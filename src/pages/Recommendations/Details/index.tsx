@@ -1,9 +1,10 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 import {
   Box, Divider, Heading, Text,
 } from '@chakra-ui/react';
 import { Recommendations } from 'model/recommendations';
+import { useFetch } from 'hooks/useFetch';
 import RecommendationComments from '../Comments';
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 
 const RecommendationDetails = ({ ownRecommendation }: Props): JSX.Element => {
   const { state } = useLocation<{ recommendation: Recommendations } | undefined>();
+  const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<Recommendations>();
 
   return (
     <Box

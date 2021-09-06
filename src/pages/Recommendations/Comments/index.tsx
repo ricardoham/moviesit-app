@@ -21,6 +21,8 @@ const RecommendationComments = ({ recommendationId }: Props): JSX.Element => {
   const { user } = useAuth0();
   const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<Comments[]>(`/comments/recommendation/${recommendationId}`);
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
+  const [loadingPost, insertData] = useApiOperation({ operation: 'insert' });
+
   const [comment, setComment] = useState<Comments>();
 
   const handleRemoveComment = async (id?: string) => {
@@ -30,6 +32,24 @@ const RecommendationComments = ({ recommendationId }: Props): JSX.Element => {
       console.error(error);
     } finally {
       fetchData();
+    }
+  };
+
+  const handleReportComment = async (commentReport: Comments) => {
+    try {
+      const reportComment = {
+        userId: user?.sub,
+        userReportName: user?.name,
+        userReportedId: commentReport.userId,
+        commentedItemId: commentReport._id,
+        commentCreatedBy: commentReport.createdBy,
+        commentCreatedAt: commentReport.createdAt,
+        comment: commentReport.comment,
+      };
+
+      await insertData({ url: '/bancomment', body: reportComment });
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -44,8 +64,10 @@ const RecommendationComments = ({ recommendationId }: Props): JSX.Element => {
   const listData: ICommentList[] | undefined = useMemo(() => data?.map((item) => ({
     _id: item._id as string,
     id: item.id as string,
+    commentedItemId: item.commentedItemId,
     createdBy: item.createdBy,
     createdById: item.userId,
+    createdAt: item.createdAt,
     comment: item.comment,
   })), [recommendationId, data]);
 
@@ -58,6 +80,7 @@ const RecommendationComments = ({ recommendationId }: Props): JSX.Element => {
         userId={user?.sub}
         onRemoveComment={handleRemoveComment}
         onEditComment={handleEditComment}
+        onReportComment={handleReportComment}
       />
       <Divider />
       <Heading size="md">Novo comentário</Heading>

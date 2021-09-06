@@ -9,6 +9,7 @@ const Navbar = (): JSX.Element => (
     <S.NavbarLink to="/people">Atores e Diretores</S.NavbarLink>
     <S.NavbarLink to="/recommendations">Recomendações de filmes</S.NavbarLink>
     <S.NavbarLink to="/profile">Perfil</S.NavbarLink>
+    <S.NavbarLink to="/admin">Admin Dashboard</S.NavbarLink>
   </S.StyledNavbar>
 );
 

@@ -16,6 +16,7 @@ import Profile from 'pages/Profile';
 import ProfileEdit from 'pages/Profile/Edit';
 import MyPeople from 'pages/People/MyPeople';
 import PersonDetails from 'pages/People/PersonDetails';
+import AdminDashboard from 'pages/AdminDashboard';
 
 const Routes = (): JSX.Element => (
   <Switch>
@@ -37,6 +38,7 @@ const Routes = (): JSX.Element => (
     <Route exact path="/profile" component={Profile} />
     <Route path="/profile/details/:id" component={Profile} />
     <Route exact path="/profile/edit" component={ProfileEdit} />
+    <Route exact path="/admin" component={AdminDashboard} />
   </Switch>
 );
 

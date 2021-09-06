@@ -7,5 +7,4 @@ export interface ICommentList {
   comment?: string;
   createdBy?: string;
   createdAt?: Date;
-
 }

@@ -15,11 +15,12 @@ interface Props {
   data?: ICommentList[];
   onRemoveComment: (id?: string) => void;
   onEditComment: (comment: ICommentList) => void;
+  onReportComment?: (comment: ICommentList) => void;
 }
 
 const CommentsList = ({
   type,
-  ownProfile, data, userId, onRemoveComment, onEditComment,
+  ownProfile, data, userId, onRemoveComment, onEditComment, onReportComment,
 }: Props): JSX.Element => {
   console.log('', data);
   const history = useHistory();
@@ -70,20 +71,17 @@ const CommentsList = ({
 
                 {
                     (item.createdById !== userId && type === 'comment')
-                && <IconButton variant="ghost" aria-label="Reportar Usuario" size="md" fontSize="25px" icon={<IoWarningOutline />} />
+                && (
+                <IconButton
+                  variant="ghost"
+                  aria-label="Reportar Usuario"
+                  size="md"
+                  fontSize="25px"
+                  icon={<IoWarningOutline />}
+                  onClick={() => onReportComment && onReportComment(item)}
+                />
+                )
                   }
-                {/* {
-                    type === 'deposition'
-                    && (
-                    <Button
-                      variant="outline"
-                      onClick={() => onRemoveComment(item._id)}
-                    >
-                      Remover
-                    </Button>
-                    )
-                  } */}
-
               </ButtonGroup>
             </Box>
             <Text>{item.comment}</Text>
