@@ -2,7 +2,7 @@ export interface ICommentList {
   _id?: string;
   id?: string;
   createdById?: string;
-  recommendationId?: string;
+  commentedItemId?: string;
   userId?: string;
   comment?: string;
   createdBy?: string;

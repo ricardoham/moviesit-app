@@ -10,14 +10,16 @@ import { useApiOperation } from 'hooks/useApiOperation';
 import { useAuth0 } from '@auth0/auth0-react';
 
 interface Props {
+  type: 'comment' | 'deposition';
   comments?: Comments;
-  recommendationId?: string;
+  itemId?: string;
   onFetchComments: () => void;
   onSendEdit: () => void;
 }
 
 const CommentsForm = ({
-  comments, recommendationId, onFetchComments, onSendEdit,
+  type,
+  comments, itemId, onFetchComments, onSendEdit,
 }: Props):JSX.Element => {
   const { user } = useAuth0();
   const isEdit = !!comments?.comment;
@@ -35,13 +37,14 @@ const CommentsForm = ({
     if (data.comment === '') return;
     try {
       if (isEdit) {
-        await editData({ url: `/comments/${comments?._id}`, body: { ...data } });
+        console.log(data);
+        await editData({ url: `/${type === 'comment' ? 'comments' : 'deposition'}/${comments?._id}`, body: { ...data } });
         onSendEdit();
       } else {
         await insertData({
-          url: 'comments',
+          url: `${type === 'comment' ? 'comments' : 'deposition'}`,
           body: {
-            ...data, userId: user?.sub, recommendationId, createdBy: user?.name,
+            ...data, userId: user?.sub, commentedItemId: itemId, createdBy: user?.name,
           },
         });
       }
@@ -54,12 +57,12 @@ const CommentsForm = ({
   };
 
   return (
-    <Box>
+    <Box bg="white">
       <Formik
         enableReinitialize
         initialValues={initialValues}
         validationSchema={validationSchema}
-        isInitialValid={(formik: any) => validationSchema.isValidSync(formik.initialValues)}
+        initialErrors={(formik: any) => validationSchema.isValidSync(formik.initialValues)}
         onSubmit={handleSubmit}
       >
         {({

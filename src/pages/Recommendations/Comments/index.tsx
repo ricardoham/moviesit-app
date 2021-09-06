@@ -11,7 +11,7 @@ import { Comments } from 'model/comments';
 import CommentsList from 'components/CommentsList';
 import { ICommentList } from 'model/commentList';
 import { useAuth0 } from '@auth0/auth0-react';
-import CommentsForm from '../CommentsForm';
+import CommentsForm from 'components/CommentsForm';
 
 interface Props {
   recommendationId?: string;
@@ -53,17 +53,18 @@ const RecommendationComments = ({ recommendationId }: Props): JSX.Element => {
     <Box mt={4}>
       <Heading size="md" mb={4}>Comentarios</Heading>
       <CommentsList
+        type="comment"
         data={listData}
         userId={user?.sub}
-        recommendationId={recommendationId}
         onRemoveComment={handleRemoveComment}
         onEditComment={handleEditComment}
       />
       <Divider />
       <Heading size="md">Novo comentário</Heading>
       <CommentsForm
+        type="comment"
         comments={comment}
-        recommendationId={recommendationId}
+        itemId={recommendationId}
         onFetchComments={fetchData}
         onSendEdit={handleEditCommentSend}
       />

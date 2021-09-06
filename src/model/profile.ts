@@ -1,9 +1,11 @@
 export interface Deposition {
   _id?: string;
   id?: string;
-  depositionUserId?: string;
+  userId?: string;
+  commentedItemId?: string;
   createdBy?: string;
-  talk?: string;
+  createdAt?: Date;
+  comment?: string;
 }
 
 export interface ProfileSocialMedia {

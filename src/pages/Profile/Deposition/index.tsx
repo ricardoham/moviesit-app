@@ -7,7 +7,7 @@ import { Deposition } from 'model/profile';
 import CommentsList from 'components/CommentsList';
 import { ICommentList } from 'model/commentList';
 import { useApiOperation } from 'hooks/useApiOperation';
-import DepositionForm from '../DepositionForm';
+import CommentsForm from 'components/CommentsForm';
 
 interface Props {
   profileId?: string;
@@ -18,7 +18,7 @@ interface Props {
 const ProfileDeposition = ({ profileId, userId, userParamsId }: Props): JSX.Element => {
   const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<Deposition[]>(`/deposition/profile/${profileId}`);
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
-  const [editComment, setEditComment] = useState<ICommentList>();
+  const [comment, setComment] = useState<ICommentList>();
 
   const handleRemoveDeposition = async (id?: string) => {
     try {
@@ -30,20 +30,22 @@ const ProfileDeposition = ({ profileId, userId, userParamsId }: Props): JSX.Elem
     }
   };
 
+  console.log('userId', userId);
+
   const handleEditComment = useCallback((c: ICommentList) => {
-    setEditComment(c);
-  }, [editComment]);
+    setComment(c);
+  }, [comment]);
 
   const handleEditCommentSend = useCallback(() => {
-    setEditComment(undefined);
-  }, [editComment]);
+    setComment(undefined);
+  }, [comment]);
 
   const listData: ICommentList[] | undefined = useMemo(() => data?.map((item) => ({
     _id: item._id as string,
     id: item.id as string,
     createdBy: item.createdBy,
-    createdById: item.depositionUserId,
-    comment: item.talk,
+    createdById: item.userId,
+    comment: item.comment,
   })), [profileId, data]);
 
   console.log('IDFORM', userParamsId);
@@ -55,13 +57,23 @@ const ProfileDeposition = ({ profileId, userId, userParamsId }: Props): JSX.Elem
         loadingFetch ? <Spinner size="xl" /> : (
           <>
             <CommentsList
+              type="deposition"
+              userId={userId}
               data={listData}
               onRemoveComment={handleRemoveDeposition}
               onEditComment={handleEditComment}
             />
             {
               (userParamsId !== userId && userParamsId !== undefined)
-            && <DepositionForm profileId={profileId} />
+            && (
+            <CommentsForm
+              type="deposition"
+              itemId={profileId}
+              comments={comment}
+              onFetchComments={fetchData}
+              onSendEdit={handleEditCommentSend}
+            />
+            )
             }
           </>
         )

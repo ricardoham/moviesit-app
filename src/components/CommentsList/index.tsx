@@ -9,19 +9,21 @@ import { ICommentList } from 'model/commentList';
 import { useHistory } from 'react-router-dom';
 
 interface Props {
+  type: 'comment' | 'deposition';
   ownProfile?: boolean;
   userId?: string;
-  recommendationId?: string;
   data?: ICommentList[];
   onRemoveComment: (id?: string) => void;
   onEditComment: (comment: ICommentList) => void;
 }
 
 const CommentsList = ({
-  ownProfile, data, recommendationId, userId, onRemoveComment, onEditComment,
+  type,
+  ownProfile, data, userId, onRemoveComment, onEditComment,
 }: Props): JSX.Element => {
-  console.log(ownProfile);
+  console.log('', data);
   const history = useHistory();
+  console.log(data);
 
   return (
     <Box
@@ -45,31 +47,44 @@ const CommentsList = ({
                   {item.createdBy}
                 </Heading>
               </Box>
-              {
-                (item.createdById === userId)
-                  ? (
-                    <ButtonGroup>
-                      {
-                        (!ownProfile || item.userId === userId)
-                        && (
+              <ButtonGroup>
+                {
+                  (item.createdById === userId)
+                    && (
+                      <>
                         <Button
                           variant="outline"
                           onClick={() => onEditComment(item)}
                         >
                           Editar
                         </Button>
-                        )
-                      }
-                      <Button
-                        variant="outline"
-                        onClick={() => onRemoveComment(item._id)}
-                      >
-                        Remover
-                      </Button>
-                    </ButtonGroup>
-                  )
-                  : <IconButton variant="ghost" aria-label="Reportar Usuario" size="md" fontSize="25px" icon={<IoWarningOutline />} />
-              }
+                        <Button
+                          variant="outline"
+                          onClick={() => onRemoveComment(item._id)}
+                        >
+                          Remover
+                        </Button>
+                      </>
+                    )
+                  }
+
+                {
+                    (item.createdById !== userId && type === 'comment')
+                && <IconButton variant="ghost" aria-label="Reportar Usuario" size="md" fontSize="25px" icon={<IoWarningOutline />} />
+                  }
+                {/* {
+                    type === 'deposition'
+                    && (
+                    <Button
+                      variant="outline"
+                      onClick={() => onRemoveComment(item._id)}
+                    >
+                      Remover
+                    </Button>
+                    )
+                  } */}
+
+              </ButtonGroup>
             </Box>
             <Text>{item.comment}</Text>
           </Box>
