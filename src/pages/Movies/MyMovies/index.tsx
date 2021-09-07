@@ -7,15 +7,20 @@ import { useApiOperation } from 'hooks/useApiOperation';
 import { TMDBMovieDetail, TMDBResults } from 'model/tmbd';
 import { useAuth0 } from '@auth0/auth0-react';
 import { ListModel } from 'model/list';
+import { useDisclosure } from '@chakra-ui/react';
+import MoviesDetails from '../MoviesDetails';
 
 const MyMovies = (): JSX.Element => {
   const { user } = useAuth0();
   const [{ data, loadingFetch, errorFetch }, doFetch, fetchData] = useFetch<FavMovies[]>(`/favmovies/user/${user?.sub}`);
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const history = useHistory();
+  const [idItem, setIdItem] = useState<number | string | undefined>();
 
   const handleMovieDetail = (item?: number | string) => {
-    history.push(`/movies/details/${item}`, { isMyMovies: true });
+    setIdItem(item);
+    onOpen();
   };
 
   const handleRemoveFavMovie = async (id?: string) => {
@@ -41,16 +46,24 @@ const MyMovies = (): JSX.Element => {
     <>
       {
         loadingFetch ? <div>Loading...</div> : (
-          <ListItems
-            data={listData}
-            listType="movies"
-            loading={loadingDelete}
-            onShowDetails={handleMovieDetail}
-            onRemoveItem={handleRemoveFavMovie}
-          />
+          <>
+            <ListItems
+              data={listData}
+              listType="movies"
+              loading={loadingDelete}
+              onShowDetails={handleMovieDetail}
+              onRemoveItem={handleRemoveFavMovie}
+            />
+            <MoviesDetails
+              movieId={idItem}
+              isOpen={isOpen}
+              onOpen={onOpen}
+              onClose={onClose}
+              hideControls
+            />
+          </>
         )
       }
-
     </>
   );
 };

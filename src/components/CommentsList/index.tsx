@@ -22,9 +22,7 @@ const CommentsList = ({
   type,
   ownProfile, data, userId, onRemoveComment, onEditComment, onReportComment,
 }: Props): JSX.Element => {
-  console.log('', data);
   const history = useHistory();
-  console.log(data);
 
   return (
     <Box

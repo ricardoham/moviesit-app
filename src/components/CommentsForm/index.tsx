@@ -37,7 +37,6 @@ const CommentsForm = ({
     if (data.comment === '') return;
     try {
       if (isEdit) {
-        console.log(data);
         await editData({ url: `/${type === 'comment' ? 'comments' : 'deposition'}/${comments?._id}`, body: { ...data } });
         onSendEdit();
       } else {

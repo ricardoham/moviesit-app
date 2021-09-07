@@ -1,3 +1,4 @@
+import { useDisclosure } from '@chakra-ui/react';
 import Card from 'components/Card';
 import ResultList from 'components/ResultList';
 import Search from 'components/Search';
@@ -7,11 +8,14 @@ import { ListModel } from 'model/list';
 import { TMDBPeopleResults } from 'model/tmdbpeople';
 import React, { useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import PersonDetails from './PersonDetails';
 
 const People = (): JSX.Element => {
   const [{ data, loadingFetch }, doFetch] = useFetch<TMDBPeopleResults>();
   const [query, setQuery] = useState('');
   const [showPeopleList, setShowPeopleList] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [idItem, setIdItem] = useState<number | string | undefined>();
   const history = useHistory();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,7 +24,8 @@ const People = (): JSX.Element => {
   };
 
   const handlePeopleDetail = (item?: number | string) => {
-    history.push(`/people/details/${item}`);
+    setIdItem(item);
+    onOpen();
   };
 
   const handleSearchMovie = () => {
@@ -42,6 +47,12 @@ const People = (): JSX.Element => {
         placeholder="Pesquisar estrelas e/ou diretores"
         onSearch={handleSearchMovie}
         onChangeSearch={(e) => handleSearch(e)}
+      />
+      <PersonDetails
+        personId={idItem}
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
       />
       {
     showPeopleList ? (

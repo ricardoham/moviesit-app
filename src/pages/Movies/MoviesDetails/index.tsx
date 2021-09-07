@@ -1,6 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
-  Box, Button, Heading, Image, Text,
+  Box,
+  Heading,
+  Image,
+  Text,
+  Modal,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
+  ModalBody,
 } from '@chakra-ui/react';
 import { CloseBar } from 'components/CloseBar';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
@@ -11,21 +19,36 @@ import LoadingSkeleton from 'components/Skeleton';
 import ControlDetails from 'components/ControlMovies';
 
 interface Props {
+  movieId?: number | string;
+  isOpen: boolean;
+  hideControls?: boolean;
+  onOpen?: () => void;
   onClose: () => void;
 }
 
 // TODO implement a modal instead to persist search data
 
-const MoviesDetails = ({ onClose }: Props): JSX.Element => {
+const MoviesDetails = ({
+  movieId, isOpen, onClose, onOpen, hideControls,
+}: Props): JSX.Element => {
   const { id } = useParams<{ id: string }>();
-  const [{ data, loadingFetch }] = useFetch<TMDBMovieDetail>(`/client/tmdb/${id}`);
+  const [{ data, loadingFetch }, doFetch] = useFetch<TMDBMovieDetail>();
   const history = useHistory();
   const { state } = useLocation<boolean>();
 
+  useEffect(() => {
+    if (isOpen) {
+      doFetch(`/client/tmdb/${movieId}`);
+    }
+  }, [movieId, isOpen]);
+
   return (
-    <>
-      <CloseBar onClose={() => history.push('/movies/mymovies')} />
-      {
+    <Modal isOpen={isOpen} onClose={onClose} size="5xl">
+      <ModalOverlay />
+      <ModalContent>
+        <ModalCloseButton onClick={() => doFetch('')} />
+        <ModalBody>
+          {
           loadingFetch
             ? <LoadingSkeleton />
             : (
@@ -91,17 +114,18 @@ const MoviesDetails = ({ onClose }: Props): JSX.Element => {
                   </Box>
                 </Box>
                 {
-                  !state && (
+                  !hideControls && (
                   <ControlDetails
                     movie={data}
                   />
                   )
                 }
-
               </Box>
             )
         }
-    </>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
   );
 };
 

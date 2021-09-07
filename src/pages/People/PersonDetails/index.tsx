@@ -1,6 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
-  Box, Button, Heading, Image, Text,
+  Box,
+  Button,
+  Heading,
+  Image,
+  Text,
+  Modal,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
+  ModalBody,
 } from '@chakra-ui/react';
 import { CloseBar } from 'components/CloseBar';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
@@ -11,15 +20,34 @@ import LoadingSkeleton from 'components/Skeleton';
 import ControlDetails from 'components/ControlMovies';
 import { TMDBPeopleDetail } from 'model/tmdbpeople';
 
-const PersonDetails = (): JSX.Element => {
+interface Props {
+  personId?: number | string;
+  isOpen: boolean;
+  hideControls?: boolean;
+  onOpen?: () => void;
+  onClose: () => void;
+}
+
+const PersonDetails = ({
+  personId, isOpen, onClose, onOpen, hideControls,
+}: Props): JSX.Element => {
   const { id } = useParams<{ id: string }>();
-  const [{ data, loadingFetch, errorFetch }] = useFetch<TMDBPeopleDetail>(`/client/tmdbperson/${id}`);
+  const [{ data, loadingFetch, errorFetch }, doFetch] = useFetch<TMDBPeopleDetail>();
   const history = useHistory();
-  // const { state } = useLocation<boolean>();
+
+  useEffect(() => {
+    if (isOpen) {
+      doFetch(`/client/tmdbperson/${personId}`);
+    }
+  }, [personId, isOpen]);
 
   return (
-    <>
-      {
+    <Modal isOpen={isOpen} onClose={onClose} size="5xl">
+      <ModalOverlay />
+      <ModalContent>
+        <ModalCloseButton onClick={() => doFetch('')} />
+        <ModalBody>
+          {
           loadingFetch
             ? <LoadingSkeleton />
             : (
@@ -80,7 +108,9 @@ const PersonDetails = (): JSX.Element => {
               </Box>
             )
         }
-    </>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
   );
 };
 

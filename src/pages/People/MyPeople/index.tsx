@@ -8,20 +8,24 @@ import { TMDBResults } from 'model/tmbd';
 import { useAuth0 } from '@auth0/auth0-react';
 import { ListModel } from 'model/list';
 import { TMDBPeopleDetail } from 'model/tmdbpeople';
+import { useDisclosure } from '@chakra-ui/react';
+import PersonDetails from '../PersonDetails';
 
 const MyPeople = (): JSX.Element => {
   const { user } = useAuth0();
   const [{ data, loadingFetch, errorFetch }, doFetch, fetchData] = useFetch<FavPeople[]>(`/favpeople/user/${user?.sub}`);
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const [loading, setLoading] = useState(loadingFetch);
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [idItem, setIdItem] = useState<number | string | undefined>();
   const history = useHistory();
 
-  const handleMovieDetail = (item?: number | string) => {
-    history.push(`/people/details/${item}`, { isMyMovies: true });
+  const handlePersonDetail = (item?: number | string) => {
+    setIdItem(item);
+    onOpen();
   };
 
-  const handleRemoveFavMovie = async (id?: string) => {
+  const handleRemoveFavPerson = async (id?: string) => {
     setLoading(true);
     try {
       await deleteData({ url: `/favpeople/${id}` });
@@ -46,13 +50,21 @@ const MyPeople = (): JSX.Element => {
     <>
       {
         loadingFetch ? <div>Loading...</div> : (
-          <ListItems
-            data={listData}
-            listType="persons"
-            loading={loadingDelete}
-            onShowDetails={handleMovieDetail}
-            onRemoveItem={handleRemoveFavMovie}
-          />
+          <>
+            <ListItems
+              data={listData}
+              listType="persons"
+              loading={loadingDelete}
+              onShowDetails={handlePersonDetail}
+              onRemoveItem={handleRemoveFavPerson}
+            />
+            <PersonDetails
+              personId={idItem}
+              isOpen={isOpen}
+              onOpen={onOpen}
+              onClose={onClose}
+            />
+          </>
         )
       }
 

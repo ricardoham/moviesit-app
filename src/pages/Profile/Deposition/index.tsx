@@ -30,8 +30,6 @@ const ProfileDeposition = ({ profileId, userId, userParamsId }: Props): JSX.Elem
     }
   };
 
-  console.log('userId', userId);
-
   const handleEditComment = useCallback((c: ICommentList) => {
     setComment(c);
   }, [comment]);
@@ -47,9 +45,6 @@ const ProfileDeposition = ({ profileId, userId, userParamsId }: Props): JSX.Elem
     createdById: item.userId,
     comment: item.comment,
   })), [profileId, data]);
-
-  console.log('IDFORM', userParamsId);
-  // console.log('ownProfile', ownProfile);
 
   return (
     <Box>

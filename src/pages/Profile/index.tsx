@@ -17,9 +17,6 @@ const Profile = (): JSX.Element => {
   const { name, picture } = { ...user };
   const ownProfile = user?.sub === id;
 
-  console.log('Params', id);
-  console.log('ownProfile', ownProfile);
-
   useEffect(() => {
     if (id) {
       doFetch(`/profile/${id}`);

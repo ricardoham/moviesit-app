@@ -5,12 +5,16 @@ import { useHistory } from 'react-router-dom';
 import Card from 'components/Card';
 import ResultList from 'components/ResultList';
 import { ListModel } from 'model/list';
+import { useDisclosure } from '@chakra-ui/react';
+import MoviesDetails from './MoviesDetails';
 
 const Movies = (): JSX.Element => {
   const [{ isError, isLoading, result }, doFetch] = useApiFetch();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [query, setQuery] = useState('');
   const [showMoviesList, setShowMoviesList] = useState(false);
   const history = useHistory();
+  const [idItem, setIdItem] = useState<number | string | undefined>();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
@@ -18,7 +22,8 @@ const Movies = (): JSX.Element => {
   };
 
   const handleMovieDetail = (item?: number | string) => {
-    history.push(`/movies/details/${item}`);
+    setIdItem(item);
+    onOpen();
   };
 
   const handleSearchMovie = () => {
@@ -40,6 +45,12 @@ const Movies = (): JSX.Element => {
         placeholder="Pesquisar filmes"
         onSearch={handleSearchMovie}
         onChangeSearch={(e) => handleSearch(e)}
+      />
+      <MoviesDetails
+        movieId={idItem}
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
       />
       {
         showMoviesList ? (

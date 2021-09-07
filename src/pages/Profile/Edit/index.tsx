@@ -18,8 +18,6 @@ const ProfileEdit = (): JSX.Element => {
   const { user } = useAuth0();
   const { profile } = { ...state };
 
-  console.log('EDI', profile);
-
   const initialValues = {
     moviesitNickname: profile?.moviesitNickname || '',
     age: profile?.age || undefined,
