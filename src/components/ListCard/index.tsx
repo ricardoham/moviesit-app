@@ -5,6 +5,7 @@ import {
 import { Recommendations } from 'model/recommendations';
 import { useHistory } from 'react-router-dom';
 import { IListCard } from 'model/listCard';
+import { localDate } from 'utils/localDate';
 
 interface Props {
   isLoading?: boolean;
@@ -60,10 +61,21 @@ const ListCard = ({
                 }
               </Box>
               <Box>
-                <Text fontWeight="bold">{`${item.movie ? 'Comentários' : 'Descrição'}📝`}</Text>
+                <Text fontWeight="bold">{`${item.movie ? 'Comentários' : 'Descrição'} 📝`}</Text>
                 <Text>
                   {item.description}
                 </Text>
+                { item.movie
+                  && (
+                  <>
+                    <Text fontWeight="bold">Data para assistir 📅</Text>
+                    <Text>
+                      {
+                       localDate(item.dueDate)
+                      }
+                    </Text>
+                  </>
+                  )}
               </Box>
               {
               !ownRecommendation

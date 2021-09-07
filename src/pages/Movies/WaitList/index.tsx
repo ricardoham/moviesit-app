@@ -39,7 +39,7 @@ const WaitList = (): JSX.Element => {
     title: item.title,
     movie: item.movie,
     description: item.comment,
-    dueData: item.dueDate,
+    dueDate: item.dueDate,
   })), [data]);
 
   const dataPdf: GenPdf[] | undefined = useMemo(() => data?.map((item) => ({
@@ -47,6 +47,7 @@ const WaitList = (): JSX.Element => {
     itemTitle: item.title,
     overview: item.comment,
     dueDate: item.dueDate,
+    createdAt: item.createdAt,
   })), [data]);
 
   return (

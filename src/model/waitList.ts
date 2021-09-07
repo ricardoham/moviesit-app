@@ -5,6 +5,7 @@ export interface WaitList {
   id?: string;
   title?: string;
   comment?: string;
-  dueDate?: Date
-  movie?: Movies
+  dueDate?: Date;
+  movie?: Movies;
+  createdAt?: Date;
 }

@@ -61,16 +61,9 @@ const FormWaitList = (): JSX.Element => {
   const handleSubmit = async (data: WaitList) => {
     try {
       if (state) {
-        const updateData: WaitList = {
-          ...data,
-          id: state.waitList.id,
-          comment: state.waitList.comment,
-          dueDate: state.waitList.dueDate,
-          movie: state.waitList.movie,
-        };
-        await editData({ url: `/waitlist/${state.waitList._id}`, body: updateData });
+        await editData({ url: `/waitlist/${state.waitList._id}`, body: { ...data } });
       } else {
-        await insertData({ url: 'waitlist', body: { ...data, userId: user?.sub } });
+        await insertData({ url: '/waitlist', body: { ...data, userId: user?.sub } });
       }
       history.push('/movies/waitlist');
     } catch (error) {

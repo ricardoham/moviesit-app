@@ -3,6 +3,7 @@ import {
   Page, Text, View, Document, StyleSheet,
 } from '@react-pdf/renderer';
 import { GenPdf } from 'model/genPdf';
+import { localDate } from 'utils/localDate';
 
 interface Props {
   type?: 'recommendation' | 'waitlist';
@@ -76,10 +77,8 @@ const GeneratorPdf = ({ type, data, section }: Props):JSX.Element => (
                     <Text style={styles.itemSubTitle}>Data para assistir: </Text>
                     <Text style={styles.itemOverview}>
                       {
-                  (item?.dueDate instanceof Date)
-                    ? item?.dueDate.toLocaleDateString()
-                    : new Date(item?.dueDate || today).toLocaleDateString()
-                  }
+                        localDate(item?.dueDate)
+                      }
                     </Text>
                   </>
                 )
@@ -87,9 +86,7 @@ const GeneratorPdf = ({ type, data, section }: Props):JSX.Element => (
               <Text style={styles.itemSubTitle}>Data de criação: </Text>
               <Text style={styles.itemOverview}>
                 {
-                (item?.createdAt instanceof Date)
-                  ? item?.createdAt.toLocaleDateString()
-                  : new Date(item?.createdAt || today).toLocaleDateString()
+                  localDate(item?.createdAt)
                 }
               </Text>
             </View>
