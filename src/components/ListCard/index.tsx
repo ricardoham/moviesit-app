@@ -18,14 +18,13 @@ const ListCard = ({
   isLoading, data, ownRecommendation, onEditCardItem, onRemoveCardItem,
 }: Props): JSX.Element => {
   const history = useHistory();
-
   return (
     <Box>
       <List>
         {
         data.map((item) => (
           <ListItem
-            key={item.id}
+            key={item?.id}
             p={3}
           >
             <Box
@@ -33,13 +32,13 @@ const ListCard = ({
               p={3}
               borderRadius="4px"
             >
-              <Image />
+              <span>{item?.dueDate}</span>
               <Box
                 display="flex"
                 alignItems="center"
                 mb="8px"
               >
-                <Heading flex={1}>{item.title}</Heading>
+                <Heading flex={1}>{item?.title}</Heading>
                 {
                   !ownRecommendation
                   && (

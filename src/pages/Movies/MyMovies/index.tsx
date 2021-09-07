@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import ReactPDF, { PDFDownloadLink } from '@react-pdf/renderer';
 import ListItems from 'components/List';
 import { useFetch } from 'hooks/useFetch';
 import { FavMovies } from 'model/favmovies';
@@ -7,7 +8,9 @@ import { useApiOperation } from 'hooks/useApiOperation';
 import { TMDBMovieDetail, TMDBResults } from 'model/tmbd';
 import { useAuth0 } from '@auth0/auth0-react';
 import { ListModel } from 'model/list';
-import { useDisclosure } from '@chakra-ui/react';
+import { useDisclosure, Button } from '@chakra-ui/react';
+import { GenPdf } from 'model/genPdf';
+import GeneratorPdf from 'components/GeneratorPdf';
 import MoviesDetails from '../MoviesDetails';
 
 const MyMovies = (): JSX.Element => {
@@ -42,11 +45,31 @@ const MyMovies = (): JSX.Element => {
     poster: item.posterPath,
   })), [data]);
 
+  const dataPdf: GenPdf[] | undefined = useMemo(() => data?.map((item) => ({
+    id: item.id as string,
+    itemTitle: item.title,
+    overview: item.overview,
+    createdAt: item.createdAt,
+  })), [data]);
+
   return (
     <>
       {
         loadingFetch ? <div>Loading...</div> : (
           <>
+            <PDFDownloadLink
+              document={(
+                <GeneratorPdf
+                  section="Meus filmes favoritos"
+                  data={dataPdf}
+                />
+              )}
+              fileName="somename.pdf"
+            >
+              {({
+                blob, url, loading, error,
+              }) => (loading ? 'Loading document...' : 'Download now!')}
+            </PDFDownloadLink>
             <ListItems
               data={listData}
               listType="movies"

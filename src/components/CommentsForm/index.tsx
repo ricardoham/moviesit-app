@@ -41,7 +41,7 @@ const CommentsForm = ({
         onSendEdit();
       } else {
         await insertData({
-          url: `${type === 'comment' ? 'comments' : 'deposition'}`,
+          url: `/${type === 'comment' ? 'comments' : 'deposition'}`,
           body: {
             ...data, userId: user?.sub, commentedItemId: itemId, createdBy: user?.name,
           },

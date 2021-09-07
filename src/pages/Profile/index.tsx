@@ -75,6 +75,7 @@ const Profile = (): JSX.Element => {
               profileId={data?.id}
               userId={user?.sub}
               userParamsId={id}
+              ownProfile={ownProfile}
             />
             )
         }

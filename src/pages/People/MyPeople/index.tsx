@@ -9,13 +9,15 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { ListModel } from 'model/list';
 import { TMDBPeopleDetail } from 'model/tmdbpeople';
 import { useDisclosure } from '@chakra-ui/react';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import GeneratorPdf from 'components/GeneratorPdf';
+import { GenPdf } from 'model/genPdf';
 import PersonDetails from '../PersonDetails';
 
 const MyPeople = (): JSX.Element => {
   const { user } = useAuth0();
   const [{ data, loadingFetch, errorFetch }, doFetch, fetchData] = useFetch<FavPeople[]>(`/favpeople/user/${user?.sub}`);
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
-  const [loading, setLoading] = useState(loadingFetch);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [idItem, setIdItem] = useState<number | string | undefined>();
   const history = useHistory();
@@ -26,7 +28,6 @@ const MyPeople = (): JSX.Element => {
   };
 
   const handleRemoveFavPerson = async (id?: string) => {
-    setLoading(true);
     try {
       await deleteData({ url: `/favpeople/${id}` });
     } catch (e) {
@@ -34,7 +35,6 @@ const MyPeople = (): JSX.Element => {
     } finally {
       fetchData();
     }
-    setLoading(false);
   };
 
   const listData: ListModel[] | undefined = useMemo(() => data?.map((item) => ({
@@ -46,11 +46,31 @@ const MyPeople = (): JSX.Element => {
     poster: item.profilePatch,
   })), [data]);
 
+  const dataPdf: GenPdf[] | undefined = useMemo(() => data?.map((item) => ({
+    id: item.id as string,
+    itemTitle: item.name,
+    overview: item.biography,
+    createdAt: item.createdAt,
+  })), [data]);
+
   return (
     <>
       {
         loadingFetch ? <div>Loading...</div> : (
           <>
+            <PDFDownloadLink
+              document={(
+                <GeneratorPdf
+                  section="Meus atores e diretores favoritos"
+                  data={dataPdf}
+                />
+              )}
+              fileName="somename.pdf"
+            >
+              {({
+                blob, url, loading, error,
+              }) => (loading ? 'Loading document...' : 'Download now!')}
+            </PDFDownloadLink>
             <ListItems
               data={listData}
               listType="persons"

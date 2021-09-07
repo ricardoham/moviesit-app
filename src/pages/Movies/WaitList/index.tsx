@@ -9,6 +9,9 @@ import ListCard from 'components/ListCard';
 import { useApiOperation } from 'hooks/useApiOperation';
 import { IListCard } from 'model/listCard';
 import { useAuth0 } from '@auth0/auth0-react';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import GeneratorPdf from 'components/GeneratorPdf';
+import { GenPdf } from 'model/genPdf';
 
 const WaitList = (): JSX.Element => {
   const { user } = useAuth0();
@@ -39,24 +42,47 @@ const WaitList = (): JSX.Element => {
     dueData: item.dueDate,
   })), [data]);
 
+  const dataPdf: GenPdf[] | undefined = useMemo(() => data?.map((item) => ({
+    id: item.id as string,
+    itemTitle: item.title,
+    overview: item.comment,
+    dueDate: item.dueDate,
+  })), [data]);
+
   return (
     <Box>
       <Button onClick={() => history.push('/waitlist/form')}>Criar uma nova list</Button>
       <Box>
         <h3>Minha lista para assistir depois: </h3>
         {
-        !loadingFetch && (
-          <ListCard
-            isLoading={loadingDelete}
-            data={listData || []}
-            ownRecommendation
-            onEditCardItem={
+        loadingFetch ? <div>Loading...</div> : (
+          <>
+            <PDFDownloadLink
+              document={(
+                <GeneratorPdf
+                  type="waitlist"
+                  section="Meus filmes para assistir depois"
+                  data={dataPdf}
+                />
+              )}
+              fileName="waitlist.pdf"
+            >
+              {({
+                blob, url, loading, error,
+              }) => (loading ? 'Loading document...' : 'Download now!')}
+            </PDFDownloadLink>
+            <ListCard
+              isLoading={loadingDelete}
+              data={listData || []}
+              ownRecommendation
+              onEditCardItem={
               (waitList: ITWaitList) => handleEditWaitList(waitList)
             }
-            onRemoveCardItem={
+              onRemoveCardItem={
               (id?: string) => handleRemoveWaitList(id)
             }
-          />
+            />
+          </>
         )
       }
       </Box>

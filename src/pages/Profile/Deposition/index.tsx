@@ -8,14 +8,20 @@ import CommentsList from 'components/CommentsList';
 import { ICommentList } from 'model/commentList';
 import { useApiOperation } from 'hooks/useApiOperation';
 import CommentsForm from 'components/CommentsForm';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import GeneratorPdf from 'components/GeneratorPdf';
+import { GenPdf } from 'model/genPdf';
 
 interface Props {
   profileId?: string;
   userId?: string;
   userParamsId?: string;
+  ownProfile?: boolean;
 }
 
-const ProfileDeposition = ({ profileId, userId, userParamsId }: Props): JSX.Element => {
+const ProfileDeposition = ({
+  profileId, userId, userParamsId, ownProfile,
+}: Props): JSX.Element => {
   const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<Deposition[]>(`/deposition/profile/${profileId}`);
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const [comment, setComment] = useState<ICommentList>();
@@ -46,11 +52,35 @@ const ProfileDeposition = ({ profileId, userId, userParamsId }: Props): JSX.Elem
     comment: item.comment,
   })), [profileId, data]);
 
+  const dataPdf: GenPdf[] | undefined = useMemo(() => data?.map((item) => ({
+    id: item.id as string,
+    itemTitle: item.createdBy,
+    overview: item.comment,
+    createdAt: item.createdAt,
+  })), [data]);
+
   return (
     <Box>
       {
         loadingFetch ? <Spinner size="xl" /> : (
           <>
+            {
+              (!userParamsId || ownProfile) && (
+              <PDFDownloadLink
+                document={(
+                  <GeneratorPdf
+                    section="Minhas depoimentos"
+                    data={dataPdf}
+                  />
+                    )}
+                fileName="somename.pdf"
+              >
+                {({
+                  blob, url, loading, error,
+                }) => (loading ? 'Loading document...' : 'Download now!')}
+              </PDFDownloadLink>
+              )
+            }
             <CommentsList
               type="deposition"
               userId={userId}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Box, Button, Heading } from '@chakra-ui/react';
 import { useFetch } from 'hooks/useFetch';
 import { Recommendations } from 'model/recommendations';
@@ -6,6 +6,9 @@ import ListCard from 'components/ListCard';
 import { useHistory } from 'react-router-dom';
 import { useApiOperation } from 'hooks/useApiOperation';
 import { useAuth0 } from '@auth0/auth0-react';
+import { GenPdf } from 'model/genPdf';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import GeneratorPdf from 'components/GeneratorPdf';
 
 const MyRecommendations = (): JSX.Element => {
   const { user } = useAuth0();
@@ -27,10 +30,32 @@ const MyRecommendations = (): JSX.Element => {
     }
   };
 
+  const dataPdf: GenPdf[] | undefined = useMemo(() => data?.map((item) => ({
+    id: item.id as string,
+    itemTitle: item.title,
+    overview: item.description,
+    createdAt: item.createdAt,
+    movies: item.movies,
+  })), [data]);
+
   return (
     <Box>
       <Button onClick={() => history.push('/myrecommendations/form')}>Nova recomendação</Button>
       <Heading as="h1" size="lg">Minhas recomendações</Heading>
+      <PDFDownloadLink
+        document={(
+          <GeneratorPdf
+            type="recommendation"
+            section="Minhas recomendações"
+            data={dataPdf}
+          />
+              )}
+        fileName="somename.pdf"
+      >
+        {({
+          blob, url, loading, error,
+        }) => (loading ? 'Loading document...' : 'Download now!')}
+      </PDFDownloadLink>
       {
         !loadingFetch && (
           <ListCard
