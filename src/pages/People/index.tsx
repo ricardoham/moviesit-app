@@ -33,6 +33,22 @@ const People = (): JSX.Element => {
     doFetch(`/client/tmdbpeople?name=${query}&page=1`);
   };
 
+  const handleNext = () => {
+    const nextPage = data?.page && data?.page + 1;
+    if (nextPage === data?.totalPages) {
+      return;
+    }
+    doFetch(`/client/tmdbpeople?name=${query}&page=${nextPage}`);
+  };
+
+  const handlePrevious = () => {
+    const previousPage = data?.page && data?.page - 1;
+    if (previousPage === 0) {
+      return;
+    }
+    doFetch(`/client/tmdbpeople?name=${query}&page=${previousPage}`);
+  };
+
   const listData: ListModel[] | undefined = useMemo(() => data?.results?.map((item) => ({
     id: item.id,
     header: item.name,
@@ -57,12 +73,13 @@ const People = (): JSX.Element => {
       {
     showPeopleList ? (
       <ResultList
-        showList={showPeopleList}
         listType="tmdb"
         isLoading={loadingFetch}
         result={listData}
         onShowDetails={handlePeopleDetail}
         onShow={() => setShowPeopleList(!showPeopleList)}
+        onNextPage={handleNext}
+        onPreviousPage={handlePrevious}
       />
     ) : (
       <>
@@ -77,7 +94,6 @@ const People = (): JSX.Element => {
       </>
     )
   }
-
     </div>
   );
 };

@@ -6,15 +6,17 @@ import Card from 'components/Card';
 import ResultList from 'components/ResultList';
 import { ListModel } from 'model/list';
 import { useDisclosure } from '@chakra-ui/react';
+import { TMDBResults } from 'model/tmbd';
+import { useFetch } from 'hooks/useFetch';
 import MoviesDetails from './MoviesDetails';
 
 const Movies = (): JSX.Element => {
-  const [{ isError, isLoading, result }, doFetch] = useApiFetch();
+  const [{ data, loadingFetch }, doFetch] = useFetch<TMDBResults>();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [query, setQuery] = useState('');
   const [showMoviesList, setShowMoviesList] = useState(false);
-  const history = useHistory();
   const [idItem, setIdItem] = useState<number | string | undefined>();
+  const history = useHistory();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
@@ -31,12 +33,28 @@ const Movies = (): JSX.Element => {
     doFetch(`/client/tmdb?name=${query}&page=1`);
   };
 
-  const listData: ListModel[] = useMemo(() => result.map((item) => ({
+  const handleNext = () => {
+    const nextPage = data?.page && data?.page + 1;
+    if (nextPage === data?.totalPages) {
+      return;
+    }
+    doFetch(`/client/tmdb?name=${query}&page=${nextPage}`);
+  };
+
+  const handlePrevious = () => {
+    const previousPage = data?.page && data?.page - 1;
+    if (previousPage === 0) {
+      return;
+    }
+    doFetch(`/client/tmdb?name=${query}&page=${previousPage}`);
+  };
+
+  const listData: ListModel[] | undefined = useMemo(() => data?.results.map((item) => ({
     id: item.id as number,
     header: item.title,
     overview: item.overview,
     poster: item.posterPath,
-  })), [result]);
+  })), [data]);
 
   return (
     <div>
@@ -57,10 +75,11 @@ const Movies = (): JSX.Element => {
           <ResultList
             listType="tmdb"
             result={listData}
-            isLoading={isLoading}
-            showList={showMoviesList}
+            isLoading={loadingFetch}
             onShowDetails={handleMovieDetail}
             onShow={() => setShowMoviesList(!showMoviesList)}
+            onNextPage={handleNext}
+            onPreviousPage={handlePrevious}
           />
         ) : (
           <>
@@ -82,7 +101,6 @@ const Movies = (): JSX.Element => {
           </>
         )
       }
-
     </div>
   );
 };
