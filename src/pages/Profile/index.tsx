@@ -38,7 +38,13 @@ const Profile = (): JSX.Element => {
   }, [id, data]);
 
   return (
-    <Box m={4}>
+    <Box
+      m={2}
+      bg="white"
+      display="flex"
+      flexFlow="column"
+      p={4}
+    >
       <Box display="flex" alignItems="center">
         <Box display="flex" alignItems="center" flex="1">
           <Avatar
@@ -52,7 +58,7 @@ const Profile = (): JSX.Element => {
         </Box>
         {
           (!id || ownProfile)
-        && <Button onClick={() => history.push('/profile/edit', { profile: data })}>Editar perfil</Button>
+        && <Button colorScheme="blue" onClick={() => history.push('/profile/edit', { profile: data })}>Editar perfil</Button>
         }
       </Box>
       <Box mt={4}>
@@ -65,9 +71,7 @@ const Profile = (): JSX.Element => {
       </Box>
       <SocialMedia socialMedia={data?.socialMedias} />
       <Box>
-        <Heading mt={10} as="h4" size="md">
-          Depoimentos
-        </Heading>
+
         {
           !loadingFetch
             && (

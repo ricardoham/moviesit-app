@@ -17,6 +17,8 @@ export const useFetch = <T>(
   const [errorFetch, setIsError] = useState(false);
   const isMounted = useIsMounted();
 
+  console.log('USE', url);
+
   const fetchData = useCallback(async (): Promise<void> => {
     setIsError(false);
     setIsLoading(true);

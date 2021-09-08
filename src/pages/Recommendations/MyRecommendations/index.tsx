@@ -7,9 +7,8 @@ import { useHistory } from 'react-router-dom';
 import { useApiOperation } from 'hooks/useApiOperation';
 import { useAuth0 } from '@auth0/auth0-react';
 import { GenPdf } from 'model/genPdf';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import GeneratorPdf from 'components/GeneratorPdf';
 import useIsMounted from 'hooks/useMount';
+import PDFLink from 'components/PDFLink';
 
 const MyRecommendations = (): JSX.Element => {
   const { user } = useAuth0();
@@ -45,23 +44,29 @@ const MyRecommendations = (): JSX.Element => {
   })), [data]);
 
   return (
-    <Box>
-      <Button onClick={() => history.push('/myrecommendations/form')}>Nova recomendação</Button>
-      <Heading as="h1" size="lg">Minhas recomendações</Heading>
-      <PDFDownloadLink
-        document={(
-          <GeneratorPdf
-            type="recommendation"
-            section="Minhas recomendações"
-            data={dataPdf}
-          />
-              )}
-        fileName="somename.pdf"
-      >
-        {({
-          blob, url, loading, error,
-        }) => (loading ? 'Loading document...' : 'Download now!')}
-      </PDFDownloadLink>
+    <Box
+      bg="white"
+      display="flex"
+      flexFlow="column"
+      p={4}
+    >
+      <Heading as="h3" size="lg">Minhas recomendações</Heading>
+      <Box alignSelf="flex-end">
+        <Button
+          mb={4}
+          variant="outline"
+          colorScheme="teal"
+          onClick={() => history.push('/myrecommendations/form')}
+        >
+          Nova recomendação
+        </Button>
+        <PDFLink
+          type="recommendation"
+          section="Minhas recomendações"
+          data={dataPdf}
+          fileName="myrecommendations.pdf"
+        />
+      </Box>
       {
         !loadingFetch && (
           <ListCard

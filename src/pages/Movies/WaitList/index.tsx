@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
-  Box, Button,
+  Box, Button, Heading,
 } from '@chakra-ui/react';
 import { WaitList as ITWaitList } from 'model/waitList';
 import { useFetch } from 'hooks/useFetch';
@@ -9,10 +9,9 @@ import ListCard from 'components/ListCard';
 import { useApiOperation } from 'hooks/useApiOperation';
 import { IListCard } from 'model/listCard';
 import { useAuth0 } from '@auth0/auth0-react';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import GeneratorPdf from 'components/GeneratorPdf';
 import { GenPdf } from 'model/genPdf';
 import useIsMounted from 'hooks/useMount';
+import PDFLink from 'components/PDFLink';
 
 const WaitList = (): JSX.Element => {
   const { user } = useAuth0();
@@ -57,27 +56,35 @@ const WaitList = (): JSX.Element => {
   })), [data]);
 
   return (
-    <Box>
-      <Button onClick={() => history.push('/waitlist/form')}>Criar uma nova list</Button>
-      <Box>
-        <h3>Minha lista para assistir depois: </h3>
-        {
+
+    <Box
+      bg="white"
+      display="flex"
+      flexFlow="column"
+      p={4}
+      m={2}
+    >
+      <Heading as="h3" size="lg">Minha lista para assistir depois</Heading>
+      <Box alignSelf="flex-end" mb={4}>
+        <Button
+          variant="outline"
+          colorScheme="teal"
+          onClick={() => history.push('/waitlist/form')}
+        >
+          Criar nova lista
+        </Button>
+      </Box>
+      {
         loadingFetch ? <div>Loading...</div> : (
           <>
-            <PDFDownloadLink
-              document={(
-                <GeneratorPdf
-                  type="waitlist"
-                  section="Meus filmes para assistir depois"
-                  data={dataPdf}
-                />
-              )}
-              fileName="waitlist.pdf"
-            >
-              {({
-                blob, url, loading, error,
-              }) => (loading ? 'Loading document...' : 'Download now!')}
-            </PDFDownloadLink>
+            <Box alignSelf="flex-end">
+              <PDFLink
+                type="waitlist"
+                section="Meus filmes para assistir depois"
+                data={dataPdf}
+                fileName="waitlist.pdf"
+              />
+            </Box>
             <ListCard
               isLoading={loadingDelete}
               data={listData || []}
@@ -92,7 +99,6 @@ const WaitList = (): JSX.Element => {
           </>
         )
       }
-      </Box>
     </Box>
   );
 };

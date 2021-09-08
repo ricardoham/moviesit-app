@@ -16,13 +16,15 @@ import ListSearch from 'components/ListSearch';
 import { IoCloseOutline } from 'react-icons/io5';
 import { useApiOperation } from 'hooks/useApiOperation';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useFetch } from 'hooks/useFetch';
+import { TMDBResults } from 'model/tmbd';
 import { Form } from './styles';
 
 const FormRecommendation = (): JSX.Element => {
   const { user } = useAuth0();
   const { state } = useLocation<{ recommendation: Recommendations } | undefined>();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [{ isError, isLoading, result }, doFetch] = useApiFetch();
+  const [{ data, loadingFetch, errorFetch }, doFetch, fetchData] = useFetch<TMDBResults>();
   const [loadingPost, insertData] = useApiOperation({ operation: 'insert' });
   const [loadingEdit, editData] = useApiOperation({ operation: 'edit' });
   const [query, setQuery] = useState('');
@@ -42,6 +44,8 @@ const FormRecommendation = (): JSX.Element => {
     movies: yup.array().min(1, 'Minimo 1 filme').max(5, 'Máximo 5 filmes').required('Filmes required'),
   });
 
+  console.log(query);
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
     setQuery(e.target.value);
@@ -54,6 +58,22 @@ const FormRecommendation = (): JSX.Element => {
   const handleSearchMovie = () => {
     setShowMoviesList(true);
     doFetch(`/client/tmdb?name=${query}&page=1`);
+  };
+
+  const handleNext = () => {
+    const nextPage = data?.page && data?.page + 1;
+    if (nextPage === data?.totalPages) {
+      return;
+    }
+    doFetch(`/client/tmdb?name=${query}&page=${nextPage}`);
+  };
+
+  const handlePrevious = () => {
+    const previousPage = data?.page && data?.page - 1;
+    if (previousPage === 0) {
+      return;
+    }
+    doFetch(`/client/tmdb?name=${query}&page=${previousPage}`);
   };
 
   const handleSelectMovies = (
@@ -80,12 +100,17 @@ const FormRecommendation = (): JSX.Element => {
     setField('movies', newList);
   };
 
-  const handleSubmit = async (data: Recommendations) => {
+  const handleCloseModal = () => {
+    doFetch('');
+    setQuery('');
+  };
+
+  const handleSubmit = async (dataForm: Recommendations) => {
     try {
       if (state) {
-        await editData({ url: `/recommendations/${state.recommendation._id}`, body: { ...data } });
+        await editData({ url: `/recommendations/${state.recommendation._id}`, body: { ...dataForm } });
       } else {
-        await insertData({ url: '/recommendations', body: { ...data, userId: user?.sub, createdBy: user?.name } });
+        await insertData({ url: '/recommendations', body: { ...dataForm, userId: user?.sub, createdBy: user?.name } });
       }
       history.push('/recommendations/myrecommendations');
     } catch (error) {
@@ -93,12 +118,12 @@ const FormRecommendation = (): JSX.Element => {
     }
   };
 
-  const listData: ListModel[] = useMemo(() => result.map((item) => ({
+  const listData: ListModel[] | undefined = useMemo(() => data?.results.map((item) => ({
     id: item.id as number,
     header: item.title,
     overview: item.overview,
     poster: item.posterPath,
-  })), [result]);
+  })), [data]);
 
   return (
     <Box p={3} bgColor="white">
@@ -129,22 +154,26 @@ const FormRecommendation = (): JSX.Element => {
                     onChangeSearch={(e) => handleSearch(e)}
                   />
                 </ModalHeader>
-                <ModalCloseButton onClick={() => setQuery('')} />
+                <ModalCloseButton onClick={handleCloseModal} />
                 <ModalBody>
                   {
-                      isLoading ? <div>Loading...</div>
+                      loadingFetch ? <div>Loading...</div>
                         : (
-                          <ListSearch
-                            listType="tmdb"
-                            data={listData}
-                            loading={isLoading}
-                            onShowDetails={handleMovieDetail}
-                            onSelectMovies={
+                          <>
+                            <ListSearch
+                              listType="tmdb"
+                              data={listData}
+                              loading={loadingFetch}
+                              onShowDetails={handleMovieDetail}
+                              onSelectMovies={
                               (movie: Movies) => handleSelectMovies(
                                 values.movies, movie, setFieldValue,
                               )
                             }
-                          />
+                              onNextPage={handleNext}
+                              onPreviousPage={handlePrevious}
+                            />
+                          </>
                         )
                     }
                   <>
@@ -176,8 +205,8 @@ const FormRecommendation = (): JSX.Element => {
                   }
               </Box>
             </Field>
-            <Button onClick={onOpen}>Inserir filmes</Button>
-            <ButtonGroup variant="outline" spacing="6">
+            <Button variant="outline" colorScheme="teal" onClick={onOpen}>Inserir filmes</Button>
+            <ButtonGroup variant="outline" spacing="6" mt={4}>
               <Button colorScheme="blue" type="submit" isLoading={loadingPost || loadingEdit}>Save</Button>
               <Button onClick={() => history.push('/recommendations/myrecommendations')}>Cancel</Button>
             </ButtonGroup>

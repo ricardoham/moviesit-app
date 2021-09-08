@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Box, Button, ButtonGroup, Image, List, ListItem, Text,
+  Box, Button, ButtonGroup, Image, List, ListItem, Text, Heading,
 } from '@chakra-ui/react';
 import { ListModel } from 'model/list';
 
@@ -24,20 +24,6 @@ const ListItems = ({
   const [list, setList] = useState(data);
   const [isLoading, setLoading] = useState(false);
 
-  // const handleRemoveItem = async (itemId?: number | string) => {
-  //   setLoading(true);
-  //   try {
-  //     if (itemId && onRemoveItem) {
-  //       await onRemoveItem(itemId);
-  //       const newList = list?.filter((l) => l.id !== itemId);
-  //       setList(newList);
-  //     }
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  //   setLoading(false);
-  // };
-
   return (
     <List>
       {
@@ -50,6 +36,7 @@ const ListItems = ({
             bg="white"
             onClick={listType === 'tmdb' ? () => onShowDetails(item.id) : undefined}
             cursor={listType === 'tmdb' ? 'pointer' : 'auto'}
+            boxShadow="0 4px 8px 0 rgba(0,0,0,0.2)"
           >
             <Box flexShrink={0}>
               <Image
@@ -58,14 +45,18 @@ const ListItems = ({
                 width={{ md: 48 }}
               />
             </Box>
-            <Box mt={{ base: 4, md: 0 }} ml={{ md: 6 }} overflow="hidden">
-              <Text fontWeight="bold" fontSize="lg">{item.header}</Text>
-              <Text>{item.overview}</Text>
+            <Box mt={{ base: 4, md: 0 }} ml={{ md: 6 }} overflow="hidden" display="flex" flexFlow="column">
+              <Box>
+                <Text fontWeight="bold" fontSize="lg">{item.header}</Text>
+                <Text>{item.overview}</Text>
+              </Box>
               {
               (listType === 'movies' || listType === 'persons') && (
-                <ButtonGroup mt={14}>
+                <ButtonGroup mt="auto" p={2}>
                   <Button
                     type="button"
+                    variant="outline"
+                    colorScheme="blue"
                     disabled={isLoading}
                     onClick={() => onShowDetails(item.itemId)}
                   >
@@ -73,6 +64,8 @@ const ListItems = ({
                   </Button>
                   <Button
                     type="button"
+                    variant="outline"
+                    colorScheme="red"
                     disabled={isLoading}
                     onClick={() => onRemoveItem && onRemoveItem(item._id)}
                   >

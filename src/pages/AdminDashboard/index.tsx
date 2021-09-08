@@ -6,11 +6,15 @@ import ChartReport from 'pages/AdminDashboard/ChartReport';
 import { useFetch } from 'hooks/useFetch';
 import { ReportData } from 'model/reportData';
 import useIsMounted from 'hooks/useMount';
+import useWindowDimensions from 'hooks/useWindowDimensions';
 import CommentsReported from './CommentsReported';
 
 const AdminDashboard = (): JSX.Element => {
   const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<ReportData>();
   const isMounted = useIsMounted();
+  const dimensions = useWindowDimensions();
+
+  console.log(dimensions);
 
   const handleRefreshData = async () => {
     try {
@@ -41,7 +45,7 @@ const AdminDashboard = (): JSX.Element => {
                 <Heading>
                   Relátorios
                 </Heading>
-                { isMounted() && <ChartReport dataReport={data} /> }
+                { (isMounted() && dimensions) && <ChartReport dataReport={data} /> }
                 <ButtonGroup alignSelf="center" mt={4}>
                   <Button
                     colorScheme="blue"

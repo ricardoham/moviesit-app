@@ -1,15 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import ReactPDF, { PDFDownloadLink } from '@react-pdf/renderer';
 import ListItems from 'components/List';
 import { useFetch } from 'hooks/useFetch';
 import { FavMovies } from 'model/favmovies';
 import { useApiOperation } from 'hooks/useApiOperation';
 import { useAuth0 } from '@auth0/auth0-react';
 import { ListModel } from 'model/list';
-import { useDisclosure, Button } from '@chakra-ui/react';
+import { useDisclosure, Box, Heading } from '@chakra-ui/react';
 import { GenPdf } from 'model/genPdf';
 import GeneratorPdf from 'components/GeneratorPdf';
 import useIsMounted from 'hooks/useMount';
+import PDFLink from 'components/PDFLink';
 import MoviesDetails from '../MoviesDetails';
 
 const MyMovies = (): JSX.Element => {
@@ -56,23 +56,24 @@ const MyMovies = (): JSX.Element => {
   })), [data]);
 
   return (
-    <>
+    <Box
+      bg="white"
+      display="flex"
+      flexFlow="column"
+      p={4}
+      m={2}
+    >
+      <Heading as="h3" size="lg">Minha lista de filmes</Heading>
       {
         loadingFetch ? <div>Loading...</div> : (
           <>
-            <PDFDownloadLink
-              document={(
-                <GeneratorPdf
-                  section="Meus filmes favoritos"
-                  data={dataPdf}
-                />
-              )}
-              fileName="somename.pdf"
-            >
-              {({
-                blob, url, loading, error,
-              }) => (loading ? 'Loading document...' : 'Download now!')}
-            </PDFDownloadLink>
+            <Box alignSelf="flex-end">
+              <PDFLink
+                section="Meus filmes favoritos"
+                data={dataPdf}
+                fileName="favmovies.pdf"
+              />
+            </Box>
             <ListItems
               data={listData}
               listType="movies"
@@ -90,7 +91,7 @@ const MyMovies = (): JSX.Element => {
           </>
         )
       }
-    </>
+    </Box>
   );
 };
 

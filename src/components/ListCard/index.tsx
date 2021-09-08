@@ -26,14 +26,15 @@ const ListCard = ({
         data.map((item) => (
           <ListItem
             key={item?.id}
-            p={3}
+            m={[2, 4]}
+            p={[0, 2]}
+            boxShadow="0 4px 8px 0 rgba(0,0,0,0.2)"
           >
             <Box
               bg="white"
               p={3}
               borderRadius="4px"
             >
-              <span>{item?.dueDate}</span>
               <Box
                 display="flex"
                 alignItems="center"
@@ -97,11 +98,12 @@ const ListCard = ({
                }
               {
                 ownRecommendation && (
-                  <ButtonGroup spacing={4} mt={8}>
+                  <ButtonGroup spacing={4} mt={8} display="flex">
                     {
                       !item.movie
                       && (
                       <Button
+                        isTruncated
                         variant="outline"
                         colorScheme="blue"
                         onClick={() => history.push('/recommendations/details', { recommendation: item })}

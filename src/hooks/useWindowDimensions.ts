@@ -1,35 +1,39 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-interface WindowDimensions {
-  width: number;
-  height: number;
+interface WindowSize {
+  width: number
+  height: number
 }
 
-const getWindowDimensions = (): WindowDimensions => {
-  const { innerWidth: width, innerHeight: height } = window;
-
-  return {
-    width,
-    height,
-  };
-};
-
-const useWindowDimensions = (): WindowDimensions => {
-  const [windowDimensions, setWindowDimensions] = useState<WindowDimensions>(
-    getWindowDimensions(),
-  );
+function useWindowDimensions(): WindowSize {
+  const [windowDimensions, setWindowSize] = useState<WindowSize>({
+    width: 0,
+    height: 0,
+  });
 
   useEffect(() => {
-    function handleResize(): void {
-      setWindowDimensions(getWindowDimensions());
-    }
+    const handler = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
 
-    window.addEventListener('resize', handleResize);
+    // Set size at the first client-side load
+    handler();
 
-    return (): void => window.removeEventListener('resize', handleResize);
+    window.addEventListener('resize', handler);
+
+    // Remove event listener on cleanup
+    return () => {
+      window.removeEventListener('resize', handler);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return windowDimensions;
-};
+}
 
 export default useWindowDimensions;
+
+// export default useWindowDimensions;

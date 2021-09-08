@@ -1,17 +1,16 @@
 import React, {
   useCallback, useEffect, useMemo, useState,
 } from 'react';
-import { Box, Spinner } from '@chakra-ui/react';
+import { Box, Spinner, Heading } from '@chakra-ui/react';
 import { useFetch } from 'hooks/useFetch';
 import { Deposition } from 'model/profile';
 import CommentsList from 'components/CommentsList';
 import { ICommentList } from 'model/commentList';
 import { useApiOperation } from 'hooks/useApiOperation';
 import CommentsForm from 'components/CommentsForm';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import GeneratorPdf from 'components/GeneratorPdf';
 import { GenPdf } from 'model/genPdf';
 import useIsMounted from 'hooks/useMount';
+import PDFLink from 'components/PDFLink';
 
 interface Props {
   profileId?: string;
@@ -67,24 +66,19 @@ const ProfileDeposition = ({
 
   return (
     <Box>
+      <Heading mt={10} as="h4" size="md">
+        Depoimentos
+      </Heading>
       {
         loadingFetch ? <Spinner size="xl" /> : (
           <>
             {
               (!userParamsId || ownProfile) && (
-              <PDFDownloadLink
-                document={(
-                  <GeneratorPdf
-                    section="Minhas depoimentos"
-                    data={dataPdf}
-                  />
-                    )}
-                fileName="somename.pdf"
-              >
-                {({
-                  blob, url, loading, error,
-                }) => (loading ? 'Loading document...' : 'Download now!')}
-              </PDFDownloadLink>
+                <PDFLink
+                  section="Minhas depoimentos"
+                  data={dataPdf}
+                  fileName="deposition.pdf"
+                />
               )
             }
             <CommentsList

@@ -31,6 +31,7 @@ const Search = ({
       ml="8px"
       type="button"
       onClick={onSearch}
+      colorScheme="blue"
     >
       Pesquisar
     </Button>

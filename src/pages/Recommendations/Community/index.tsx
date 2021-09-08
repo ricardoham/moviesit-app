@@ -28,7 +28,12 @@ const CommunityRecommendations = (): JSX.Element => {
   }, [isMounted]);
 
   return (
-    <Box>
+    <Box
+      bg="white"
+      display="flex"
+      flexFlow="column"
+      p={4}
+    >
       <Search
         value={query}
         placeholder="Pesquisar recomendações da comunidade"

@@ -7,11 +7,10 @@ import { TMDBResults } from 'model/tmbd';
 import { useAuth0 } from '@auth0/auth0-react';
 import { ListModel } from 'model/list';
 import { TMDBPeopleDetail } from 'model/tmdbpeople';
-import { useDisclosure } from '@chakra-ui/react';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import GeneratorPdf from 'components/GeneratorPdf';
+import { useDisclosure, Box, Heading } from '@chakra-ui/react';
 import { GenPdf } from 'model/genPdf';
 import useIsMounted from 'hooks/useMount';
+import PDFLink from 'components/PDFLink';
 import PersonDetails from '../PersonDetails';
 
 const MyPeople = (): JSX.Element => {
@@ -58,23 +57,19 @@ const MyPeople = (): JSX.Element => {
   })), [data]);
 
   return (
-    <>
+    <Box bg="white" display="flex" flexFlow="column" p={4} m={2}>
+      <Heading as="h3" size="lg">Minha lista de atores e diretores</Heading>
+
       {
         loadingFetch ? <div>Loading...</div> : (
           <>
-            <PDFDownloadLink
-              document={(
-                <GeneratorPdf
-                  section="Meus atores e diretores favoritos"
-                  data={dataPdf}
-                />
-              )}
-              fileName="somename.pdf"
-            >
-              {({
-                blob, url, loading, error,
-              }) => (loading ? 'Loading document...' : 'Download now!')}
-            </PDFDownloadLink>
+            <Box alignSelf="flex-end">
+              <PDFLink
+                section="Meus atores e diretores favoritos"
+                data={dataPdf}
+                fileName="favpeople.pdf"
+              />
+            </Box>
             <ListItems
               data={listData}
               listType="persons"
@@ -92,7 +87,7 @@ const MyPeople = (): JSX.Element => {
         )
       }
 
-    </>
+    </Box>
   );
 };
 

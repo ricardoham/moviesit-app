@@ -14,6 +14,8 @@ interface Props {
   onAddRecommendation?: (item?: number | string) => void;
   onSelectMovies?: (movie: Movies) => void;
   onClose?: () => void;
+  onNextPage: () => void;
+  onPreviousPage: () => void;
 }
 
 const ListSearch = ({
@@ -25,6 +27,8 @@ const ListSearch = ({
   onRemoveItem,
   onSelectMovies,
   onClose,
+  onNextPage,
+  onPreviousPage,
 }: Props): JSX.Element => {
   const [list, setList] = useState(data);
   const [isLoading, setLoading] = useState(false);
@@ -53,11 +57,12 @@ const ListSearch = ({
   };
 
   return (
-    <List>
-      {
+    <Box display="flex" flexFlow="column">
+      <List>
+        {
         list?.map((item) => (
           <ListItem
-            key={item.itemId}
+            key={item.id as number}
             m={4}
             p={2}
             display={{ md: 'flex' }}
@@ -116,7 +121,19 @@ const ListSearch = ({
           </ListItem>
         ))
       }
-    </List>
+
+      </List>
+      {
+        list
+      && (
+      <ButtonGroup spacing={4} alignSelf="center" mt={4}>
+        <Button onClick={onPreviousPage}>Anterior</Button>
+        <Button onClick={onNextPage}>Próxima</Button>
+      </ButtonGroup>
+      )
+      }
+    </Box>
+
   );
 };
 

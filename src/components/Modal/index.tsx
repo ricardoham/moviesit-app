@@ -42,7 +42,24 @@ const MoviesModal = ({
 
   const handleCloseModal = () => {
     setURL('');
+    setQuery('');
     onClose();
+  };
+
+  const handleNext = () => {
+    const nextPage = data?.page && data?.page + 1;
+    if (nextPage === data?.totalPages) {
+      return;
+    }
+    setURL(`/client/tmdb?name=${query}&page=${nextPage}`);
+  };
+
+  const handlePrevious = () => {
+    const previousPage = data?.page && data?.page - 1;
+    if (previousPage === 0) {
+      return;
+    }
+    setURL(`/client/tmdb?name=${query}&page=${previousPage}`);
   };
 
   useEffect(() => {
@@ -91,6 +108,8 @@ const MoviesModal = ({
                   loading={loadingFetch}
                   onSelectMovies={(movie: Movies) => onSelectMovie(movie)}
                   onClose={handleCloseModal}
+                  onNextPage={handleNext}
+                  onPreviousPage={handlePrevious}
                 />
               )
           }
