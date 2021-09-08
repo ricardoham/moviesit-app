@@ -14,7 +14,6 @@ interface Props {
 
 const Header = ({ isAdmin }: Props): JSX.Element => {
   const windowDimensions = useWindowDimensions();
-  console.log(windowDimensions);
 
   return (
     <Box bg="white" p={[2, 4]} border="solid 1px grey" m={0.5}>

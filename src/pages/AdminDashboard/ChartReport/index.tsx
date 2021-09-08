@@ -37,8 +37,6 @@ const ChartReport = ({ dataReport }: Props): JSX.Element => {
           title: 'Categoria',
         },
       }}
-  // For tests
-      rootProps={{ 'data-testid': '1' }}
     />
   );
 };

@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box, Heading, Button, ButtonGroup, Divider, Spinner,
 } from '@chakra-ui/react';
 import ChartReport from 'pages/AdminDashboard/ChartReport';
 import { useFetch } from 'hooks/useFetch';
 import { ReportData } from 'model/reportData';
+import useIsMounted from 'hooks/useMount';
 import CommentsReported from './CommentsReported';
 
 const AdminDashboard = (): JSX.Element => {
-  const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<ReportData>('/report');
+  const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<ReportData>();
+  const isMounted = useIsMounted();
 
   const handleRefreshData = async () => {
     try {
@@ -17,6 +19,10 @@ const AdminDashboard = (): JSX.Element => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (isMounted()) doFetch('/report');
+  }, [isMounted]);
 
   return (
     <Box p={4} bg="white" mt={4}>
@@ -28,14 +34,14 @@ const AdminDashboard = (): JSX.Element => {
                 <Heading>
                   Comentarios Reportados
                 </Heading>
-                {/* <CommentsReported /> */}
+                { isMounted() && <CommentsReported /> }
               </Box>
               <Divider m="12px 0px" />
               <Box display="flex" flexFlow="column">
                 <Heading>
                   Relátorios
                 </Heading>
-                {/* <ChartReport dataReport={data} /> */}
+                { isMounted() && <ChartReport dataReport={data} /> }
                 <ButtonGroup alignSelf="center" mt={4}>
                   <Button
                     colorScheme="blue"

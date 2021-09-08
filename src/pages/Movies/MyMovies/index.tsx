@@ -1,25 +1,24 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import ReactPDF, { PDFDownloadLink } from '@react-pdf/renderer';
 import ListItems from 'components/List';
 import { useFetch } from 'hooks/useFetch';
 import { FavMovies } from 'model/favmovies';
-import { useHistory } from 'react-router-dom';
 import { useApiOperation } from 'hooks/useApiOperation';
-import { TMDBMovieDetail, TMDBResults } from 'model/tmbd';
 import { useAuth0 } from '@auth0/auth0-react';
 import { ListModel } from 'model/list';
 import { useDisclosure, Button } from '@chakra-ui/react';
 import { GenPdf } from 'model/genPdf';
 import GeneratorPdf from 'components/GeneratorPdf';
+import useIsMounted from 'hooks/useMount';
 import MoviesDetails from '../MoviesDetails';
 
 const MyMovies = (): JSX.Element => {
   const { user } = useAuth0();
-  const [{ data, loadingFetch, errorFetch }, doFetch, fetchData] = useFetch<FavMovies[]>(`/favmovies/user/${user?.sub}`);
+  const [{ data, loadingFetch, errorFetch }, doFetch, fetchData] = useFetch<FavMovies[]>();
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const history = useHistory();
   const [idItem, setIdItem] = useState<number | string | undefined>();
+  const isMounted = useIsMounted();
 
   const handleMovieDetail = (item?: number | string) => {
     setIdItem(item);
@@ -35,6 +34,10 @@ const MyMovies = (): JSX.Element => {
       fetchData();
     }
   };
+
+  useEffect(() => {
+    if (isMounted()) doFetch(`/favmovies/user/${user?.sub}`);
+  }, [isMounted]);
 
   const listData: ListModel[] | undefined = useMemo(() => data?.map((item) => ({
     _id: item._id,

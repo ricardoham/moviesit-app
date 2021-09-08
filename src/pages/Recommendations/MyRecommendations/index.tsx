@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Box, Button, Heading } from '@chakra-ui/react';
 import { useFetch } from 'hooks/useFetch';
 import { Recommendations } from 'model/recommendations';
@@ -9,12 +9,14 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { GenPdf } from 'model/genPdf';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import GeneratorPdf from 'components/GeneratorPdf';
+import useIsMounted from 'hooks/useMount';
 
 const MyRecommendations = (): JSX.Element => {
   const { user } = useAuth0();
-  const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<Recommendations[]>(`/recommendations/user/${user?.sub}`);
+  const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<Recommendations[]>();
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const history = useHistory();
+  const isMounted = useIsMounted();
 
   const handleEditRecommendation = (recommendation: Recommendations) => {
     history.push('/myrecommendations/form/edit', { recommendation });
@@ -29,6 +31,10 @@ const MyRecommendations = (): JSX.Element => {
       fetchData();
     }
   };
+
+  useEffect(() => {
+    if (isMounted()) doFetch(`/recommendations/user/${user?.sub}`);
+  }, [isMounted]);
 
   const dataPdf: GenPdf[] | undefined = useMemo(() => data?.map((item) => ({
     id: item.id as string,

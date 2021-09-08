@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import ListItems from 'components/List';
 import { useFetch } from 'hooks/useFetch';
 import { FavMovies, FavPeople } from 'model/favmovies';
-import { useHistory } from 'react-router-dom';
 import { useApiOperation } from 'hooks/useApiOperation';
 import { TMDBResults } from 'model/tmbd';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -12,15 +11,16 @@ import { useDisclosure } from '@chakra-ui/react';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import GeneratorPdf from 'components/GeneratorPdf';
 import { GenPdf } from 'model/genPdf';
+import useIsMounted from 'hooks/useMount';
 import PersonDetails from '../PersonDetails';
 
 const MyPeople = (): JSX.Element => {
   const { user } = useAuth0();
-  const [{ data, loadingFetch, errorFetch }, doFetch, fetchData] = useFetch<FavPeople[]>(`/favpeople/user/${user?.sub}`);
+  const [{ data, loadingFetch, errorFetch }, doFetch, fetchData] = useFetch<FavPeople[]>();
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [idItem, setIdItem] = useState<number | string | undefined>();
-  const history = useHistory();
+  const isMounted = useIsMounted();
 
   const handlePersonDetail = (item?: number | string) => {
     setIdItem(item);
@@ -36,6 +36,10 @@ const MyPeople = (): JSX.Element => {
       fetchData();
     }
   };
+
+  useEffect(() => {
+    if (isMounted()) doFetch(`/favpeople/user/${user?.sub}`);
+  }, [isMounted]);
 
   const listData: ListModel[] | undefined = useMemo(() => data?.map((item) => ({
     _id: item._id,

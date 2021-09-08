@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box, List, ListItem, Text, Button, ButtonGroup, Spinner,
 } from '@chakra-ui/react';
-import { useHistory } from 'react-router-dom';
 import { useFetch } from 'hooks/useFetch';
 import { CommentReport } from 'model/comments';
 import { useApiOperation } from 'hooks/useApiOperation';
+import useIsMounted from 'hooks/useMount';
 
 const CommentsReported = ():JSX.Element => {
-  const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<CommentReport[]>('/bancomment');
+  const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<CommentReport[]>();
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
-  const history = useHistory();
+  const isMounted = useIsMounted();
+
+  useEffect(() => {
+    if (isMounted()) doFetch('/bancomment');
+  }, [isMounted]);
 
   const handleRemoveComment = async (commentId?: string, banId?: string) => {
     try {

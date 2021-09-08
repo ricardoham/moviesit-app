@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Box, Button,
@@ -12,12 +12,14 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import GeneratorPdf from 'components/GeneratorPdf';
 import { GenPdf } from 'model/genPdf';
+import useIsMounted from 'hooks/useMount';
 
 const WaitList = (): JSX.Element => {
   const { user } = useAuth0();
-  const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<ITWaitList[]>(`/waitlist/user/${user?.sub}`);
+  const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<ITWaitList[]>();
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const history = useHistory();
+  const isMounted = useIsMounted();
 
   const handleEditWaitList = (waitList: ITWaitList) => {
     history.push('/waitList/form/edit', { waitList });
@@ -32,6 +34,10 @@ const WaitList = (): JSX.Element => {
       fetchData();
     }
   };
+
+  useEffect(() => {
+    if (isMounted()) doFetch(`/waitlist/user/${user?.sub}`);
+  }, [isMounted]);
 
   const listData: IListCard[] | undefined = useMemo(() => data?.map((item) => ({
     _id: item._id as string,

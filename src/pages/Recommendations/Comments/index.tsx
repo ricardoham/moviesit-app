@@ -12,6 +12,7 @@ import CommentsList from 'components/CommentsList';
 import { ICommentList } from 'model/commentList';
 import { useAuth0 } from '@auth0/auth0-react';
 import CommentsForm from 'components/CommentsForm';
+import useIsMounted from 'hooks/useMount';
 
 interface Props {
   recommendationId?: string;
@@ -19,10 +20,10 @@ interface Props {
 
 const RecommendationComments = ({ recommendationId }: Props): JSX.Element => {
   const { user } = useAuth0();
-  const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<Comments[]>(`/comments/recommendation/${recommendationId}`);
+  const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<Comments[]>();
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const [loadingPost, insertData] = useApiOperation({ operation: 'insert' });
-
+  const isMounted = useIsMounted();
   const [comment, setComment] = useState<Comments>();
 
   const handleRemoveComment = async (id?: string) => {
@@ -52,6 +53,10 @@ const RecommendationComments = ({ recommendationId }: Props): JSX.Element => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (isMounted()) doFetch(`/comments/recommendation/${recommendationId}`);
+  }, [isMounted]);
 
   const handleEditComment = useCallback((c: Comments) => {
     setComment(c);

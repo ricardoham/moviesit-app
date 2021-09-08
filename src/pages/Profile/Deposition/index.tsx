@@ -11,6 +11,7 @@ import CommentsForm from 'components/CommentsForm';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import GeneratorPdf from 'components/GeneratorPdf';
 import { GenPdf } from 'model/genPdf';
+import useIsMounted from 'hooks/useMount';
 
 interface Props {
   profileId?: string;
@@ -22,9 +23,14 @@ interface Props {
 const ProfileDeposition = ({
   profileId, userId, userParamsId, ownProfile,
 }: Props): JSX.Element => {
-  const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<Deposition[]>(`/deposition/profile/${profileId}`);
+  const isMounted = useIsMounted();
+  const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<Deposition[]>();
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const [comment, setComment] = useState<ICommentList>();
+
+  useEffect(() => {
+    if (isMounted()) doFetch(`/deposition/profile/${profileId}`);
+  }, [isMounted]);
 
   const handleRemoveDeposition = async (id?: string) => {
     try {
