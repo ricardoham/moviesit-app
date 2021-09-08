@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Box, Heading, Button, ButtonGroup,
+  Box, Heading, Button, ButtonGroup, Divider,
 } from '@chakra-ui/react';
 import ChartReport from 'pages/AdminDashboard/ChartReport';
 import { useFetch } from 'hooks/useFetch';
@@ -19,13 +19,14 @@ const AdminDashboard = (): JSX.Element => {
   };
 
   return (
-    <Box p={4}>
+    <Box p={4} bg="white" mt={4}>
       <Box>
         <Heading>
           Comentarios Reportados
         </Heading>
         <CommentsReported />
       </Box>
+      <Divider m="12px 0px" />
       <Box display="flex" flexFlow="column">
         <Heading>
           Relátorios

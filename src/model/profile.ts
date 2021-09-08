@@ -20,6 +20,7 @@ export interface Profile {
   _id?: string;
   id?: string;
   hasProfile?: boolean;
+  isAdmin?: boolean;
   userId?: string;
   name?: string;
   picture?: string;

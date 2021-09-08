@@ -17,28 +17,29 @@ import ProfileEdit from 'pages/Profile/Edit';
 import MyPeople from 'pages/People/MyPeople';
 import PersonDetails from 'pages/People/PersonDetails';
 import AdminDashboard from 'pages/AdminDashboard';
+import ProtectedRoute from './ProtectedRoute';
 
 const Routes = (): JSX.Element => (
   <Switch>
     <Route exact path="/" component={Home} />
-    <Route exact path="/movies" component={Movies} />
-    <Route path="/movies/details/:id" component={MoviesDetails} />
-    <Route path="/movies/mymovies" component={MyMovies} />
-    <Route path="/movies/waitlist" component={WaitList} />
-    <Route path="/waitlist/form" component={FormWaitList} />
-    <Route exact path="/people" component={People} />
-    <Route path="/people/mypeople" component={MyPeople} />
-    <Route path="/people/details/:id" component={PersonDetails} />
-    <Route exact path="/recommendations" component={Recommendations} />
-    <Route path="/recommendations/community" component={CommunityRecommendations} />
-    <Route path="/recommendations/myrecommendations" component={MyRecommendations} />
-    <Route path="/recommendations/details" component={RecommendationDetails} />
-    <Route path="/myrecommendations/form" component={FormRecommendation} />
-    <Route path="/myrecommendations/form/edit" component={FormRecommendation} />
-    <Route exact path="/profile" component={Profile} />
-    <Route path="/profile/details/:id" component={Profile} />
-    <Route exact path="/profile/edit" component={ProfileEdit} />
-    <Route exact path="/admin" component={AdminDashboard} />
+    <ProtectedRoute exact path="/movies" component={Movies} />
+    <ProtectedRoute path="/movies/details/:id" component={MoviesDetails} />
+    <ProtectedRoute path="/movies/mymovies" component={MyMovies} />
+    <ProtectedRoute path="/movies/waitlist" component={WaitList} />
+    <ProtectedRoute path="/waitlist/form" component={FormWaitList} />
+    <ProtectedRoute exact path="/people" component={People} />
+    <ProtectedRoute path="/people/mypeople" component={MyPeople} />
+    <ProtectedRoute path="/people/details/:id" component={PersonDetails} />
+    <ProtectedRoute exact path="/recommendations" component={Recommendations} />
+    <ProtectedRoute path="/recommendations/community" component={CommunityRecommendations} />
+    <ProtectedRoute path="/recommendations/myrecommendations" component={MyRecommendations} />
+    <ProtectedRoute path="/recommendations/details" component={RecommendationDetails} />
+    <ProtectedRoute path="/myrecommendations/form" component={FormRecommendation} />
+    <ProtectedRoute path="/myrecommendations/form/edit" component={FormRecommendation} />
+    <ProtectedRoute exact path="/profile" component={Profile} />
+    <ProtectedRoute path="/profile/details/:id" component={Profile} />
+    <ProtectedRoute exact path="/profile/edit" component={ProfileEdit} />
+    <ProtectedRoute exact path="/admin" component={AdminDashboard} />
   </Switch>
 );
 

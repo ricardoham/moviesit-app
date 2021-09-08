@@ -46,7 +46,13 @@ const ListCard = ({
                   <Box>
                     <Text>Feito por</Text>
                     {' '}
-                    <Text fontWeight="bold">{item.createdBy}</Text>
+                    <Text
+                      cursor="pointer"
+                      fontWeight="bold"
+                      onClick={() => history.push(`/profile/details/${item.userId}`)}
+                    >
+                      {item.createdBy}
+                    </Text>
                   </Box>
                   )
                 }

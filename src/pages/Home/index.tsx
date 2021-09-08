@@ -8,26 +8,6 @@ import { moviesItAPI } from 'api';
 
 const Home = (): JSX.Element => {
   const { user } = useAuth0();
-  const [loadingPost, insertData] = useApiOperation({ operation: 'insert' });
-
-  useEffect(() => {
-    const createNewProfile = async () => {
-      try {
-        const res = await moviesItAPI.get(`/profile/${user?.sub}`);
-        if (res.status === 204 && user?.sub) {
-          await insertData({
-            url: 'profile',
-            body: {
-              name: user.name, picture: user.picture, userId: user?.sub, hasProfile: true,
-            },
-          });
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    createNewProfile();
-  }, []);
 
   return (
     <div>

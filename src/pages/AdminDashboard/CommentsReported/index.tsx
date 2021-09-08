@@ -24,47 +24,56 @@ const CommentsReported = ():JSX.Element => {
   };
 
   return (
-    <Box>
+    <Box bg="white">
       {
-        loadingFetch ? <Spinner />
-
+        loadingFetch ? <Spinner m={8} />
           : (
-            <List>
+            <>
               {
-        data?.map((item) => (
-          <ListItem key={item.id}>
-            <Text fontWeight="bold">
-              Reportado por
-            </Text>
-            <Text>
-              {item.userReportName}
-            </Text>
-            <Box>
-              <Text fontWeight="bold">
-                Detalhes:
-              </Text>
-              <Text>
-                Comentário feito por:
-                {item.commentCreatedBy}
-              </Text>
-              <Text>
-                Comentário:
-                {item.comment}
-              </Text>
-              <Box>
-                <ButtonGroup>
-                  <Button
-                    onClick={() => handleRemoveComment(item.commentedItemId, item._id)}
-                  >
-                    Excluir comentário
-                  </Button>
-                </ButtonGroup>
-              </Box>
-            </Box>
-          </ListItem>
-        ))
-        }
-            </List>
+                !data?.length
+                  ? (
+                    <Box m={8}>
+                      <Text>Não há comentários reportados no momento</Text>
+                    </Box>
+                  )
+                  : (
+                    <List>
+                      {
+                data?.map((item) => (
+                  <ListItem key={item.id}>
+                    <Text fontWeight="bold" mt={4}>
+                      Reportado por
+                    </Text>
+                    <Text>
+                      {item.userReportName}
+                    </Text>
+                    <Box>
+                      <Text fontWeight="bold" mt={4}>
+                        Detalhes
+                      </Text>
+                      <Text>
+                        {`Comentário feito por: ${item.commentCreatedBy}`}
+                      </Text>
+                      <Text>
+                        {`Comentário: ${item.comment}`}
+                      </Text>
+                      <ButtonGroup mt={4}>
+                        <Button
+                          colorScheme="red"
+                          onClick={() => handleRemoveComment(item.commentedItemId, item._id)}
+                        >
+                          Excluir comentário
+                        </Button>
+                      </ButtonGroup>
+                    </Box>
+                  </ListItem>
+                ))
+              }
+                    </List>
+                  )
+                }
+            </>
+
           )
        }
     </Box>
