@@ -6,7 +6,7 @@ import { useApiOperation } from 'hooks/useApiOperation';
 import { useFetch } from 'hooks/useFetch';
 import { Profile } from 'model/profile';
 import { moviesItAPI } from 'api';
-import { Spinner } from '@chakra-ui/react';
+import { Spinner, Box } from '@chakra-ui/react';
 
 const App = ():JSX.Element => {
   const { user, isLoading } = useAuth0();
@@ -34,14 +34,15 @@ const App = ():JSX.Element => {
         console.error(error);
         setLoadingFetch(false);
       }
+      setLoadingFetch(false);
     };
     createNewProfile();
   }, [user, isLoading]);
 
   return (
-    <div className="App">
+    <Box display="flex" flexFlow="column">
       {
-        (isLoading || loadingPost || loadingFetch) ? <Spinner />
+        (isLoading || loadingPost || loadingFetch) ? <Spinner alignSelf="center" mt={50} size="xl" />
           : (
             <>
               <Header isAdmin={isAdmin} />
@@ -49,7 +50,7 @@ const App = ():JSX.Element => {
             </>
           )
       }
-    </div>
+    </Box>
   );
 };
 

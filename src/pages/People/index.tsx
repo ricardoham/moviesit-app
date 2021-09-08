@@ -1,4 +1,4 @@
-import { useDisclosure } from '@chakra-ui/react';
+import { useDisclosure, Box } from '@chakra-ui/react';
 import Card from 'components/Card';
 import ResultList from 'components/ResultList';
 import Search from 'components/Search';
@@ -57,7 +57,7 @@ const People = (): JSX.Element => {
   })), [data]);
 
   return (
-    <div>
+    <Box bg="white" mt={4} h="100vh">
       <Search
         value={query}
         placeholder="Pesquisar estrelas e/ou diretores"
@@ -94,7 +94,7 @@ const People = (): JSX.Element => {
       </>
     )
   }
-    </div>
+    </Box>
   );
 };
 

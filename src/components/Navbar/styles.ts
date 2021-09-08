@@ -1,12 +1,16 @@
 import styled from '@emotion/styled';
 import { NavLink } from 'react-router-dom';
 
-export const StyledNavbar = styled.nav`
+interface StyledProps {
+  isHamburger: boolean;
+}
+
+export const StyledNavbar = styled.nav<StyledProps>`
   display: flex;
+  flex-flow: ${({ isHamburger }: StyledProps) => (isHamburger ? 'column' : 'row')};
   justify-content: space-evenly;
-  align-items: center;
+  align-items: ${({ isHamburger }: StyledProps) => (isHamburger ? 'flex-start' : 'center')};
   border-radius: 8px;
-  margin: 8px 12px 16px 12px;
 `;
 
 export const NavbarLink = styled(NavLink)`
@@ -19,4 +23,5 @@ export const NavbarLink = styled(NavLink)`
   color: #181818;
   border-bottom: 3px solid transparent;
   font-weight: bold;
+  text-align: center
 `;

@@ -13,7 +13,7 @@ const Profile = (): JSX.Element => {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth0();
   const history = useHistory();
-  const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<ITProfile>();
+  const [{ data, loadingFetch }, doFetch] = useFetch<ITProfile>();
   const { name, picture } = { ...user };
   const ownProfile = user?.sub === id;
 

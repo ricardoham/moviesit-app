@@ -17,22 +17,49 @@ interface Props {
 const Card = ({
   image, header, text, btnText, invert, onAction,
 }: Props): JSX.Element => (
-  <Box display="flex" m={6} bg="white" p={4}>
-    {!invert && <Image src={image} boxSize="300px" borderRadius="lg" /> }
+  <Box display="flex" m={6} bg="white" p={4} boxShadow="0 4px 8px 0 rgba(0,0,0,0.2)">
+    {!invert && (
+    <Image
+      src={image}
+      w={[100, 300, 400]}
+      h={[150, 200, 250]}
+      mr="auto"
+      borderRadius="lg"
+    />
+    ) }
     <Box
-      display="flex"
+      display={{ md: 'flex' }}
       flexFlow="column"
-      ml={!invert ? 12 : 'auto'}
+      p={3}
     >
       <Box flex="1" mt={4}>
         <Heading as="h4" size="md">{header}</Heading>
         <Text mt={4}>{text}</Text>
       </Box>
-      <Button size="md" onClick={onAction}>{btnText}</Button>
+      <Box>
+        <Button
+          size="md"
+          onClick={onAction}
+          colorScheme="blue"
+          variant="ghost"
+        >
+          {btnText}
+        </Button>
+      </Box>
     </Box>
     {
       invert
-    && <Image src={image} boxSize="300px" borderRadius="lg" ml={12} />
+    && (
+
+      <Image
+        src={image}
+        w={[100, 200, 400]}
+        h={[150, 200, 250]}
+        borderRadius="lg"
+        ml="auto"
+        justifySelf="flex-end"
+      />
+    )
     }
   </Box>
 );

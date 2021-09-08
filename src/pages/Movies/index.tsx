@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import Card from 'components/Card';
 import ResultList from 'components/ResultList';
 import { ListModel } from 'model/list';
-import { useDisclosure } from '@chakra-ui/react';
+import { useDisclosure, Box } from '@chakra-ui/react';
 import { TMDBResults } from 'model/tmbd';
 import { useFetch } from 'hooks/useFetch';
 import MoviesDetails from './MoviesDetails';
@@ -57,7 +57,7 @@ const Movies = (): JSX.Element => {
   })), [data]);
 
   return (
-    <div>
+    <Box bg="white" mt={4} h="100vh">
       <Search
         value={query}
         placeholder="Pesquisar filmes"
@@ -101,7 +101,7 @@ const Movies = (): JSX.Element => {
           </>
         )
       }
-    </div>
+    </Box>
   );
 };
 

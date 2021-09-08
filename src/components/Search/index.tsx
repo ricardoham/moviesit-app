@@ -14,7 +14,7 @@ interface Props {
 const Search = ({
   value, placeholder, onChangeSearch, onSearch,
 }: Props): JSX.Element => (
-  <Box display="flex" m="8px">
+  <Box display="flex" p={4} borderRadius="4px">
     <InputGroup bg="white" borderRadius="lg">
       <InputLeftElement
         pointerEvents="none"

@@ -4,10 +4,11 @@ import * as S from './styles';
 
 interface Props {
   isAdmin?: boolean;
+  isHamburger: boolean;
 }
 
-const Navbar = ({ isAdmin }: Props): JSX.Element => (
-  <S.StyledNavbar>
+const Navbar = ({ isAdmin, isHamburger }: Props): JSX.Element => (
+  <S.StyledNavbar isHamburger={isHamburger}>
     <S.NavbarLink to="/">Home</S.NavbarLink>
     <S.NavbarLink to="/movies">Filmes</S.NavbarLink>
     <S.NavbarLink to="/people">Atores e Diretores</S.NavbarLink>

@@ -11,6 +11,7 @@ const LoginButton = ():JSX.Element => {
         !isAuthenticated
           ? (
             <Button
+              colorScheme="blue"
               onClick={() => loginWithRedirect()}
             >
               Login
@@ -18,6 +19,7 @@ const LoginButton = ():JSX.Element => {
           )
           : (
             <Button
+              variant="outline"
               onClick={() => logout({
                 returnTo: window.location.origin,
               })}
