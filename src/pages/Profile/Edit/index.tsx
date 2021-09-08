@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Box, Button, ButtonGroup, Input, Textarea,
+  Box, Button, ButtonGroup, Input, Textarea, useToast,
 } from '@chakra-ui/react';
 import * as yup from 'yup';
 import Field from 'components/Field';
@@ -12,7 +12,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 
 const ProfileEdit = (): JSX.Element => {
   const [loadingEdit, editData] = useApiOperation({ operation: 'edit' });
-
+  const toast = useToast();
   const history = useHistory();
   const { state } = useLocation<{ profile: Profile } | undefined>();
   const { user } = useAuth0();
@@ -46,7 +46,12 @@ const ProfileEdit = (): JSX.Element => {
       }
       history.push('/profile');
     } catch (err) {
-      console.error(err);
+      toast({
+        title: 'Error inesperado',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
     }
   };
 
@@ -56,7 +61,9 @@ const ProfileEdit = (): JSX.Element => {
         enableReinitialize
         initialValues={initialValues}
         validationSchema={validationSchema}
-        isInitialValid={(formik: any) => validationSchema.isValidSync(formik.initialValues)}
+        isInitialValid={
+          (formik: FormikValues) => validationSchema.isValidSync(formik.initialValues)
+        }
         onSubmit={handleSubmit}
       >
         {({ values, isValid, setFieldValue }: FormikValues) => (

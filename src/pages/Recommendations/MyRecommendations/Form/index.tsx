@@ -4,12 +4,11 @@ import * as yup from 'yup';
 import { Movies, Recommendations } from 'model/recommendations';
 import {
   Box, Button, ButtonGroup, IconButton, Input, Modal, ModalBody,
-
+  useToast,
   ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Textarea, useDisclosure,
 } from '@chakra-ui/react';
 import Field from 'components/Field';
 import Search from 'components/Search';
-import { useApiFetch } from 'hooks/useApiFetch';
 import { ListModel } from 'model/list';
 import { useHistory, useLocation } from 'react-router-dom';
 import ListSearch from 'components/ListSearch';
@@ -31,6 +30,7 @@ const FormRecommendation = (): JSX.Element => {
   const [showMoviesList, setShowMoviesList] = useState(false);
   const [movieContains, setMovieContains] = useState(false);
   const history = useHistory();
+  const toast = useToast();
 
   const initialValues = {
     title: state?.recommendation?.title || '',
@@ -43,8 +43,6 @@ const FormRecommendation = (): JSX.Element => {
     description: yup.string().required('Informe a descrição'),
     movies: yup.array().min(1, 'Minimo 1 filme').max(5, 'Máximo 5 filmes').required('Filmes required'),
   });
-
-  console.log(query);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
@@ -79,20 +77,34 @@ const FormRecommendation = (): JSX.Element => {
   const handleSelectMovies = (
     movies: Movies[],
     movie: Movies,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setField: (field: string, value: any) => void,
   ) => {
     const alreadyRecommendation = movies.find((item) => item.movieId === movie.movieId);
 
     if (alreadyRecommendation) {
       setMovieContains(true);
+      toast({
+        title: 'Filme já está na lista',
+        status: 'warning',
+        isClosable: true,
+        position: 'top',
+      });
       return;
     }
     setField('movies', [...movies, movie]);
+    toast({
+      title: 'Filme adicionado na lista',
+      status: 'info',
+      isClosable: true,
+      position: 'top',
+    });
   };
 
   const handleRemoveSelectMovies = (
     movies: Movies[],
     movie: Movies,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setField: (field: string, value: any) => void,
   ) => {
     const newList = movies?.filter((l) => l.movieId !== movie.movieId);
@@ -112,9 +124,20 @@ const FormRecommendation = (): JSX.Element => {
       } else {
         await insertData({ url: '/recommendations', body: { ...dataForm, userId: user?.sub, createdBy: user?.name } });
       }
+      toast({
+        title: 'Novo item criado',
+        status: 'success',
+        isClosable: true,
+        position: 'top',
+      });
       history.push('/recommendations/myrecommendations');
     } catch (error) {
-      console.error(error);
+      toast({
+        title: 'Erro ao criar novo item',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
     }
   };
 

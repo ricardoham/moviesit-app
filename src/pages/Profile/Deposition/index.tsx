@@ -1,7 +1,9 @@
 import React, {
   useCallback, useEffect, useMemo, useState,
 } from 'react';
-import { Box, Spinner, Heading } from '@chakra-ui/react';
+import {
+  Box, Spinner, Heading, useToast,
+} from '@chakra-ui/react';
 import { useFetch } from 'hooks/useFetch';
 import { Deposition } from 'model/profile';
 import CommentsList from 'components/CommentsList';
@@ -26,6 +28,7 @@ const ProfileDeposition = ({
   const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<Deposition[]>();
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const [comment, setComment] = useState<ICommentList>();
+  const toast = useToast();
 
   useEffect(() => {
     if (isMounted()) doFetch(`/deposition/profile/${profileId}`);
@@ -35,7 +38,12 @@ const ProfileDeposition = ({
     try {
       await deleteData({ url: `/deposition/${id}` });
     } catch (error) {
-      console.error(error);
+      toast({
+        title: 'Error inesperado',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
     } finally {
       fetchData();
     }

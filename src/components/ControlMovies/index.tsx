@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, useToast } from '@chakra-ui/react';
 import { useFetch } from 'hooks/useFetch';
 import { TMDBMovieDetail } from 'model/tmbd';
 import { FavMovies, FavPeople } from 'model/favmovies';
@@ -18,6 +18,7 @@ const ControlDetails = ({ movie, person }: Props): JSX.Element => {
   const [{ data }, doFetch] = useFetch<FavMovies | FavPeople>();
   const [loadingPost, insertData] = useApiOperation({ operation: 'insert' });
   const history = useHistory();
+  const toast = useToast();
 
   useEffect(() => {
     if (movie) {
@@ -39,7 +40,12 @@ const ControlDetails = ({ movie, person }: Props): JSX.Element => {
         history.push('/people/mypeople');
       }
     } catch (error) {
-      console.error(error);
+      toast({
+        title: 'Error inesperado',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
     }
   };
 

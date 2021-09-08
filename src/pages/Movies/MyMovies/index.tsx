@@ -5,7 +5,9 @@ import { FavMovies } from 'model/favmovies';
 import { useApiOperation } from 'hooks/useApiOperation';
 import { useAuth0 } from '@auth0/auth0-react';
 import { ListModel } from 'model/list';
-import { useDisclosure, Box, Heading } from '@chakra-ui/react';
+import {
+  useDisclosure, Box, Heading, useToast,
+} from '@chakra-ui/react';
 import { GenPdf } from 'model/genPdf';
 import GeneratorPdf from 'components/GeneratorPdf';
 import useIsMounted from 'hooks/useMount';
@@ -19,6 +21,7 @@ const MyMovies = (): JSX.Element => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [idItem, setIdItem] = useState<number | string | undefined>();
   const isMounted = useIsMounted();
+  const toast = useToast();
 
   const handleMovieDetail = (item?: number | string) => {
     setIdItem(item);
@@ -29,7 +32,12 @@ const MyMovies = (): JSX.Element => {
     try {
       await deleteData({ url: `/favmovies/${id}` });
     } catch (error) {
-      console.error(error);
+      toast({
+        title: 'Error inesperado',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
     } finally {
       fetchData();
     }

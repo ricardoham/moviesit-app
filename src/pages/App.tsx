@@ -31,6 +31,7 @@ const App = ():JSX.Element => {
           });
         }
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(error);
         setLoadingFetch(false);
       }

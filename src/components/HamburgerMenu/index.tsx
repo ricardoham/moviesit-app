@@ -21,6 +21,7 @@ interface Props {
 
 const HamburgerMenu = ({ isAdmin }: Props): JSX.Element => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const btnRef = React.useRef<any>();
 
   return (

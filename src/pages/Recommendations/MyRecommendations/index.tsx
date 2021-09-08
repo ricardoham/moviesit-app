@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
-import { Box, Button, Heading } from '@chakra-ui/react';
+import {
+  Box, Button, Heading, useToast,
+} from '@chakra-ui/react';
 import { useFetch } from 'hooks/useFetch';
 import { Recommendations } from 'model/recommendations';
 import ListCard from 'components/ListCard';
@@ -16,6 +18,7 @@ const MyRecommendations = (): JSX.Element => {
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const history = useHistory();
   const isMounted = useIsMounted();
+  const toast = useToast();
 
   const handleEditRecommendation = (recommendation: Recommendations) => {
     history.push('/myrecommendations/form/edit', { recommendation });
@@ -25,7 +28,12 @@ const MyRecommendations = (): JSX.Element => {
     try {
       await deleteData({ url: `/recommendations/${id}` });
     } catch (error) {
-      console.error(error);
+      toast({
+        title: 'Error inesperado',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
     } finally {
       fetchData();
     }

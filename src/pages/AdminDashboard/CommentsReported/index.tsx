@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import {
-  Box, List, ListItem, Text, Button, ButtonGroup, Spinner,
+  Box, List, ListItem, Text, Button, ButtonGroup, Spinner, useToast,
 } from '@chakra-ui/react';
 import { useFetch } from 'hooks/useFetch';
 import { CommentReport } from 'model/comments';
@@ -11,6 +11,7 @@ const CommentsReported = ():JSX.Element => {
   const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<CommentReport[]>();
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const isMounted = useIsMounted();
+  const toast = useToast();
 
   useEffect(() => {
     if (isMounted()) doFetch('/bancomment');
@@ -21,7 +22,12 @@ const CommentsReported = ():JSX.Element => {
       await deleteData({ url: `/comments/${commentId}` });
       await deleteData({ url: `/bancomment/${banId}` });
     } catch (error) {
-      console.error(error);
+      toast({
+        title: 'Error inesperado',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
     } finally {
       fetchData();
     }

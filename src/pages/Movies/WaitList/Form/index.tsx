@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import * as yup from 'yup';
 import { useHistory, useLocation } from 'react-router-dom';
 import {
-  Box, Button, ButtonGroup, IconButton, Input, Text, useDisclosure,
+  Box, Button, ButtonGroup, IconButton, Input, Text, useDisclosure, useToast,
 } from '@chakra-ui/react';
 import { Formik, FormikValues } from 'formik';
 import Field from 'components/Field';
@@ -24,6 +24,7 @@ const FormWaitList = (): JSX.Element => {
   const [loadingPost, insertData] = useApiOperation({ operation: 'insert' });
   const [loadingEdit, editData] = useApiOperation({ operation: 'edit' });
   const history = useHistory();
+  const toast = useToast();
   const today = new Date();
   const yesterDay = new Date(new Date().setDate(new Date().getDate() - 1));
 
@@ -42,12 +43,14 @@ const FormWaitList = (): JSX.Element => {
 
   const handleSelectMovie = (
     movie: Movies,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setField: (field: string, value: any) => void,
   ) => {
     setField('movie', movie);
   };
 
   const handleRemoveSelectMovies = (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setField: (field: string, value: any) => void,
   ) => {
     setField('movie', undefined);
@@ -65,9 +68,20 @@ const FormWaitList = (): JSX.Element => {
       } else {
         await insertData({ url: '/waitlist', body: { ...data, userId: user?.sub } });
       }
+      toast({
+        title: 'Novo item criado',
+        status: 'success',
+        isClosable: true,
+        position: 'top',
+      });
       history.push('/movies/waitlist');
     } catch (error) {
-      console.error(error);
+      toast({
+        title: 'Erro ao criar novo item',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
     }
   };
 
@@ -81,7 +95,9 @@ const FormWaitList = (): JSX.Element => {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
-          isInitialValid={(formik: any) => validationSchema.isValidSync(formik.initialValues)}
+          isInitialValid={
+            (formik: FormikValues) => validationSchema.isValidSync(formik.initialValues)
+          }
           onSubmit={handleSubmit}
         >
           {({ values, isValid, setFieldValue }: FormikValues) => (

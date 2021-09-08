@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Box, Button, ButtonGroup, Checkbox, Image, List, ListItem, Radio, RadioGroup, Text,
+  Box, Button, ButtonGroup, Image, List, ListItem, useToast, Text,
 } from '@chakra-ui/react';
 import { ListModel } from 'model/list';
 import { Movies } from 'model/recommendations';
@@ -32,6 +32,7 @@ const ListSearch = ({
 }: Props): JSX.Element => {
   const [list, setList] = useState(data);
   const [isLoading, setLoading] = useState(false);
+  const toast = useToast();
 
   const handleRemoveItem = async (itemId?: number | string) => {
     setLoading(true);
@@ -42,7 +43,12 @@ const ListSearch = ({
         setList(newList);
       }
     } catch (e) {
-      console.error(e);
+      toast({
+        title: 'Error inesperado',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
     }
     setLoading(false);
   };

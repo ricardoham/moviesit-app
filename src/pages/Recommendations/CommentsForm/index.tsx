@@ -1,7 +1,7 @@
 import React from 'react';
 import * as yup from 'yup';
 import {
-  Box, Button, ButtonGroup, Textarea,
+  Box, Button, ButtonGroup, Textarea, useToast,
 } from '@chakra-ui/react';
 import Field from 'components/Field';
 import { Formik, FormikValues, Form } from 'formik';
@@ -23,6 +23,7 @@ const CommentsForm = ({
   const isEdit = !!comments?.comment;
   const [loadingPost, insertData] = useApiOperation({ operation: 'insert' });
   const [loadingEdit, editData] = useApiOperation({ operation: 'edit' });
+  const toast = useToast();
 
   const initialValues: Comments = {
     comment: comments?.comment || '',
@@ -45,9 +46,20 @@ const CommentsForm = ({
           },
         });
       }
+      toast({
+        title: 'Novo item criado',
+        status: 'success',
+        isClosable: true,
+        position: 'top',
+      });
       resetForm();
     } catch (error) {
-      console.error(error);
+      toast({
+        title: 'Erro ao criar novo item',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
     } finally {
       onFetchComments();
     }

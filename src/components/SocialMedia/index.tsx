@@ -33,6 +33,7 @@ const SocialItems = {
     arial: 'Tiktok',
     icon: <IoLogoTiktok />,
   },
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 } as any;
 
 const SocialMedia = ({ socialMedia }: Props):JSX.Element => (

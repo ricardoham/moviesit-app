@@ -13,6 +13,7 @@ const AuthRoute = ({ children }: Props): JSX.Element => {
 
   const history = useHistory();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onRedirectCallback = (appState: any) => {
     history.push(appState?.returnTo || window.location.pathname);
   };

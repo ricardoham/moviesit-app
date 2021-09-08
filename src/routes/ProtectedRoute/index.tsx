@@ -4,6 +4,7 @@ import { withAuthenticationRequired, WithAuthenticationRequiredOptions } from '@
 import { Spinner } from '@chakra-ui/react';
 
 interface Props {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   component: ComponentType<any>;
   exact?: boolean;
   path?: string;

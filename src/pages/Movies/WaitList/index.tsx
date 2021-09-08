@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
-  Box, Button, Heading,
+  Box, Button, Heading, useToast,
 } from '@chakra-ui/react';
 import { WaitList as ITWaitList } from 'model/waitList';
 import { useFetch } from 'hooks/useFetch';
@@ -19,6 +19,7 @@ const WaitList = (): JSX.Element => {
   const [loadingDelete, deleteData] = useApiOperation({ operation: 'delete' });
   const history = useHistory();
   const isMounted = useIsMounted();
+  const toast = useToast();
 
   const handleEditWaitList = (waitList: ITWaitList) => {
     history.push('/waitList/form/edit', { waitList });
@@ -28,7 +29,12 @@ const WaitList = (): JSX.Element => {
     try {
       await deleteData({ url: `/waitlist/${id}` });
     } catch (error) {
-      console.error(error);
+      toast({
+        title: 'Error inesperado',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
     } finally {
       fetchData();
     }

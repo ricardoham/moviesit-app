@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import {
-  Box, Heading, Button, ButtonGroup, Divider, Spinner,
+  Box, Heading, Button, ButtonGroup, Divider, Spinner, useToast,
 } from '@chakra-ui/react';
 import ChartReport from 'pages/AdminDashboard/ChartReport';
 import { useFetch } from 'hooks/useFetch';
@@ -13,14 +13,18 @@ const AdminDashboard = (): JSX.Element => {
   const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<ReportData>();
   const isMounted = useIsMounted();
   const dimensions = useWindowDimensions();
-
-  console.log(dimensions);
+  const toast = useToast();
 
   const handleRefreshData = async () => {
     try {
       await fetchData();
     } catch (error) {
-      console.error(error);
+      toast({
+        title: 'Error ao carregar os dados',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
     }
   };
 

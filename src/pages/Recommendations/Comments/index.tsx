@@ -2,7 +2,7 @@ import React, {
   useState, useEffect, useCallback, useMemo,
 } from 'react';
 import {
-  Box, Divider, Heading, Text,
+  Box, Divider, Heading, useToast,
 } from '@chakra-ui/react';
 import { useFetch } from 'hooks/useFetch';
 import { Recommendations } from 'model/recommendations';
@@ -25,12 +25,18 @@ const RecommendationComments = ({ recommendationId }: Props): JSX.Element => {
   const [loadingPost, insertData] = useApiOperation({ operation: 'insert' });
   const isMounted = useIsMounted();
   const [comment, setComment] = useState<Comments>();
+  const toast = useToast();
 
   const handleRemoveComment = async (id?: string) => {
     try {
       await deleteData({ url: `/comments/${id}` });
     } catch (error) {
-      console.error(error);
+      toast({
+        title: 'Error inesperado',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
     } finally {
       fetchData();
     }
@@ -50,7 +56,12 @@ const RecommendationComments = ({ recommendationId }: Props): JSX.Element => {
 
       await insertData({ url: '/bancomment', body: reportComment });
     } catch (error) {
-      console.error(error);
+      toast({
+        title: 'Error inesperado',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
     }
   };
 
