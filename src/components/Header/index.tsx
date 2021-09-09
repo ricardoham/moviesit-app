@@ -22,7 +22,7 @@ const Header = ({ isAdmin }: Props): JSX.Element => {
           ? <HamburgerMenu isAdmin={isAdmin} />
           : (
             <Box display="flex">
-              <Heading as="h2" size="xl" alignSelf="center" textAlign="center">Movies it! 🎬</Heading>
+              <Heading as="h2" size="xl" alignSelf="center" textAlign="center">🎬 Movies it!</Heading>
               <Navbar isAdmin={isAdmin} isHamburger={false} />
               <Box alignSelf="flex-end" ml="auto">
                 <Login />

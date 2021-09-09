@@ -78,9 +78,10 @@ const MyRecommendations = (): JSX.Element => {
       {
         !loadingFetch && (
           <ListCard
+            fromMyRecommendations
+            ownRecommendation
             isLoading={loadingDelete}
             data={data || []}
-            ownRecommendation
             onEditCardItem={
               (recommendation: Recommendations) => handleEditRecommendation(recommendation)
             }

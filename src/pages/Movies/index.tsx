@@ -57,7 +57,7 @@ const Movies = (): JSX.Element => {
   })), [data]);
 
   return (
-    <Box bg="white" mt={4} h="100vh">
+    <Box bg="white" m={2} h="100vh">
       <Search
         value={query}
         placeholder="Pesquisar filmes"

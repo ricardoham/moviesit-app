@@ -7,8 +7,7 @@ const Recommendations = (): JSX.Element => {
   const history = useHistory();
 
   return (
-    <Box>
-
+    <Box bg="white" m={2}>
       <Box>
         <Card
           header="Minhas recomendações"

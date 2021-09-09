@@ -11,12 +11,13 @@ interface Props {
   isLoading?: boolean;
   data: IListCard[];
   ownRecommendation?: boolean;
+  fromMyRecommendations?: boolean;
   onEditCardItem?: (recommendation: Recommendations) => void;
   onRemoveCardItem?: (id?: string) => void;
 }
 
 const ListCard = ({
-  isLoading, data, ownRecommendation, onEditCardItem, onRemoveCardItem,
+  isLoading, data, ownRecommendation, onEditCardItem, onRemoveCardItem, fromMyRecommendations,
 }: Props): JSX.Element => {
   const history = useHistory();
   return (
@@ -90,7 +91,7 @@ const ListCard = ({
               <Button
                 variant="outline"
                 colorScheme="blue"
-                onClick={() => history.push('/recommendations/details', { recommendation: item })}
+                onClick={() => history.push('/recommendations/details', { recommendation: item, isMine: fromMyRecommendations })}
               >
                 Ver detalhes
               </Button>
@@ -106,7 +107,7 @@ const ListCard = ({
                         isTruncated
                         variant="outline"
                         colorScheme="blue"
-                        onClick={() => history.push('/recommendations/details', { recommendation: item })}
+                        onClick={() => history.push('/recommendations/details', { recommendation: item, isMine: fromMyRecommendations })}
                       >
                         Ver detalhes
                       </Button>

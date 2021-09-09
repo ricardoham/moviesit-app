@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import {
-  Box, Divider, Heading, Text,
+  Box, Divider, Heading, Text, Button,
 } from '@chakra-ui/react';
 import { Recommendations } from 'model/recommendations';
 import { useFetch } from 'hooks/useFetch';
@@ -12,15 +12,30 @@ interface Props {
 }
 
 const RecommendationDetails = ({ ownRecommendation }: Props): JSX.Element => {
-  const { state } = useLocation<{ recommendation: Recommendations } | undefined>();
+  const { state } = useLocation<{ recommendation: Recommendations, isMine: boolean } | undefined>();
   const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<Recommendations>();
+  const history = useHistory();
 
   return (
     <Box
+      display="flex"
+      flexFlow="column"
       bg="white"
       p={3}
       borderRadius="4px"
     >
+      <Box
+        alignSelf="flex-end"
+        m={2}
+      >
+        <Button
+          variant="outline"
+          colorScheme="teal"
+          onClick={() => history.push(`${state?.isMine ? '/recommendations/myrecommendations' : '/recommendations/community'}`)}
+        >
+          Voltar
+        </Button>
+      </Box>
       <Box mb={4}>
         <Box
           display="flex"
@@ -55,6 +70,7 @@ const RecommendationDetails = ({ ownRecommendation }: Props): JSX.Element => {
       <RecommendationComments
         recommendationId={state?.recommendation.id}
       />
+
     </Box>
   );
 };

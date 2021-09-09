@@ -30,10 +30,13 @@ const AdminDashboard = (): JSX.Element => {
 
   useEffect(() => {
     if (isMounted()) doFetch('/report');
+    setTimeout(() => {
+
+    }, 3000);
   }, [isMounted]);
 
   return (
-    <Box p={4} bg="white" mt={4}>
+    <Box p={4} bg="white" m={2}>
       {
         loadingFetch ? <Spinner />
           : (

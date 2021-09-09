@@ -46,8 +46,8 @@ const HamburgerMenu = ({ isAdmin }: Props): JSX.Element => {
           <DrawerCloseButton />
           <DrawerHeader>Movies It!</DrawerHeader>
           <DrawerBody>
-            <Navbar isAdmin={isAdmin} isHamburger />
-            <Login />
+            <Navbar isAdmin={isAdmin} isHamburger onSelect={() => onClose()} />
+            <Login onSelect={() => onClose()} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
