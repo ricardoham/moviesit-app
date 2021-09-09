@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
-  Box, Button, Heading, useToast,
+  Box, Button, Heading, useToast, Spinner,
 } from '@chakra-ui/react';
 import { WaitList as ITWaitList } from 'model/waitList';
 import { useFetch } from 'hooks/useFetch';
@@ -12,6 +12,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { GenPdf } from 'model/genPdf';
 import useIsMounted from 'hooks/useMount';
 import PDFLink from 'components/PDFLink';
+import EmptyState from 'components/EmptyState';
 
 const WaitList = (): JSX.Element => {
   const { user } = useAuth0();
@@ -81,27 +82,34 @@ const WaitList = (): JSX.Element => {
         </Button>
       </Box>
       {
-        loadingFetch ? <div>Loading...</div> : (
+        loadingFetch ? <Spinner alignSelf="center" /> : (
           <>
-            <Box alignSelf="flex-end">
-              <PDFLink
-                type="waitlist"
-                section="Meus filmes para assistir depois"
-                data={dataPdf}
-                fileName="waitlist.pdf"
-              />
-            </Box>
-            <ListCard
-              isLoading={loadingDelete}
-              data={listData || []}
-              ownRecommendation
-              onEditCardItem={
+            {
+            !data?.length ? <EmptyState noItem="Lista para assistir mais tarde" />
+              : (
+                <>
+                  <Box alignSelf="flex-end">
+                    <PDFLink
+                      type="waitlist"
+                      section="Meus filmes para assistir depois"
+                      data={dataPdf}
+                      fileName="waitlist.pdf"
+                    />
+                  </Box>
+                  <ListCard
+                    isLoading={loadingDelete}
+                    data={listData || []}
+                    ownRecommendation
+                    onEditCardItem={
               (waitList: ITWaitList) => handleEditWaitList(waitList)
             }
-              onRemoveCardItem={
+                    onRemoveCardItem={
               (id?: string) => handleRemoveWaitList(id)
             }
-            />
+                  />
+                </>
+              )
+                      }
           </>
         )
       }

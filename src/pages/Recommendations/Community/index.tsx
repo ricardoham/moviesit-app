@@ -1,31 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { Box } from '@chakra-ui/react';
-import Search from 'components/Search';
-import { useApiFetch } from 'hooks/useApiFetch';
+import React, { useEffect, useMemo } from 'react';
+import {
+  Box, Heading, Spinner, Text,
+} from '@chakra-ui/react';
 import { Recommendations } from 'model/recommendations';
 import { useFetch } from 'hooks/useFetch';
 import ListCard from 'components/ListCard';
 import useIsMounted from 'hooks/useMount';
+import PDFLink from 'components/PDFLink';
+import { GenPdf } from 'model/genPdf';
 
 const CommunityRecommendations = (): JSX.Element => {
   const [{ data, loadingFetch }, doFetch, fetchData] = useFetch<Recommendations[]>();
-  const [query, setQuery] = useState('');
-  const [showMoviesList, setShowMoviesList] = useState(false);
   const isMounted = useIsMounted();
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.stopPropagation();
-    setQuery(e.target.value);
-  };
-
-  const handleSearchRecommendations = () => {
-    setShowMoviesList(true);
-    doFetch('/recommendations');
-  };
 
   useEffect(() => {
     if (isMounted()) doFetch('/recommendations');
   }, [isMounted]);
+
+  const dataPdf: GenPdf[] | undefined = useMemo(() => data?.map((item) => ({
+    id: item.id as string,
+    itemTitle: item.title,
+    overview: item.description,
+    movies: item.movies,
+    createdAt: item.createdAt,
+    createdBy: item.createdBy,
+  })), [data]);
 
   return (
     <Box
@@ -34,15 +33,26 @@ const CommunityRecommendations = (): JSX.Element => {
       flexFlow="column"
       p={4}
     >
-      <Search
-        value={query}
-        placeholder="Pesquisar recomendações da comunidade"
-        onSearch={handleSearchRecommendations}
-        onChangeSearch={(e) => handleSearch(e)}
-      />
+      <Heading as="h3" size="lg">Recomendações da comunidade</Heading>
       {
-        !loadingFetch && (
-          <ListCard data={data || []} />
+        data?.length
+          ? (
+            <PDFLink
+              type="recommendation"
+              section="Recomendações da comunidade"
+              data={dataPdf}
+              fileName="recommendationcomuni.pdf"
+            />
+          ) : null
+      }
+      {
+        loadingFetch ? <Spinner alignSelf="center" /> : (
+          <>
+            {
+            !data?.length ? <Text p={4}>Não ha recomendações no momento</Text>
+              : <ListCard data={data || []} />
+          }
+          </>
         )
       }
     </Box>

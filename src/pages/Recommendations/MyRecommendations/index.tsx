@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import {
-  Box, Button, Heading, useToast,
+  Box, Button, Heading, useToast, Spinner,
 } from '@chakra-ui/react';
 import { useFetch } from 'hooks/useFetch';
 import { Recommendations } from 'model/recommendations';
@@ -11,6 +11,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { GenPdf } from 'model/genPdf';
 import useIsMounted from 'hooks/useMount';
 import PDFLink from 'components/PDFLink';
+import EmptyState from 'components/EmptyState';
 
 const MyRecommendations = (): JSX.Element => {
   const { user } = useAuth0();
@@ -76,21 +77,29 @@ const MyRecommendations = (): JSX.Element => {
         />
       </Box>
       {
-        !loadingFetch && (
-          <ListCard
-            fromMyRecommendations
-            ownRecommendation
-            isLoading={loadingDelete}
-            data={data || []}
-            onEditCardItem={
+        loadingFetch ? <Spinner alignSelf="center" /> : (
+          <>
+            {
+            !data?.length ? <EmptyState noItem="Recomendação" /> : (
+              <>
+                <ListCard
+                  fromMyRecommendations
+                  ownRecommendation
+                  isLoading={loadingDelete}
+                  data={data || []}
+                  onEditCardItem={
               (recommendation: Recommendations) => handleEditRecommendation(recommendation)
             }
-            onRemoveCardItem={
+                  onRemoveCardItem={
               (id?: string) => handleRemoveRecommendation(id)
             }
-          />
-        )
+                />
+              </>
+            )
       }
+          </>
+        )
+    }
     </Box>
   );
 };

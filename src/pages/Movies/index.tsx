@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import Card from 'components/Card';
 import ResultList from 'components/ResultList';
 import { ListModel } from 'model/list';
-import { useDisclosure, Box } from '@chakra-ui/react';
+import { useDisclosure, Box, Text } from '@chakra-ui/react';
 import { TMDBResults } from 'model/tmbd';
 import { useFetch } from 'hooks/useFetch';
 import MoviesDetails from './MoviesDetails';
@@ -57,7 +57,8 @@ const Movies = (): JSX.Element => {
   })), [data]);
 
   return (
-    <Box bg="white" m={2} h="100vh">
+    <Box bg="white" m={2} h="100vh" display="flex" flexFlow="column">
+      <Text alignSelf="center" as="u">Utilize a barra de pesquisa para procurar um filme no Movies Data Base</Text>
       <Search
         value={query}
         placeholder="Pesquisar filmes"

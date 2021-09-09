@@ -66,6 +66,15 @@ const GeneratorPdf = ({ type, data, section }: Props):JSX.Element => (
                           <Text key={m.movieId} style={styles.itemOverview}>{m.title}</Text>
                         ))
                       }
+                      {
+                        item.createdBy
+                        && (
+                        <>
+                          <Text style={styles.itemSubTitle}>Feito por: </Text>
+                          <Text style={styles.itemOverview}>{item?.createdBy}</Text>
+                        </>
+                        )
+                      }
                     </>
                   )
                   : <Text style={styles.itemOverview}>{item?.overview}</Text>

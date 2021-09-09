@@ -5,6 +5,7 @@ export interface GenPdf {
   itemTitle?: string;
   overview?: string;
   createdAt?: Date;
+  createdBy?: string;
   movies?: Movies[];
   dueDate?: Date;
 }

@@ -1,4 +1,4 @@
-import { useDisclosure, Box } from '@chakra-ui/react';
+import { useDisclosure, Box, Text } from '@chakra-ui/react';
 import Card from 'components/Card';
 import ResultList from 'components/ResultList';
 import Search from 'components/Search';
@@ -57,7 +57,9 @@ const People = (): JSX.Element => {
   })), [data]);
 
   return (
-    <Box bg="white" m={2} h="100vh">
+    <Box bg="white" m={2} h="100vh" display="flex" flexFlow="column">
+      <Text alignSelf="center" as="u">Utilize a barra de pesquisa para procurar um ator ou diretor no Movies Data Base</Text>
+
       <Search
         value={query}
         placeholder="Pesquisar estrelas e/ou diretores"

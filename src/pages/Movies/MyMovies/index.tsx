@@ -6,12 +6,13 @@ import { useApiOperation } from 'hooks/useApiOperation';
 import { useAuth0 } from '@auth0/auth0-react';
 import { ListModel } from 'model/list';
 import {
-  useDisclosure, Box, Heading, useToast,
+  useDisclosure, Box, Heading, useToast, Spinner,
 } from '@chakra-ui/react';
 import { GenPdf } from 'model/genPdf';
 import GeneratorPdf from 'components/GeneratorPdf';
 import useIsMounted from 'hooks/useMount';
 import PDFLink from 'components/PDFLink';
+import EmptyState from 'components/EmptyState';
 import MoviesDetails from '../MoviesDetails';
 
 const MyMovies = (): JSX.Element => {
@@ -73,29 +74,36 @@ const MyMovies = (): JSX.Element => {
     >
       <Heading as="h3" size="lg">Minha lista de filmes</Heading>
       {
-        loadingFetch ? <div>Loading...</div> : (
+        loadingFetch ? <Spinner alignSelf="center" /> : (
           <>
-            <Box alignSelf="flex-end">
-              <PDFLink
-                section="Meus filmes favoritos"
-                data={dataPdf}
-                fileName="favmovies.pdf"
-              />
-            </Box>
-            <ListItems
-              data={listData}
-              listType="movies"
-              loading={loadingDelete}
-              onShowDetails={handleMovieDetail}
-              onRemoveItem={handleRemoveFavMovie}
-            />
-            <MoviesDetails
-              movieId={idItem}
-              isOpen={isOpen}
-              onOpen={onOpen}
-              onClose={onClose}
-              hideControls
-            />
+            {
+            !data?.length ? <EmptyState type="movie" noItem="Filme" />
+              : (
+                <>
+                  <Box alignSelf="flex-end">
+                    <PDFLink
+                      section="Meus filmes favoritos"
+                      data={dataPdf}
+                      fileName="favmovies.pdf"
+                    />
+                  </Box>
+                  <ListItems
+                    data={listData}
+                    listType="movies"
+                    loading={loadingDelete}
+                    onShowDetails={handleMovieDetail}
+                    onRemoveItem={handleRemoveFavMovie}
+                  />
+                  <MoviesDetails
+                    movieId={idItem}
+                    isOpen={isOpen}
+                    onOpen={onOpen}
+                    onClose={onClose}
+                    hideControls
+                  />
+                </>
+              )
+          }
           </>
         )
       }

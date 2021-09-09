@@ -25,6 +25,7 @@ const Card = ({
       h={[150, 200, 250]}
       mr="auto"
       borderRadius="lg"
+      boxShadow="0 4px 8px 0 rgba(0,0,0,0.2)"
     />
     ) }
     <Box
@@ -58,6 +59,7 @@ const Card = ({
         borderRadius="lg"
         ml="auto"
         justifySelf="flex-end"
+        boxShadow="0 4px 8px 0 rgba(0,0,0,0.2)"
       />
     )
     }

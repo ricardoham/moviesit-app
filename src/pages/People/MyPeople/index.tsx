@@ -7,10 +7,13 @@ import { TMDBResults } from 'model/tmbd';
 import { useAuth0 } from '@auth0/auth0-react';
 import { ListModel } from 'model/list';
 import { TMDBPeopleDetail } from 'model/tmdbpeople';
-import { useDisclosure, Box, Heading } from '@chakra-ui/react';
+import {
+  useDisclosure, Box, Heading, Spinner,
+} from '@chakra-ui/react';
 import { GenPdf } from 'model/genPdf';
 import useIsMounted from 'hooks/useMount';
 import PDFLink from 'components/PDFLink';
+import EmptyState from 'components/EmptyState';
 import PersonDetails from '../PersonDetails';
 
 const MyPeople = (): JSX.Element => {
@@ -61,28 +64,36 @@ const MyPeople = (): JSX.Element => {
       <Heading as="h3" size="lg">Minha lista de atores e diretores</Heading>
 
       {
-        loadingFetch ? <div>Loading...</div> : (
+        loadingFetch ? <Spinner alignSelf="center" /> : (
           <>
-            <Box alignSelf="flex-end">
-              <PDFLink
-                section="Meus atores e diretores favoritos"
-                data={dataPdf}
-                fileName="favpeople.pdf"
-              />
-            </Box>
-            <ListItems
-              data={listData}
-              listType="persons"
-              loading={loadingDelete}
-              onShowDetails={handlePersonDetail}
-              onRemoveItem={handleRemoveFavPerson}
-            />
-            <PersonDetails
-              personId={idItem}
-              isOpen={isOpen}
-              onOpen={onOpen}
-              onClose={onClose}
-            />
+            {
+            !data?.length ? <EmptyState type="people" noItem="ator ou diretor" />
+              : (
+                <>
+
+                  <Box alignSelf="flex-end">
+                    <PDFLink
+                      section="Meus atores e diretores favoritos"
+                      data={dataPdf}
+                      fileName="favpeople.pdf"
+                    />
+                  </Box>
+                  <ListItems
+                    data={listData}
+                    listType="persons"
+                    loading={loadingDelete}
+                    onShowDetails={handlePersonDetail}
+                    onRemoveItem={handleRemoveFavPerson}
+                  />
+                  <PersonDetails
+                    personId={idItem}
+                    isOpen={isOpen}
+                    onOpen={onOpen}
+                    onClose={onClose}
+                  />
+                </>
+              )
+                    }
           </>
         )
       }
