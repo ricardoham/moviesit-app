@@ -1,9 +1,11 @@
 import axios from 'axios';
 
+const serverURL = process.env.REACT_APP_SERVER_URL;
+
 const axiosConfig = () => ({
-  baseURL: 'http://localhost:8080/api/v1',
+  baseURL: `${serverURL}/api/v1`,
 });
 
-axios.defaults.baseURL = 'http://localhost:8080/api/v1';
+axios.defaults.baseURL = `${serverURL}/api/v1`;
 
 export const moviesItAPI = axios.create(axiosConfig());
