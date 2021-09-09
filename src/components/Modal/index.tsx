@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import {
-  Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay,
+  Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Spinner,
 } from '@chakra-ui/react';
 import ListSearch from 'components/ListSearch';
 import Search from 'components/Search';
@@ -98,9 +98,9 @@ const MoviesModal = ({
           }
         </ModalHeader>
         <ModalCloseButton onClick={() => setURL('')} />
-        <ModalBody>
+        <ModalBody display="flex" flexFlow="column">
           {
-            (loadingFetch) ? <div>Loading...</div>
+            (loadingFetch) ? <Spinner alignSelf="center" m={12} size="lg" />
               : (
                 <ListSearch
                   listType={listType}

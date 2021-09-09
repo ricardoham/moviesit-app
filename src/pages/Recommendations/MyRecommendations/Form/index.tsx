@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { Movies, Recommendations } from 'model/recommendations';
 import {
   Box, Button, ButtonGroup, IconButton, Input, Modal, ModalBody,
-  useToast,
+  useToast, Spinner,
   ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Textarea, useDisclosure,
 } from '@chakra-ui/react';
 import Field from 'components/Field';
@@ -178,9 +178,9 @@ const FormRecommendation = (): JSX.Element => {
                   />
                 </ModalHeader>
                 <ModalCloseButton onClick={handleCloseModal} />
-                <ModalBody>
+                <ModalBody display="flex" flexFlow="column">
                   {
-                      loadingFetch ? <div>Loading...</div>
+                      loadingFetch ? <Spinner alignSelf="center" m={12} size="lg" />
                         : (
                           <>
                             <ListSearch

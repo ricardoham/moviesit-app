@@ -1,6 +1,8 @@
 import React from 'react';
 import ListItems from 'components/List';
-import { Box, Button, ButtonGroup } from '@chakra-ui/react';
+import {
+  Box, Button, ButtonGroup, Spinner,
+} from '@chakra-ui/react';
 import { CloseBar } from 'components/CloseBar';
 import { ListModel } from 'model/list';
 import Modal from 'components/Modal';
@@ -18,10 +20,10 @@ interface Props {
 const ResultList = ({
   result, listType, isLoading, onShowDetails, onShow, onNextPage, onPreviousPage,
 }: Props):JSX.Element => (
-  <Box bg="white" pb={8}>
+  <Box bg="white" pb={8} display="flex" flexFlow="column">
     <CloseBar onClose={onShow} />
     {
-      isLoading ? <div>Loading...</div>
+      isLoading ? <Spinner alignSelf="center" mt={12} size="lg" />
         : (
           <Box display="flex" flexFlow="column">
             <ListItems

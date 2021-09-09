@@ -78,7 +78,10 @@ const Movies = (): JSX.Element => {
             result={listData}
             isLoading={loadingFetch}
             onShowDetails={handleMovieDetail}
-            onShow={() => setShowMoviesList(!showMoviesList)}
+            onShow={() => {
+              setShowMoviesList(!showMoviesList);
+              setQuery('');
+            }}
             onNextPage={handleNext}
             onPreviousPage={handlePrevious}
           />

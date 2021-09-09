@@ -79,7 +79,10 @@ const People = (): JSX.Element => {
         isLoading={loadingFetch}
         result={listData}
         onShowDetails={handlePeopleDetail}
-        onShow={() => setShowPeopleList(!showPeopleList)}
+        onShow={() => {
+          setShowPeopleList(!showPeopleList);
+          setQuery('');
+        }}
         onNextPage={handleNext}
         onPreviousPage={handlePrevious}
       />
