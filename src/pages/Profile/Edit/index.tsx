@@ -61,35 +61,35 @@ const ProfileEdit = (): JSX.Element => {
         enableReinitialize
         initialValues={initialValues}
         validationSchema={validationSchema}
-        isInitialValid={
+        initialErrors={
           (formik: FormikValues) => validationSchema.isValidSync(formik.initialValues)
         }
         onSubmit={handleSubmit}
       >
         {({ values, isValid, setFieldValue }: FormikValues) => (
           <Form>
-            <Field name="moviesitNickname" label="Nome">
+            <Field id="moviesitNickname" name="moviesitNickname" label="Nome">
               <Input />
             </Field>
-            <Field name="age" label="Idade">
+            <Field id="age" name="age" label="Idade">
               <Input type="number" />
             </Field>
-            <Field name="about" label="Sobre mim">
+            <Field id="about" name="about" label="Sobre mim">
               <Textarea />
             </Field>
-            <Field name="socialMedias.facebook" label="Facebook">
+            <Field id="socialMedias.facebook" name="socialMedias.facebook" label="Facebook">
               <Input />
             </Field>
-            <Field name="socialMedias.instagram" label="Instagram">
+            <Field id="socialMedias.instagram" name="socialMedias.instagram" label="Instagram">
               <Input />
             </Field>
-            <Field name="socialMedias.twitter" label="Twitter">
+            <Field id="socialMedias.twitter" name="socialMedias.twitter" label="Twitter">
               <Input />
             </Field>
-            <Field name="socialMedias.whatsapp" label="WhatsApp">
+            <Field id="socialMedias.whatsapp" name="socialMedias.whatsapp" label="WhatsApp">
               <Input type="number" />
             </Field>
-            <Field name="socialMedias.tiktok" label="TikTok">
+            <Field id="socialMedias.tiktok" name="socialMedias.tiktok" label="TikTok">
               <Input />
             </Field>
             <ButtonGroup variant="outline" spacing="6">
