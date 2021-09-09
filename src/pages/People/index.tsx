@@ -86,7 +86,7 @@ const People = (): JSX.Element => {
     ) : (
       <>
         <Card
-          image="/images/recommendations.jpg"
+          image="/images/actor.jpg"
           header="Meus atores e diretores"
           text="Aqui você encontra suas estrelas e diretores favoritos"
           btnText="Ver mais..."

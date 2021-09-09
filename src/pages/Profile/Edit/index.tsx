@@ -87,7 +87,7 @@ const ProfileEdit = (): JSX.Element => {
               <Input />
             </Field>
             <Field name="socialMedias.whatsapp" label="WhatsApp">
-              <Input type="tel" />
+              <Input type="number" />
             </Field>
             <Field name="socialMedias.tiktok" label="TikTok">
               <Input />
