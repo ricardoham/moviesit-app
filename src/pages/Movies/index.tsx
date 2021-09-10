@@ -57,7 +57,7 @@ const Movies = (): JSX.Element => {
   })), [data]);
 
   return (
-    <Box bg="white" m={2} h="100vh" display="flex" flexFlow="column">
+    <Box bg="white" m={2} h="110vh" display="flex" flexFlow="column">
       <Text alignSelf="center" as="u">Utilize a barra de pesquisa para procurar um filme no Movies Data Base</Text>
       <Search
         value={query}
@@ -97,7 +97,7 @@ const Movies = (): JSX.Element => {
             <Card
               invert
               image="/images/towatch.jpg"
-              header="Filmes para assistir"
+              header="Filmes para assistir depois"
               text="Crie listas de filmes para assistir depois"
               btnText="Ver mais..."
               onAction={() => history.push('/movies/waitlist')}

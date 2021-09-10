@@ -71,7 +71,7 @@ const WaitList = (): JSX.Element => {
       p={4}
       m={2}
     >
-      <Heading as="h3" size="lg">Minha lista para assistir depois</Heading>
+      <Heading as="h3" size="lg">Minha lista de filmes para assistir depois</Heading>
       <Box alignSelf="flex-end" mb={4}>
         <Button
           variant="outline"
