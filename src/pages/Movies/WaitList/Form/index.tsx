@@ -161,8 +161,8 @@ const FormWaitList = (): JSX.Element => {
                 onSelectMovie={(movie: Movies) => handleSelectMovie(movie, setFieldValue)}
               />
               <ButtonGroup variant="outline" spacing="6" mt={4}>
-                <Button colorScheme="blue" type="submit" isLoading={loadingPost || loadingEdit}>Save</Button>
-                <Button onClick={() => history.push('/movies/waitlist')}>Cancel</Button>
+                <Button colorScheme="blue" type="submit" isLoading={loadingPost || loadingEdit}>Salvar</Button>
+                <Button onClick={() => history.push('/movies/waitlist')}>Cancelar</Button>
               </ButtonGroup>
             </Form>
           )}

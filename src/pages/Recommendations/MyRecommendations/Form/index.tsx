@@ -230,8 +230,8 @@ const FormRecommendation = (): JSX.Element => {
             </Field>
             <Button variant="outline" colorScheme="teal" onClick={onOpen}>Inserir filmes</Button>
             <ButtonGroup variant="outline" spacing="6" mt={4}>
-              <Button colorScheme="blue" type="submit" isLoading={loadingPost || loadingEdit}>Save</Button>
-              <Button onClick={() => history.push('/recommendations/myrecommendations')}>Cancel</Button>
+              <Button colorScheme="blue" type="submit" isLoading={loadingPost || loadingEdit}>Salvar</Button>
+              <Button onClick={() => history.push('/recommendations/myrecommendations')}>Cancelar</Button>
             </ButtonGroup>
           </Form>
         )}
