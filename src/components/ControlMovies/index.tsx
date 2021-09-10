@@ -60,15 +60,17 @@ const ControlDetails = ({ movie, person }: Props): JSX.Element => {
 
   return (
     <Box display="flex" flexFlow="column" justifyContent="center" p={2}>
-      <Button
-        disabled={data?.isFavorite}
-        colorScheme="blue"
-        onClick={handleFavItem}
-        isLoading={loadingPost}
-        loadingText="Adicionando a lista..."
-      >
-        {btnText}
-      </Button>
+      <Box alignSelf="center">
+        <Button
+          disabled={data?.isFavorite}
+          colorScheme="blue"
+          onClick={handleFavItem}
+          isLoading={loadingPost}
+          loadingText="Adicionando a lista..."
+        >
+          {btnText}
+        </Button>
+      </Box>
     </Box>
   );
 };
