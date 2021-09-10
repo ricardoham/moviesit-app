@@ -21,8 +21,8 @@ const RecommendationDetails = ({ ownRecommendation }: Props): JSX.Element => {
       display="flex"
       flexFlow="column"
       bg="white"
-      p={3}
-      borderRadius="4px"
+      p={4}
+      m={2}
     >
       <Box
         alignSelf="flex-end"
@@ -62,6 +62,7 @@ const RecommendationDetails = ({ ownRecommendation }: Props): JSX.Element => {
         ))
       }
         </Box>
+        <Text fontWeight="bold">Descrição 📝</Text>
         <Text>
           {state?.recommendation.description}
         </Text>

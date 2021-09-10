@@ -34,7 +34,7 @@ const Home = (): JSX.Element => {
           </Box>
           <Box mt={8}>
             <Text fontSize="xl">Crie listas com seus filmes favoritos ou atores e diretores favoritos ⭐️</Text>
-            <Button variant="ghost" colorScheme="blue" onClick={() => history.push('/movies/mymovies')}>Ver mais...</Button>
+            <Button variant="ghost" colorScheme="blue" onClick={() => history.push('/people')}>Ver mais...</Button>
           </Box>
           <Box mt={8}>
             <Text fontSize="xl">Crie listas de filmes para assistir mais tarde 📅</Text>

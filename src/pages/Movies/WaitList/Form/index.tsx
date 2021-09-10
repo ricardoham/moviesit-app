@@ -86,12 +86,12 @@ const FormWaitList = (): JSX.Element => {
   };
 
   return (
-    <Box display="flex" flexFlow="column" m={4}>
-      <Text>
+    <Box bgColor="white" display="flex" flexFlow="column" p={4} m={2}>
+      <Text p={4} fontWeight="bold">
         Escolha um filme de sua lista de filmes ou busque um novo filme,
         para criar uma lista de filmes para assistir mais tarde.
       </Text>
-      <Box bgColor="white">
+      <Box>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -133,11 +133,15 @@ const FormWaitList = (): JSX.Element => {
                 </Field>
                 <ButtonGroup spacing={5} alignSelf="center" mt={4}>
                   <Button
+                    variant="outline"
+                    colorScheme="blue"
                     onClick={() => handleOpenModel(true)}
                   >
                     Buscar da minha lista
                   </Button>
                   <Button
+                    variant="outline"
+                    colorScheme="blue"
                     onClick={() => handleOpenModel(false)}
                   >
                     Buscar novo filme
@@ -156,7 +160,7 @@ const FormWaitList = (): JSX.Element => {
                 onClose={onClose}
                 onSelectMovie={(movie: Movies) => handleSelectMovie(movie, setFieldValue)}
               />
-              <ButtonGroup variant="outline" spacing="6">
+              <ButtonGroup variant="outline" spacing="6" mt={4}>
                 <Button colorScheme="blue" type="submit" isLoading={loadingPost || loadingEdit}>Save</Button>
                 <Button onClick={() => history.push('/movies/waitlist')}>Cancel</Button>
               </ButtonGroup>

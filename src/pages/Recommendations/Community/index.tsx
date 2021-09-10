@@ -32,6 +32,7 @@ const CommunityRecommendations = (): JSX.Element => {
       display="flex"
       flexFlow="column"
       p={4}
+      m={2}
     >
       <Heading as="h3" size="lg">Recomendações da comunidade</Heading>
       {

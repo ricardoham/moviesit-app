@@ -21,7 +21,7 @@ import ProtectedRoute from './ProtectedRoute';
 
 const Routes = (): JSX.Element => (
   <Switch>
-    <Route exact path="/" component={Home} />
+    <ProtectedRoute exact path="/" component={Home} />
     <ProtectedRoute exact path="/movies" component={Movies} />
     <ProtectedRoute path="/movies/details/:id" component={MoviesDetails} />
     <ProtectedRoute path="/movies/mymovies" component={MyMovies} />

@@ -43,6 +43,7 @@ const ListItems = ({
                 src={`https://image.tmdb.org/t/p/original/${item.poster}`}
                 borderRadius="lg"
                 width={{ md: 48 }}
+                fallbackSrc="/images/fallback.jpg"
               />
             </Box>
             <Box mt={{ base: 4, md: 0 }} ml={{ md: 6 }} overflow="hidden" display="flex" flexFlow="column">

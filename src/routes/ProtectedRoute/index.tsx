@@ -1,7 +1,7 @@
 import React, { ComponentType } from 'react';
 import { Route } from 'react-router-dom';
 import { withAuthenticationRequired, WithAuthenticationRequiredOptions } from '@auth0/auth0-react';
-import { Spinner } from '@chakra-ui/react';
+import { Box, Spinner } from '@chakra-ui/react';
 
 interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -13,7 +13,15 @@ interface Props {
 const ProtectedRoute = ({ component, ...args }: Props):JSX.Element => (
   <Route
     component={withAuthenticationRequired(component, {
-      onRedirecting: () => <Spinner />,
+      onRedirecting: () => (
+        <Box
+          display="flex"
+          p={8}
+          justifyContent="center"
+        >
+          <Spinner />
+        </Box>
+      ),
     })}
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...args}
