@@ -60,7 +60,7 @@ const MyPeople = (): JSX.Element => {
   })), [data]);
 
   return (
-    <Box bg="white" display="flex" flexFlow="column" p={4} m={2}>
+    <Box bg="white" display="flex" flexFlow="column" p={4} m={2} h="140vh">
       <Heading as="h3" size="lg">Minha lista de atores e diretores</Heading>
 
       {

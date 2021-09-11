@@ -59,6 +59,7 @@ const MyRecommendations = (): JSX.Element => {
       flexFlow="column"
       p={4}
       m={2}
+      h="140vh"
     >
       <Heading as="h3" size="lg">Minhas recomendações</Heading>
       <Box alignSelf="flex-end">

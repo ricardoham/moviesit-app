@@ -15,7 +15,7 @@ const Home = (): JSX.Element => {
   const history = useHistory();
 
   return (
-    <Box bg="white" display="flex" flexFlow="column" p={4}>
+    <Box bg="white" display="flex" flexFlow="column" p={4} h="140vh">
       <Heading as="h3" size="lg">Bem vindo ao Movies It</Heading>
       <Box
         display="flex"

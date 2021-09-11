@@ -40,10 +40,11 @@ const Profile = (): JSX.Element => {
   return (
     <Box
       m={2}
+      p={4}
+      h="140vh"
       bg="white"
       display="flex"
       flexFlow="column"
-      p={4}
     >
       <Box display="flex" alignItems="center">
         <Box display="flex" alignItems="center" flex="1">

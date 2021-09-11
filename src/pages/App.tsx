@@ -3,10 +3,10 @@ import Header from 'components/Header';
 import Routes from 'routes';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useApiOperation } from 'hooks/useApiOperation';
-import { useFetch } from 'hooks/useFetch';
 import { Profile } from 'model/profile';
 import { moviesItAPI } from 'api';
 import { Spinner, Box } from '@chakra-ui/react';
+import Footer from 'components/Footer';
 
 const App = ():JSX.Element => {
   const { user, isLoading } = useAuth0();
@@ -48,6 +48,9 @@ const App = ():JSX.Element => {
             <>
               <Header isAdmin={isAdmin} />
               <Routes />
+              <Box alignSelf="center">
+                <Footer />
+              </Box>
             </>
           )
       }

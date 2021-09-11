@@ -34,9 +34,13 @@ const CommentsReported = ():JSX.Element => {
   };
 
   return (
-    <Box bg="white">
+    <Box
+      bg="white"
+      display="flex"
+      flexFlow="column"
+    >
       {
-        loadingFetch ? <Spinner m={8} />
+        loadingFetch ? <Spinner ml={24} mt={8} mb={8} />
           : (
             <>
               {

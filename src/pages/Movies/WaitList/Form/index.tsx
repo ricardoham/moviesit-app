@@ -86,7 +86,7 @@ const FormWaitList = (): JSX.Element => {
   };
 
   return (
-    <Box bgColor="white" display="flex" flexFlow="column" p={4} m={2}>
+    <Box bgColor="white" display="flex" flexFlow="column" p={4} m={2} h="140vh">
       <Text p={4} fontWeight="bold">
         Escolha um filme de sua lista de filmes ou busque um novo filme,
         para criar uma lista de filmes para assistir mais tarde.

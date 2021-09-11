@@ -36,9 +36,16 @@ const AdminDashboard = (): JSX.Element => {
   }, [isMounted]);
 
   return (
-    <Box p={4} bg="white" m={2}>
+    <Box
+      p={4}
+      bg="white"
+      m={2}
+      display="flex"
+      flexFlow="column"
+      h="140vh"
+    >
       {
-        loadingFetch ? <Spinner />
+        loadingFetch ? <Spinner alignSelf="center" />
           : (
             <>
               <Box>

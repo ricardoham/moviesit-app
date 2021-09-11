@@ -23,6 +23,7 @@ const RecommendationDetails = ({ ownRecommendation }: Props): JSX.Element => {
       bg="white"
       p={4}
       m={2}
+      h="140vh"
     >
       <Box
         alignSelf="flex-end"

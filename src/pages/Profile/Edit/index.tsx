@@ -56,7 +56,14 @@ const ProfileEdit = (): JSX.Element => {
   };
 
   return (
-    <Box bgColor="white" p={2}>
+    <Box
+      bgColor="white"
+      m={2}
+      p={4}
+      h="140vh"
+      display="flex"
+      flexFlow="column"
+    >
       <Formik
         enableReinitialize
         initialValues={initialValues}

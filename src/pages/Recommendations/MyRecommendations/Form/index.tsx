@@ -155,6 +155,7 @@ const FormRecommendation = (): JSX.Element => {
       flexFlow="column"
       p={4}
       m={2}
+      h="140vh"
     >
       <Heading as="h3" size="lg">{`${state?.recommendation ? 'Editar recomendação' : 'Cadastrar nova recomendação'}`}</Heading>
       <Formik
