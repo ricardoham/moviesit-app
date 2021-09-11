@@ -31,7 +31,7 @@ const ProfileEdit = (): JSX.Element => {
     } || undefined,
   };
   const validationSchema = yup.object().shape({
-    comment: yup.string().max(500),
+    about: yup.string().max(500),
   });
 
   const handleSubmit = async (data: Profile) => {
