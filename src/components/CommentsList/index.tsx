@@ -66,6 +66,17 @@ const CommentsList = ({
                       </>
                     )
                   }
+                {
+                    (type === 'deposition' && item.createdById !== userId)
+                    && (
+                    <Button
+                      variant="outline"
+                      onClick={() => onRemoveComment(item._id)}
+                    >
+                      Remover
+                    </Button>
+                    )
+                  }
 
                 {
                     (item.createdById !== userId && type === 'comment')
