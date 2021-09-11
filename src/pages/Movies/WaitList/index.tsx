@@ -79,7 +79,7 @@ const WaitList = (): JSX.Element => {
           colorScheme="teal"
           onClick={() => history.push('/waitlist/form')}
         >
-          Criar nova lista
+          Criar novo item
         </Button>
       </Box>
       {
