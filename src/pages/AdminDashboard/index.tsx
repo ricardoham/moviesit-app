@@ -57,7 +57,7 @@ const AdminDashboard = (): JSX.Element => {
               <Divider m="12px 0px" />
               <Box display="flex" flexFlow="column">
                 <Heading>
-                  Relátorios
+                  Relatórios
                 </Heading>
                 { (isMounted() && dimensions) && <ChartReport dataReport={data} /> }
                 <ButtonGroup alignSelf="center" mt={4}>
