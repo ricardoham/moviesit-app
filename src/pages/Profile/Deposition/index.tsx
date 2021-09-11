@@ -2,7 +2,7 @@ import React, {
   useCallback, useEffect, useMemo, useState,
 } from 'react';
 import {
-  Box, Spinner, Heading, useToast,
+  Box, Spinner, Heading, useToast, Text,
 } from '@chakra-ui/react';
 import { useFetch } from 'hooks/useFetch';
 import { Deposition } from 'model/profile';
@@ -81,21 +81,26 @@ const ProfileDeposition = ({
         loadingFetch ? <Spinner size="xl" /> : (
           <>
             {
-              (!userParamsId || ownProfile) && (
+              ((!userParamsId || ownProfile) && data?.length) ? (
                 <PDFLink
                   section="Minhas depoimentos"
                   data={dataPdf}
                   fileName="deposition.pdf"
                 />
-              )
+              ) : null
             }
-            <CommentsList
-              type="deposition"
-              userId={userId}
-              data={listData}
-              onRemoveComment={handleRemoveDeposition}
-              onEditComment={handleEditComment}
-            />
+            {
+              data?.length ? (
+                <CommentsList
+                  type="deposition"
+                  userId={userId}
+                  data={listData}
+                  onRemoveComment={handleRemoveDeposition}
+                  onEditComment={handleEditComment}
+                />
+              ) : <Text>Não há depoimentos no momento</Text>
+            }
+
             {
               (userParamsId !== userId && userParamsId !== undefined)
             && (

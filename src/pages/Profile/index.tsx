@@ -69,10 +69,22 @@ const Profile = (): JSX.Element => {
         <Text>
           {data?.about}
         </Text>
+        {
+          data?.age
+          && (
+          <>
+            <Heading mb={2} mt={2} as="h4" size="md">
+              Idade
+            </Heading>
+            <Text>
+              {`${data?.age} anos`}
+            </Text>
+          </>
+          )
+        }
       </Box>
       <SocialMedia socialMedia={data?.socialMedias} />
       <Box>
-
         {
           !loadingFetch
             && (

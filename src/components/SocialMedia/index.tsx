@@ -56,8 +56,7 @@ const SocialMedia = ({ socialMedia }: Props):JSX.Element => {
 
   const hasSocialMedia = ():boolean => {
     if (socialMedia) {
-      const test = Object.values(socialMedia).some((el) => el !== '');
-      return test;
+      return Object.values(socialMedia).some((el) => el !== '');
     }
     return false;
   };
@@ -69,26 +68,26 @@ const SocialMedia = ({ socialMedia }: Props):JSX.Element => {
       </Heading>
       <HStack>
         {
-        hasSocialMedia() && socialMedia
-        && Object.entries(socialMedia).map(([k, v]) => {
-          const comp = SocialItems[k].icon as React.ReactElement;
-          if (!v) {
-            return null;
-          }
-          return (
-            <IconButton
-              key={k}
-              size="lg"
-              fontSize="25px"
-              colorScheme={SocialItems[k].color}
-              aria-label={SocialItems[k].arial}
-              icon={comp}
-              onClick={k === 'whatsapp'
-                ? () => onOpen()
-                : () => window.open(v, '_blank')}
-            />
-          );
-        })
+        (hasSocialMedia() && socialMedia)
+          && Object.entries(socialMedia).map(([k, v]) => {
+            const comp = SocialItems[k].icon as React.ReactElement;
+            if (!v) {
+              return null;
+            }
+            return (
+              <IconButton
+                key={k}
+                size="lg"
+                fontSize="25px"
+                colorScheme={SocialItems[k].color}
+                aria-label={SocialItems[k].arial}
+                icon={comp}
+                onClick={k === 'whatsapp'
+                  ? () => onOpen()
+                  : () => window.open(v, '_blank')}
+              />
+            );
+          })
       }
       </HStack>
       <Modal isOpen={isOpen} onClose={onClose}>
