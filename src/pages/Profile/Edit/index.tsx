@@ -75,7 +75,7 @@ const ProfileEdit = (): JSX.Element => {
       >
         {({ values, isValid, setFieldValue }: FormikValues) => (
           <Form>
-            <Field id="moviesitNickname" name="moviesitNickname" label="Nome">
+            <Field id="moviesitNickname" name="moviesitNickname" label="Apelido">
               <Input />
             </Field>
             <Field id="age" name="age" label="Idade">
