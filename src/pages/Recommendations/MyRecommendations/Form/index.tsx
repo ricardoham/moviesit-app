@@ -3,7 +3,7 @@ import { Formik, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { Movies, Recommendations } from 'model/recommendations';
 import {
-  Box, Button, ButtonGroup, IconButton, Input, Modal, ModalBody,
+  Box, Button, ButtonGroup, IconButton, Input, Modal, ModalBody, Heading,
   useToast, Spinner,
   ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Textarea, useDisclosure,
 } from '@chakra-ui/react';
@@ -149,7 +149,14 @@ const FormRecommendation = (): JSX.Element => {
   })), [data]);
 
   return (
-    <Box p={3} bgColor="white">
+    <Box
+      bg="white"
+      display="flex"
+      flexFlow="column"
+      p={4}
+      m={2}
+    >
+      <Heading as="h3" size="lg">{`${state?.recommendation ? 'Editar recomendação' : 'Cadastrar nova recomendação'}`}</Heading>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
