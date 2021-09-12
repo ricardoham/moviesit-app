@@ -17,6 +17,7 @@ Set all the env vars of application:
 - REACT_APP_SERVER_URL: url from back-end
 
 ** More info: https://auth0.com/blog/complete-guide-to-react-user-authentication/
+
 ** Need the back-end running as well
 ***
 - yarn
