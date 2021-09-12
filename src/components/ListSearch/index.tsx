@@ -9,6 +9,7 @@ interface Props {
   listType: 'tmdb' | 'movies' | 'persons';
   data?: ListModel[];
   loading: boolean;
+  ownList?: boolean;
   onShowDetails?: (item?: number | string) => void;
   onRemoveItem?: (item?: number | string) => Promise<void>;
   onAddRecommendation?: (item?: number | string) => void;
@@ -21,6 +22,7 @@ interface Props {
 const ListSearch = ({
   data,
   loading,
+  ownList,
   listType,
   onShowDetails,
   onAddRecommendation,
@@ -68,7 +70,7 @@ const ListSearch = ({
         {
         list?.map((item) => (
           <ListItem
-            key={item.id as number}
+            key={item.itemId as number}
             m={4}
             p={2}
             display={{ md: 'flex' }}
@@ -130,7 +132,7 @@ const ListSearch = ({
 
       </List>
       {
-        list
+        (list && !ownList)
       && (
       <ButtonGroup spacing={4} alignSelf="center" mt={4}>
         <Button onClick={onPreviousPage}>Anterior</Button>

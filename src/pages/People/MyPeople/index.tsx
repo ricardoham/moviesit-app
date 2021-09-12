@@ -90,6 +90,7 @@ const MyPeople = (): JSX.Element => {
                     isOpen={isOpen}
                     onOpen={onOpen}
                     onClose={onClose}
+                    hideControls
                   />
                 </>
               )

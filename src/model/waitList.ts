@@ -8,4 +8,5 @@ export interface WaitList {
   dueDate?: Date;
   movie?: Movies;
   createdAt?: Date;
+  description?: string;
 }

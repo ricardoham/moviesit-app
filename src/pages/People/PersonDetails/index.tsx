@@ -104,7 +104,11 @@ const PersonDetails = ({
                     </Box>
                   </Box>
                 </Box>
-                <ControlDetails person={data} />
+                {
+                  !hideControls && (
+                    <ControlDetails person={data} />
+                  )
+                }
               </Box>
             )
         }

@@ -30,7 +30,7 @@ const FormWaitList = (): JSX.Element => {
 
   const initialValues: WaitList = {
     title: state?.waitList.title || '',
-    comment: state?.waitList.comment || '',
+    comment: state?.waitList.description || '',
     dueDate: state?.waitList.dueDate || today,
     movie: state?.waitList.movie || undefined,
   };
@@ -95,7 +95,7 @@ const FormWaitList = (): JSX.Element => {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
-          isInitialValid={
+          initialErrors={
             (formik: FormikValues) => validationSchema.isValidSync(formik.initialValues)
           }
           onSubmit={handleSubmit}

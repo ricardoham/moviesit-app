@@ -8,6 +8,7 @@ import { useFetch } from 'hooks/useFetch';
 import { ListModel } from 'model/list';
 import { Movies } from 'model/recommendations';
 import { TMDBResults } from 'model/tmbd';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface Props {
   ownList?: boolean;
@@ -26,6 +27,7 @@ const MoviesModal = ({
   onOpen,
   onClose,
 }: Props): JSX.Element => {
+  const { user } = useAuth0();
   const [query, setQuery] = useState('');
   const [{ data, loadingFetch, errorFetch }, setURL] = useFetch<TMDBResults>();
   const [showMoviesList, setShowMoviesList] = useState(false);
@@ -64,7 +66,7 @@ const MoviesModal = ({
 
   useEffect(() => {
     if (isOpen && ownList) {
-      setURL('/favmovies');
+      setURL(`/favmovies/userresults/${user?.sub}`);
     }
   }, [ownList, isOpen]);
 
@@ -110,6 +112,7 @@ const MoviesModal = ({
                   onClose={handleCloseModal}
                   onNextPage={handleNext}
                   onPreviousPage={handlePrevious}
+                  ownList={ownList}
                 />
               )
           }
