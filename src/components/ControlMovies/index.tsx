@@ -22,9 +22,9 @@ const ControlDetails = ({ movie, person }: Props): JSX.Element => {
 
   useEffect(() => {
     if (movie) {
-      doFetch(`/favmovies/${movie?.id}`);
+      doFetch(`/favmovies/${movie?.id}?userId=${user?.sub}`);
     } else if (person) {
-      doFetch(`/favpeople/${person.id}`);
+      doFetch(`/favpeople/${person.id}?userId=${user?.sub}`);
     }
   }, [movie]);
 
