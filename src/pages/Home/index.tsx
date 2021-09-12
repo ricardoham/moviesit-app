@@ -41,7 +41,7 @@ const Home = (): JSX.Element => {
             <Button variant="ghost" colorScheme="blue" onClick={() => history.push('/movies/waitlist')}>Ver mais...</Button>
           </Box>
           <Box mt={8}>
-            <Text fontSize="xl">Crie recomendações de filmes para assistir para toda a comunidade 📝</Text>
+            <Text fontSize="xl">Crie recomendações de filmes para assistir, e compartilhe com toda a comunidade 📝</Text>
             <Button variant="ghost" colorScheme="blue" onClick={() => history.push('/recommendations/myrecommendations')}>Ver mais...</Button>
           </Box>
           <Box mt={8}>
